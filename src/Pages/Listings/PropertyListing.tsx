@@ -91,32 +91,32 @@ const Listings = () => {
     <div className="min-h-screen flex flex-col">
       <Navbar />
 
-      <main className="flex-1 pt-32 pb-20">
+      <main className="flex-1 pt-32 pb-20 bg-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
           <div className="mb-12 animate-fade-in">
-            <h1 className="text-4xl sm:text-5xl font-serif font-bold mb-4 text-foreground">
+            <h1 className="text-4xl sm:text-5xl font-serif font-bold mb-4 text-[#235C47]">
               Property Listings
             </h1>
-            <p className="text-xl text-muted-foreground">
+            <p className="text-xl text-[#235C47]/80">
               Browse our collection of exceptional properties
             </p>
           </div>
 
-          <div className="flex flex-col lg:flex-row gap-8">
+          <div className="flex flex-col lg:flex-row gap-8 bg-[#FFFFFF]">
             {/* Filters Sidebar */}
             <aside className="lg:w-80 space-y-6">
-              <div className="bg-card p-6 rounded-xl border border-border card-shadow">
+              <div className="bg-white p-6 rounded-xl border border-[#235C47]/20 card-shadow">
                 <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-xl font-serif font-semibold flex items-center gap-2">
-                    <SlidersHorizontal className="w-5 h-5" />
+                  <h2 className="text-xl font-serif font-semibold flex items-center gap-2 text-[#235C47]">
+                    <SlidersHorizontal className="w-5 h-5 text-[#235C47]" />
                     Filters
                   </h2>
                   <Button
-                    variant="ghost"
+                    variant="outline"
                     size="sm"
                     onClick={resetFilters}
-                    className="text-primary"
+                    className="text-[#235C47] border-[#235C47] hover:bg-[#F9F7F6] hover:text-[#235C47]"
                   >
                     Reset
                   </Button>
@@ -125,13 +125,13 @@ const Listings = () => {
                 <div className="space-y-6">
                   {/* Search */}
                   <div className="space-y-2">
-                    <Label htmlFor="search">Search</Label>
+                    <Label htmlFor="search" className="text-[#235C47]">Search</Label>
                     <div className="relative">
-                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#235C47]/70" />
                       <Input
                         id="search"
                         placeholder="Location or keyword..."
-                        className="pl-10"
+                        className="pl-10 border-[#235C47]/20 focus:border-[#235C47] focus:ring-[#235C47]/20"
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                       />
@@ -140,12 +140,12 @@ const Listings = () => {
 
                   {/* Property Type */}
                   <div className="space-y-2">
-                    <Label htmlFor="type">Property Type</Label>
+                    <Label htmlFor="type" className="text-[#235C47]">Property Type</Label>
                     <Select
                       value={propertyType}
                       onValueChange={setPropertyType}
                     >
-                      <SelectTrigger id="type">
+                      <SelectTrigger id="type" className="border-[#235C47]/20">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
@@ -160,12 +160,12 @@ const Listings = () => {
 
                   {/* Property Status */}
                   <div className="space-y-2">
-                    <Label htmlFor="status">Status</Label>
+                    <Label htmlFor="status" className="text-[#235C47]">Status</Label>
                     <Select
                       value={propertyStatus}
                       onValueChange={setPropertyStatus}
                     >
-                      <SelectTrigger id="status">
+                      <SelectTrigger id="status" className="border-[#235C47]/20">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
@@ -178,7 +178,7 @@ const Listings = () => {
 
                   {/* Price Range */}
                   <div className="space-y-4">
-                    <Label>Price Range (Sale)</Label>
+                    <Label className="text-[#235C47]">Price Range (Sale)</Label>
                     <div className="space-y-4">
                       <Slider
                         min={0}
@@ -188,7 +188,7 @@ const Listings = () => {
                         onValueChange={setPriceRange}
                         className="w-full"
                       />
-                      <div className="flex items-center justify-between text-sm text-muted-foreground">
+                      <div className="flex items-center justify-between text-sm text-[#235C47]/70">
                         <span>${(priceRange[0] / 1000000).toFixed(1)}M</span>
                         <span>${(priceRange[1] / 1000000).toFixed(1)}M</span>
                       </div>
@@ -201,9 +201,9 @@ const Listings = () => {
             {/* Property Grid */}
             <div className="flex-1">
               <div className="mb-6 flex items-center justify-between">
-                <p className="text-muted-foreground">
+                <p className="text-[#235C47]/80">
                   Showing{" "}
-                  <span className="font-semibold text-foreground">
+                  <span className="font-semibold text-[#235C47]">
                     {filteredProperties.length}
                   </span>{" "}
                   properties
@@ -211,11 +211,16 @@ const Listings = () => {
               </div>
 
               {filteredProperties.length === 0 ? (
-                <div className="text-center py-20">
-                  <p className="text-xl text-muted-foreground mb-4">
+                <div className="text-center py-20 bg-[#F9F7F6] p-8 rounded-xl">
+                  <p className="text-xl text-[#235C47]/80 mb-4">
                     No properties found
                   </p>
-                  <Button onClick={resetFilters}>Reset Filters</Button>
+                  <Button
+                    onClick={resetFilters}
+                    className="bg-[#235C47] hover:bg-[#235C47]/90 text-white"
+                  >
+                    Reset Filters
+                  </Button>
                 </div>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
