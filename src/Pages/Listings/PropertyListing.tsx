@@ -16,13 +16,13 @@ import {
   SelectValue,
 } from "@/src/components/ui/select";
 import { Slider } from "@/src/components/ui/slider";
-import { properties, Property } from "@/src/utils/properties";
+import { properties } from "@/src/utils/properties";
 import { Search, SlidersHorizontal } from "lucide-react";
 
 const Listings = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
-  
+
   const [searchQuery, setSearchQuery] = useState("");
   const [propertyType, setPropertyType] = useState(
     searchParams.get("type") || "all"
@@ -31,7 +31,7 @@ const Listings = () => {
     searchParams.get("status") || "all"
   );
   const [priceRange, setPriceRange] = useState([0, 5000000]);
-  
+
   // Use useMemo to filter properties efficiently and prevent unnecessary re-renders
   const filteredProperties = useMemo(() => {
     let result = properties;
@@ -52,9 +52,7 @@ const Listings = () => {
 
     // Filter by property status
     if (propertyStatus !== "all") {
-      result = result.filter(
-        (property) => property.status === propertyStatus
-      );
+      result = result.filter((property) => property.status === propertyStatus);
     }
 
     // Filter by price range (for sale properties)
@@ -75,10 +73,10 @@ const Listings = () => {
     const params = new URLSearchParams();
     if (propertyType !== "all") params.set("type", propertyType);
     if (propertyStatus !== "all") params.set("status", propertyStatus);
-    
+
     // Update the URL without causing a page refresh
     const queryString = params.toString();
-    const newUrl = queryString ? `/listings?${queryString}` : '/listings';
+    const newUrl = queryString ? `/listings?${queryString}` : "/listings";
     router.push(newUrl, { scroll: false });
   }, [propertyType, propertyStatus, router]);
 
