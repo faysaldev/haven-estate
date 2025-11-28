@@ -9,7 +9,7 @@ const About = () => {
 
       <main className="flex-1 pt-20">
         {/* Hero Section */}
-        <section className="py-20 bg-primary text-white">
+        <section className="py-20 bg-[#235C47] text-white">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-3xl mx-auto text-center animate-fade-in">
               <h1 className="text-5xl sm:text-6xl font-serif font-bold mb-6">
@@ -23,13 +23,13 @@ const About = () => {
         </section>
 
         {/* Mission Section */}
-        <section className="py-20 bg-background">
+        <section className="py-20 bg-[#FFFFFF]">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-4xl mx-auto">
-              <h2 className="text-4xl font-serif font-bold mb-6 text-center text-foreground">
+              <h2 className="text-4xl font-serif font-bold mb-6 text-center text-[#235C47]">
                 Our Mission
               </h2>
-              <p className="text-lg text-muted-foreground leading-relaxed text-center mb-12">
+              <p className="text-lg text-[#235C47]/80 leading-relaxed text-center mb-12">
                 At Haven Estates, we{`'`}re committed to making real estate
                 simple, transparent, and accessible for everyone. We believe
                 that finding your dream property should be an exciting journey,
@@ -61,14 +61,14 @@ const About = () => {
                 ].map((stat, index) => (
                   <div
                     key={index}
-                    className="text-center p-6 rounded-lg bg-card hover:shadow-lg transition-smooth animate-fade-in"
+                    className="text-center p-6 rounded-lg bg-[#F9F7F6] hover:shadow-lg transition-smooth animate-fade-in"
                     style={{ animationDelay: `${index * 100}ms` }}
                   >
-                    <stat.icon className="w-12 h-12 mx-auto mb-4 text-primary" />
-                    <h3 className="text-2xl font-serif font-bold mb-2 text-foreground">
+                    <stat.icon className="w-12 h-12 mx-auto mb-4 text-[#235C47]" />
+                    <h3 className="text-2xl font-serif font-bold mb-2 text-[#235C47]">
                       {stat.title}
                     </h3>
-                    <p className="text-muted-foreground">{stat.description}</p>
+                    <p className="text-[#235C47]/80">{stat.description}</p>
                   </div>
                 ))}
               </div>
@@ -77,10 +77,10 @@ const About = () => {
         </section>
 
         {/* Values Section */}
-        <section className="py-20 bg-muted">
+        <section className="py-20 bg-[#F9F7F6]">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-4xl mx-auto">
-              <h2 className="text-4xl font-serif font-bold mb-12 text-center text-foreground">
+              <h2 className="text-4xl font-serif font-bold mb-12 text-center text-[#235C47]">
                 Our Values
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -103,13 +103,13 @@ const About = () => {
                 ].map((value, index) => (
                   <div
                     key={index}
-                    className="bg-card p-8 rounded-lg shadow-sm hover:shadow-md transition-smooth animate-slide-up"
+                    className="bg-white p-8 rounded-lg shadow-sm hover:shadow-md transition-smooth animate-slide-up"
                     style={{ animationDelay: `${index * 100}ms` }}
                   >
-                    <h3 className="text-2xl font-serif font-bold mb-4 text-foreground">
+                    <h3 className="text-2xl font-serif font-bold mb-4 text-[#235C47]">
                       {value.title}
                     </h3>
-                    <p className="text-muted-foreground leading-relaxed">
+                    <p className="text-[#235C47]/80 leading-relaxed">
                       {value.description}
                     </p>
                   </div>
@@ -120,13 +120,13 @@ const About = () => {
         </section>
 
         {/* Team Section */}
-        <section className="py-20 bg-background">
+        <section className="py-20 bg-[#FFFFFF]">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-4xl mx-auto text-center">
-              <h2 className="text-4xl font-serif font-bold mb-6 text-foreground">
+              <h2 className="text-4xl font-serif font-bold mb-6 text-[#235C47]">
                 Our Leadership Team
               </h2>
-              <p className="text-lg text-muted-foreground mb-12">
+              <p className="text-lg text-[#235C47]/80 mb-12">
                 Meet the experts dedicated to helping you find your perfect
                 property
               </p>

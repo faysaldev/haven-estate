@@ -29,7 +29,7 @@ const Contact = () => {
 
       <main className="flex-1 pt-20">
         {/* Hero Section */}
-        <section className="py-20 bg-primary text-white">
+        <section className="py-20 bg-[#235C47] text-white">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-3xl mx-auto text-center animate-fade-in">
               <h1 className="text-5xl sm:text-6xl font-serif font-bold mb-6">
@@ -44,16 +44,16 @@ const Contact = () => {
         </section>
 
         {/* Contact Info & Form */}
-        <section className="py-20 bg-background">
+        <section className="py-20 bg-[#FFFFFF]">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
               {/* Contact Information */}
               <div className="space-y-8 animate-fade-in">
                 <div>
-                  <h2 className="text-3xl font-serif font-bold mb-6 text-foreground">
+                  <h2 className="text-3xl font-serif font-bold mb-6 text-[#235C47]">
                     Contact Information
                   </h2>
-                  <p className="text-muted-foreground leading-relaxed mb-8">
+                  <p className="text-[#235C47]/80 leading-relaxed mb-8">
                     Reach out to us through any of these channels. Our team is
                     ready to assist you.
                   </p>
@@ -84,14 +84,14 @@ const Contact = () => {
                   ].map((item, index) => (
                     <div
                       key={index}
-                      className="flex items-start gap-4 p-4 rounded-lg bg-card hover:shadow-md transition-smooth"
+                      className="flex items-start gap-4 p-4 rounded-lg bg-[#F9F7F6] hover:shadow-md transition-smooth"
                     >
-                      <item.icon className="w-6 h-6 text-primary flex-shrink-0 mt-1" />
+                      <item.icon className="w-6 h-6 text-[#235C47] flex-shrink-0 mt-1" />
                       <div>
-                        <h3 className="font-semibold text-foreground mb-1">
+                        <h3 className="font-semibold text-[#235C47] mb-1">
                           {item.title}
                         </h3>
-                        <p className="text-muted-foreground">{item.content}</p>
+                        <p className="text-[#235C47]/80">{item.content}</p>
                       </div>
                     </div>
                   ))}
@@ -99,13 +99,13 @@ const Contact = () => {
               </div>
 
               {/* Contact Form */}
-              <div className="bg-card p-8 rounded-lg shadow-lg animate-slide-up">
-                <h2 className="text-3xl font-serif font-bold mb-6 text-foreground">
+              <div className="bg-[#F9F7F6] p-8 rounded-lg shadow-lg animate-slide-up">
+                <h2 className="text-3xl font-serif font-bold mb-6 text-[#235C47]">
                   Send us a Message
                 </h2>
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div>
-                    <Label htmlFor="name">Full Name</Label>
+                    <Label htmlFor="name" className="text-[#235C47]">Full Name</Label>
                     <Input
                       id="name"
                       type="text"
@@ -115,12 +115,12 @@ const Contact = () => {
                         setFormData({ ...formData, name: e.target.value })
                       }
                       required
-                      className="mt-2"
+                      className="mt-2 border-[#235C47]/30 focus:border-[#235C47] focus:ring-[#235C47]/20"
                     />
                   </div>
 
                   <div>
-                    <Label htmlFor="email">Email Address</Label>
+                    <Label htmlFor="email" className="text-[#235C47]">Email Address</Label>
                     <Input
                       id="email"
                       type="email"
@@ -130,12 +130,12 @@ const Contact = () => {
                         setFormData({ ...formData, email: e.target.value })
                       }
                       required
-                      className="mt-2"
+                      className="mt-2 border-[#235C47]/30 focus:border-[#235C47] focus:ring-[#235C47]/20"
                     />
                   </div>
 
                   <div>
-                    <Label htmlFor="phone">Phone Number</Label>
+                    <Label htmlFor="phone" className="text-[#235C47]">Phone Number</Label>
                     <Input
                       id="phone"
                       type="tel"
@@ -144,12 +144,12 @@ const Contact = () => {
                       onChange={(e) =>
                         setFormData({ ...formData, phone: e.target.value })
                       }
-                      className="mt-2"
+                      className="mt-2 border-[#235C47]/30 focus:border-[#235C47] focus:ring-[#235C47]/20"
                     />
                   </div>
 
                   <div>
-                    <Label htmlFor="message">Message</Label>
+                    <Label htmlFor="message" className="text-[#235C47]">Message</Label>
                     <Textarea
                       id="message"
                       placeholder="Tell us about your property requirements..."
@@ -158,11 +158,11 @@ const Contact = () => {
                         setFormData({ ...formData, message: e.target.value })
                       }
                       required
-                      className="mt-2 min-h-[120px]"
+                      className="mt-2 min-h-[120px] border-[#235C47]/30 focus:border-[#235C47] focus:ring-[#235C47]/20"
                     />
                   </div>
 
-                  <Button type="submit" size="lg" className="w-full">
+                  <Button type="submit" size="lg" className="w-full bg-[#235C47] hover:bg-[#1a4a38]">
                     Send Message
                   </Button>
                 </form>
