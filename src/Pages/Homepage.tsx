@@ -28,28 +28,28 @@ const Homepage = () => {
             backgroundPosition: "center",
           }}
         >
-          <div className="absolute inset-0 bg-gradient-to-b from-[#235C47]/90 via-[#235C47]/80 to-[#235C47]/95" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#235C47]/60 via-[#235C47]/50 to-[#235C47]/70" />
         </div>
 
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="max-w-4xl mx-auto text-center space-y-8 animate-fade-in">
-            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-serif font-bold text-white leading-tight">
+          <div className="max-w-4xl mx-auto text-center space-y-8 animate-fade-in py-4">
+            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-serif font-bold text-white leading-tight drop-shadow-lg">
               Find Your Dream Property
             </h1>
-            <p className="text-xl sm:text-2xl text-white/90 leading-relaxed">
+            <p className="text-xl sm:text-2xl text-white/95 leading-relaxed drop-shadow-md">
               Discover exceptional homes and investment opportunities in the
               most sought-after locations
             </p>
 
             {/* Search Bar */}
             <div className="max-w-3xl mx-auto">
-              <div className="flex gap-2 bg-white p-2 rounded-xl shadow-2xl">
+              <div className="flex gap-2 bg-white/90 backdrop-blur-sm p-2 rounded-xl shadow-2xl">
                 <div className="relative flex-1">
-                  <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                  <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#235C47]" />
                   <Input
                     type="text"
                     placeholder="Search by location, property type, or keyword..."
-                    className="pl-12 h-14 border-0 focus-visible:ring-0 text-base text-gray-600"
+                    className="pl-12 h-14 border-0 focus-visible:ring-0 text-base text-gray-700 bg-white/80"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                   />
@@ -78,9 +78,9 @@ const Homepage = () => {
                 >
                   <Button
                     variant="outline"
-                    className="h-12 px-6 bg-white/10 text-white border-white/30 hover:bg-[#F9F7F6] hover:text-[#235C47] backdrop-blur-sm transition-smooth"
+                    className="h-12 px-6 bg-white/80 text-[#235C47] border-white/50 hover:bg-[#F9F7F6] hover:text-[#235C47] backdrop-blur-sm transition-smooth"
                   >
-                    <category.icon className="w-5 h-5 mr-2" />
+                    <category.icon className="w-5 h-5 mr-2 text-[#235C47]" />
                     {category.label}
                   </Button>
                 </Link>
