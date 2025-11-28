@@ -1,5 +1,4 @@
-import Contact from "@/src/Pages/Contact/Contactpage";
-
-export default function Home() {
-  return <Contact />;
+import About from "@/src/Pages/About/Aboutpage";
+export default function page() {
+  return <About />;
 }
