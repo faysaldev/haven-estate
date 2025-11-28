@@ -28,7 +28,7 @@ const Homepage = () => {
             backgroundPosition: "center",
           }}
         >
-          <div className="absolute inset-0 bg-gradient-to-b from-primary/90 via-primary/80 to-primary/95" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#235C47]/90 via-[#235C47]/80 to-[#235C47]/95" />
         </div>
 
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -49,12 +49,15 @@ const Homepage = () => {
                   <Input
                     type="text"
                     placeholder="Search by location, property type, or keyword..."
-                    className="pl-12 h-14 border-0 focus-visible:ring-0 text-base"
+                    className="pl-12 h-14 border-0 focus-visible:ring-0 text-base text-gray-600"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                   />
                 </div>
-                <Button size="lg" className="h-14 px-8">
+                <Button
+                  size="lg"
+                  className="h-14 px-8 bg-[#235C47] hover:bg-[#1a4a38] text-white"
+                >
                   <Link href="/listings">Search</Link>
                 </Button>
               </div>
@@ -75,7 +78,7 @@ const Homepage = () => {
                 >
                   <Button
                     variant="outline"
-                    className="h-12 px-6 bg-white/10 text-white border-white/30 hover:bg-white hover:text-primary backdrop-blur-sm transition-smooth"
+                    className="h-12 px-6 bg-white/10 text-white border-white/30 hover:bg-[#F9F7F6] hover:text-[#235C47] backdrop-blur-sm transition-smooth"
                   >
                     <category.icon className="w-5 h-5 mr-2" />
                     {category.label}
@@ -88,13 +91,13 @@ const Homepage = () => {
       </section>
 
       {/* Featured Properties */}
-      <section className="py-20 bg-background">
+      <section className="py-20 bg-[#FFFFFF]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12 animate-slide-up">
-            <h2 className="text-4xl sm:text-5xl font-serif font-bold mb-4 text-foreground">
+            <h2 className="text-4xl sm:text-5xl font-serif font-bold mb-4 text-[#235C47]">
               Featured Properties
             </h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-xl text-[#235C47]/80 max-w-2xl mx-auto">
               Handpicked selection of our finest properties
             </p>
           </div>
@@ -112,7 +115,11 @@ const Homepage = () => {
           </div>
 
           <div className="text-center">
-            <Button size="lg" asChild className="px-8">
+            <Button
+              size="lg"
+              asChild
+              className="px-8 bg-[#235C47] hover:bg-[#1a4a38] text-white"
+            >
               <Link href="/listings">View All Properties</Link>
             </Button>
           </div>
@@ -120,7 +127,7 @@ const Homepage = () => {
       </section>
 
       {/* Stats Section */}
-      <section className="py-20 bg-primary text-white">
+      <section className="py-20 bg-[#235C47] text-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 text-center">
             {[
@@ -134,7 +141,7 @@ const Homepage = () => {
                 className="space-y-2 animate-fade-in"
                 style={{ animationDelay: `${index * 100}ms` }}
               >
-                <p className="text-5xl font-serif font-bold text-accent">
+                <p className="text-5xl font-serif font-bold text-[#F9F7F6]">
                   {stat.number}
                 </p>
                 <p className="text-lg text-white/90">{stat.label}</p>

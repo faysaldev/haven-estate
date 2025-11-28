@@ -29,10 +29,10 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
             className="w-full h-64 object-cover transition-smooth group-hover:scale-110"
           />
           <div className="absolute top-4 left-4 flex gap-2">
-            <Badge className="bg-accent text-accent-foreground font-medium">
+            <Badge className="bg-[#235C47] text-white font-medium">
               For {property.status === "sale" ? "Sale" : "Rent"}
             </Badge>
-            <Badge variant="secondary" className="capitalize">
+            <Badge variant="outline" className="bg-white/80 text-[#235C47] capitalize border-[#235C47]/30">
               {property.type}
             </Badge>
           </div>
@@ -40,36 +40,36 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
 
         <CardContent className="p-6 space-y-4">
           <div className="space-y-2">
-            <h3 className="text-xl font-serif font-semibold text-foreground group-hover:text-primary transition-smooth">
+            <h3 className="text-xl font-serif font-semibold text-[#235C47] group-hover:text-[#235C47] transition-smooth">
               {property.title}
             </h3>
-            <div className="flex items-center gap-1 text-muted-foreground">
+            <div className="flex items-center gap-1 text-[#235C47]/80">
               <MapPin className="w-4 h-4" />
               <span className="text-sm">{property.location}</span>
             </div>
           </div>
 
-          <div className="flex items-center gap-4 text-muted-foreground text-sm">
+          <div className="flex items-center gap-4 text-[#235C47]/70 text-sm">
             {property.bedrooms && (
               <div className="flex items-center gap-1">
-                <Bed className="w-4 h-4" />
+                <Bed className="w-4 h-4 text-[#235C47]/70" />
                 <span>{property.bedrooms} Beds</span>
               </div>
             )}
             {property.bathrooms && (
               <div className="flex items-center gap-1">
-                <Bath className="w-4 h-4" />
+                <Bath className="w-4 h-4 text-[#235C47]/70" />
                 <span>{property.bathrooms} Baths</span>
               </div>
             )}
             <div className="flex items-center gap-1">
-              <Maximize className="w-4 h-4" />
+              <Maximize className="w-4 h-4 text-[#235C47]/70" />
               <span>{property.area.toLocaleString()} sq ft</span>
             </div>
           </div>
 
           <div className="pt-4 border-t border-border">
-            <p className="text-2xl font-serif font-semibold text-primary">
+            <p className="text-2xl font-serif font-semibold text-[#235C47]">
               {formatPrice(property.price)}
             </p>
           </div>

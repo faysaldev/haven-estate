@@ -3,20 +3,20 @@ import Link from "next/link";
 
 const Footer = () => {
   return (
-    <footer className="bg-card border-t border-border">
+    <footer className="bg-[#FFFFFF] border-t border-[#F9F7F6]">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Brand */}
           <div className="space-y-4">
             <Link href="/" className="flex items-center gap-2">
-              <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
-                <Home className="w-6 h-6 text-primary-foreground" />
+              <div className="w-10 h-10 bg-[#235C47] rounded-lg flex items-center justify-center">
+                <Home className="w-6 h-6 text-white" />
               </div>
-              <span className="text-xl font-serif font-semibold text-foreground">
-                Haven <span className="text-primary">Estates</span>
+              <span className="text-xl font-serif font-semibold text-[#235C47]">
+                Haven <span className="text-[#235C47]">Estates</span>
               </span>
             </Link>
-            <p className="text-muted-foreground text-sm leading-relaxed">
+            <p className="text-[#235C47]/80 text-sm leading-relaxed">
               Your trusted partner in finding the perfect property. Excellence
               in real estate since 2024.
             </p>
@@ -24,14 +24,14 @@ const Footer = () => {
 
           {/* Quick Links */}
           <div>
-            <h3 className="font-serif text-lg font-semibold mb-4 text-foreground">
+            <h3 className="font-serif text-lg font-semibold mb-4 text-[#235C47]">
               Quick Links
             </h3>
             <ul className="space-y-2">
               <li>
                 <Link
                   href="/"
-                  className="text-muted-foreground hover:text-primary transition-smooth"
+                  className="text-[#235C47]/80 hover:text-[#235C47] transition-smooth"
                 >
                   Home
                 </Link>
@@ -39,7 +39,7 @@ const Footer = () => {
               <li>
                 <Link
                   href="/listings"
-                  className="text-muted-foreground hover:text-primary transition-smooth"
+                  className="text-[#235C47]/80 hover:text-[#235C47] transition-smooth"
                 >
                   Properties
                 </Link>
@@ -47,7 +47,7 @@ const Footer = () => {
               <li>
                 <Link
                   href="/about"
-                  className="text-muted-foreground hover:text-primary transition-smooth"
+                  className="text-[#235C47]/80 hover:text-[#235C47] transition-smooth"
                 >
                   About Us
                 </Link>
@@ -55,7 +55,7 @@ const Footer = () => {
               <li>
                 <Link
                   href="/contact"
-                  className="text-muted-foreground hover:text-primary transition-smooth"
+                  className="text-[#235C47]/80 hover:text-[#235C47] transition-smooth"
                 >
                   Contact
                 </Link>
@@ -63,7 +63,7 @@ const Footer = () => {
               <li>
                 <Link
                   href="/privacy"
-                  className="text-muted-foreground hover:text-primary transition-smooth"
+                  className="text-[#235C47]/80 hover:text-[#235C47] transition-smooth"
                 >
                   Privacy Policy
                 </Link>
@@ -71,7 +71,7 @@ const Footer = () => {
               <li>
                 <Link
                   href="/terms"
-                  className="text-muted-foreground hover:text-primary transition-smooth"
+                  className="text-[#235C47]/80 hover:text-[#235C47] transition-smooth"
                 >
                   Terms & Conditions
                 </Link>
@@ -81,14 +81,14 @@ const Footer = () => {
 
           {/* Property Types */}
           <div>
-            <h3 className="font-serif text-lg font-semibold mb-4 text-foreground">
+            <h3 className="font-serif text-lg font-semibold mb-4 text-[#235C47]">
               Property Types
             </h3>
             <ul className="space-y-2">
               <li>
                 <Link
                   href="/listings?type=residential"
-                  className="text-muted-foreground hover:text-primary transition-smooth"
+                  className="text-[#235C47]/80 hover:text-[#235C47] transition-smooth"
                 >
                   Residential
                 </Link>
@@ -96,7 +96,7 @@ const Footer = () => {
               <li>
                 <Link
                   href="/listings?type=commercial"
-                  className="text-muted-foreground hover:text-primary transition-smooth"
+                  className="text-[#235C47]/80 hover:text-[#235C47] transition-smooth"
                 >
                   Commercial
                 </Link>
@@ -104,7 +104,7 @@ const Footer = () => {
               <li>
                 <Link
                   href="/listings?type=land"
-                  className="text-muted-foreground hover:text-primary transition-smooth"
+                  className="text-[#235C47]/80 hover:text-[#235C47] transition-smooth"
                 >
                   Land
                 </Link>
@@ -112,7 +112,7 @@ const Footer = () => {
               <li>
                 <Link
                   href="/listings?type=luxury"
-                  className="text-muted-foreground hover:text-primary transition-smooth"
+                  className="text-[#235C47]/80 hover:text-[#235C47] transition-smooth"
                 >
                   Luxury Estates
                 </Link>
@@ -122,29 +122,29 @@ const Footer = () => {
 
           {/* Contact Info */}
           <div>
-            <h3 className="font-serif text-lg font-semibold mb-4 text-foreground">
+            <h3 className="font-serif text-lg font-semibold mb-4 text-[#235C47]">
               Contact Us
             </h3>
             <ul className="space-y-3">
-              <li className="flex items-start gap-2 text-muted-foreground">
-                <MapPin className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
+              <li className="flex items-start gap-2 text-[#235C47]/80">
+                <MapPin className="w-5 h-5 text-[#235C47] mt-0.5 flex-shrink-0" />
                 <span className="text-sm">
                   123 Estate Avenue, Property District, NY 10001
                 </span>
               </li>
-              <li className="flex items-center gap-2 text-muted-foreground">
-                <Phone className="w-5 h-5 text-primary flex-shrink-0" />
+              <li className="flex items-center gap-2 text-[#235C47]/80">
+                <Phone className="w-5 h-5 text-[#235C47] flex-shrink-0" />
                 <span className="text-sm">+1 (555) 123-4567</span>
               </li>
-              <li className="flex items-center gap-2 text-muted-foreground">
-                <Mail className="w-5 h-5 text-primary flex-shrink-0" />
+              <li className="flex items-center gap-2 text-[#235C47]/80">
+                <Mail className="w-5 h-5 text-[#235C47] flex-shrink-0" />
                 <span className="text-sm">info@havenestates.com</span>
               </li>
             </ul>
           </div>
         </div>
 
-        <div className="border-t border-border mt-12 pt-8 text-center text-muted-foreground text-sm">
+        <div className="border-t border-[#F9F7F6] mt-12 pt-8 text-center text-[#235C47]/80 text-sm">
           <p>
             &copy; {new Date().getFullYear()} Haven Estates. All rights
             reserved.
