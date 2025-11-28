@@ -2,13 +2,13 @@
 import { useState } from "react";
 import Navbar from "@/src/components/Common/Navbar";
 import Footer from "@/src/components/Common/Footer";
-import PropertyCard from "@/components/PropertyCard";
-import { Button } from "@/components/ui/button";
+import PropertyCard from "@/src/components/Property/PropertyCard";
+import { Button } from "@/src/components/ui/button";
 import { Input } from "@/src/components/ui/input";
 import { Search, Home, Building2, TreePine, Crown } from "lucide-react";
-import { properties } from "@/data/properties";
-import { Link } from "react-router-dom";
+import { properties } from "@/src/utils/properties";
 import heroImage from "@/assets/hero-property.jpg";
+import Link from "next/link";
 
 const Homepage = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -55,7 +55,7 @@ const Homepage = () => {
                   />
                 </div>
                 <Button size="lg" className="h-14 px-8">
-                  <Link to="/listings">Search</Link>
+                  <Link href="/listings">Search</Link>
                 </Button>
               </div>
             </div>
@@ -70,7 +70,7 @@ const Homepage = () => {
               ].map((category) => (
                 <Link
                   key={category.type}
-                  to={`/listings?type=${category.type}`}
+                  href={`/listings?type=${category.type}`}
                   className="group"
                 >
                   <Button
@@ -113,7 +113,7 @@ const Homepage = () => {
 
           <div className="text-center">
             <Button size="lg" asChild className="px-8">
-              <Link to="/listings">View All Properties</Link>
+              <Link href="/listings">View All Properties</Link>
             </Button>
           </div>
         </div>
