@@ -3,6 +3,7 @@ import { Card, CardContent } from "@/src/components/ui/card";
 import { Badge } from "@/src/components/ui/badge";
 import { Bed, Bath, Maximize, MapPin } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 
 interface PropertyCardProps {
   property: Property;
@@ -17,12 +18,14 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
   };
 
   return (
-    <Link href={`/property/${property.id}`}>
+    <Link href={`/listings/${property.id}`}>
       <Card className="group overflow-hidden card-shadow card-shadow-hover transition-smooth hover:scale-[1.02] cursor-pointer border-border">
         <div className="relative overflow-hidden">
-          <img
+          <Image
             src={property.image}
             alt={property.title}
+            width={400}
+            height={300}
             className="w-full h-64 object-cover transition-smooth group-hover:scale-110"
           />
           <div className="absolute top-4 left-4 flex gap-2">
