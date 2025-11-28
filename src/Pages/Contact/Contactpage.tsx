@@ -1,3 +1,4 @@
+"use client";
 import Navbar from "@/src/components/Common/Navbar";
 import Footer from "@/src/components/Common/Footer";
 import { Button } from "@/src/components/ui/button";

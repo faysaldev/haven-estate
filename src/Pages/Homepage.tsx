@@ -7,7 +7,7 @@ import { Button } from "@/src/components/ui/button";
 import { Input } from "@/src/components/ui/input";
 import { Search, Home, Building2, TreePine, Crown } from "lucide-react";
 import { properties } from "@/src/utils/properties";
-import heroImage from "@/assets/hero-property.jpg";
+import heroImage from "@/assets/hero_image.jpg";
 import Link from "next/link";
 
 const Homepage = () => {

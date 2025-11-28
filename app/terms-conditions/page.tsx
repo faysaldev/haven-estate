@@ -1,5 +1,5 @@
-import Contact from "@/src/Pages/Contact/Contactpage";
+import TermsConditions from "@/src/Pages/TermsConditions/TermsConditions";
 
 export default function page() {
-  return <Contact />;
+  return <TermsConditions />;
 }
