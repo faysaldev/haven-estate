@@ -49,7 +49,11 @@ const Navbar = () => {
           </div>
 
           <div className="hidden md:flex items-center gap-4">
-            <Button variant="outline" asChild className="border-[#235C47] text-[#235C47] hover:bg-[#235C47] hover:text-white">
+            <Button
+              variant="outline"
+              asChild
+              className="px-8 bg-[#235C47] hover:bg-[#1a4a38] text-white hover:text-white"
+            >
               <Link href="/listings">Browse Properties</Link>
             </Button>
           </div>
@@ -99,7 +103,10 @@ const Navbar = () => {
               >
                 Contact
               </Link>
-              <Button asChild className="mt-4 bg-[#235C47] hover:bg-[#1a4a38] text-white">
+              <Button
+                asChild
+                className="mt-4 bg-[#235C47] hover:bg-[#1a4a38] text-white"
+              >
                 <Link href="/listings" onClick={() => setIsMenuOpen(false)}>
                   Browse Properties
                 </Link>

@@ -116,7 +116,7 @@ const Listings = () => {
                     variant="outline"
                     size="sm"
                     onClick={resetFilters}
-                    className="text-[#235C47] border-[#235C47] hover:bg-[#F9F7F6] hover:text-[#235C47]"
+                    className="px-8 bg-[#235C47] hover:bg-[#1a4a38] text-white hover:text-white"
                   >
                     Reset
                   </Button>
@@ -125,7 +125,9 @@ const Listings = () => {
                 <div className="space-y-6">
                   {/* Search */}
                   <div className="space-y-2">
-                    <Label htmlFor="search" className="text-[#235C47]">Search</Label>
+                    <Label htmlFor="search" className="text-[#235C47]">
+                      Search
+                    </Label>
                     <div className="relative">
                       <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#235C47]/70" />
                       <Input
@@ -140,7 +142,9 @@ const Listings = () => {
 
                   {/* Property Type */}
                   <div className="space-y-2">
-                    <Label htmlFor="type" className="text-[#235C47]">Property Type</Label>
+                    <Label htmlFor="type" className="text-[#235C47]">
+                      Property Type
+                    </Label>
                     <Select
                       value={propertyType}
                       onValueChange={setPropertyType}
@@ -160,12 +164,17 @@ const Listings = () => {
 
                   {/* Property Status */}
                   <div className="space-y-2">
-                    <Label htmlFor="status" className="text-[#235C47]">Status</Label>
+                    <Label htmlFor="status" className="text-[#235C47]">
+                      Status
+                    </Label>
                     <Select
                       value={propertyStatus}
                       onValueChange={setPropertyStatus}
                     >
-                      <SelectTrigger id="status" className="border-[#235C47]/20">
+                      <SelectTrigger
+                        id="status"
+                        className="border-[#235C47]/20"
+                      >
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
