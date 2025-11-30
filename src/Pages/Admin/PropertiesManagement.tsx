@@ -2,7 +2,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import Image from "next/image";
-import AdminLayout from "@/src/layout/AdminLayout";
 import { Button } from "@/src/components/ui/button";
 import { Input } from "@/src/components/ui/input";
 import { Card, CardContent } from "@/src/components/ui/card";
@@ -224,12 +223,12 @@ const PropertiesManagement = () => {
   };
 
   return (
-    <AdminLayout>
-      <div className="space-y-6">
+    <div className="min-h-screen bg-white p-8">
+      <div className="max-w-6xl mx-auto space-y-6">
         <div className="flex justify-between items-center">
           <div>
-            <h1 className="text-4xl font-serif font-bold">Properties</h1>
-            <p className="text-muted-foreground mt-1">
+            <h1 className="text-4xl font-serif font-bold text-[#235C47]">Properties</h1>
+            <p className="text-[#235C47]/70 mt-1">
               Manage all property listings
             </p>
           </div>
@@ -240,62 +239,66 @@ const PropertiesManagement = () => {
                   resetForm();
                   setEditingProperty(null);
                 }}
+                className="bg-[#235C47] text-white hover:bg-[#235C47]/90"
               >
                 <Plus className="w-4 h-4 mr-2" />
                 Add Property
               </Button>
             </DialogTrigger>
-            <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+            <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto border border-[#235C47]/20 bg-white">
               <DialogHeader>
-                <DialogTitle>
+                <DialogTitle className="text-[#235C47]">
                   {editingProperty ? "Edit" : "Add"} Property
                 </DialogTitle>
               </DialogHeader>
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label>Title</Label>
+                    <Label className="text-[#235C47]">Title</Label>
                     <Input
                       value={formData.title}
                       onChange={(e) =>
                         setFormData({ ...formData, title: e.target.value })
                       }
+                      className="border-[#235C47]/20 focus:border-[#235C47] focus:ring-[#235C47]"
                       required
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label>Price</Label>
+                    <Label className="text-[#235C47]">Price</Label>
                     <Input
                       type="number"
                       value={formData.price}
                       onChange={(e) =>
                         setFormData({ ...formData, price: e.target.value })
                       }
+                      className="border-[#235C47]/20 focus:border-[#235C47] focus:ring-[#235C47]"
                       required
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label>Location</Label>
+                    <Label className="text-[#235C47]">Location</Label>
                     <Input
                       value={formData.location}
                       onChange={(e) =>
                         setFormData({ ...formData, location: e.target.value })
                       }
+                      className="border-[#235C47]/20 focus:border-[#235C47] focus:ring-[#235C47]"
                       required
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label>Type</Label>
+                    <Label className="text-[#235C47]">Type</Label>
                     <Select
                       value={formData.type}
                       onValueChange={(value) =>
                         setFormData({ ...formData, type: value })
                       }
                     >
-                      <SelectTrigger>
+                      <SelectTrigger className="border-[#235C47]/20 focus:border-[#235C47] focus:ring-[#235C47]">
                         <SelectValue />
                       </SelectTrigger>
-                      <SelectContent>
+                      <SelectContent className="bg-white border-[#235C47]/20">
                         <SelectItem value="house">House</SelectItem>
                         <SelectItem value="apartment">Apartment</SelectItem>
                         <SelectItem value="condo">Condo</SelectItem>
@@ -304,118 +307,127 @@ const PropertiesManagement = () => {
                     </Select>
                   </div>
                   <div className="space-y-2">
-                    <Label>Status</Label>
+                    <Label className="text-[#235C47]">Status</Label>
                     <Select
                       value={formData.status}
                       onValueChange={(value: "sale" | "rent") =>
                         setFormData({ ...formData, status: value })
                       }
                     >
-                      <SelectTrigger>
+                      <SelectTrigger className="border-[#235C47]/20 focus:border-[#235C47] focus:ring-[#235C47]">
                         <SelectValue />
                       </SelectTrigger>
-                      <SelectContent>
+                      <SelectContent className="bg-white border-[#235C47]/20">
                         <SelectItem value="sale">For Sale</SelectItem>
                         <SelectItem value="rent">For Rent</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
                   <div className="space-y-2">
-                    <Label>Area (sq ft)</Label>
+                    <Label className="text-[#235C47]">Area (sq ft)</Label>
                     <Input
                       type="number"
                       value={formData.area}
                       onChange={(e) =>
                         setFormData({ ...formData, area: e.target.value })
                       }
+                      className="border-[#235C47]/20 focus:border-[#235C47] focus:ring-[#235C47]"
                       required
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label>Bedrooms</Label>
+                    <Label className="text-[#235C47]">Bedrooms</Label>
                     <Input
                       type="number"
                       value={formData.bedrooms}
                       onChange={(e) =>
                         setFormData({ ...formData, bedrooms: e.target.value })
                       }
+                      className="border-[#235C47]/20 focus:border-[#235C47] focus:ring-[#235C47]"
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label>Bathrooms</Label>
+                    <Label className="text-[#235C47]">Bathrooms</Label>
                     <Input
                       type="number"
                       value={formData.bathrooms}
                       onChange={(e) =>
                         setFormData({ ...formData, bathrooms: e.target.value })
                       }
+                      className="border-[#235C47]/20 focus:border-[#235C47] focus:ring-[#235C47]"
                     />
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <Label>Image URL</Label>
+                  <Label className="text-[#235C47]">Image URL</Label>
                   <Input
                     value={formData.image}
                     onChange={(e) =>
                       setFormData({ ...formData, image: e.target.value })
                     }
+                    className="border-[#235C47]/20 focus:border-[#235C47] focus:ring-[#235C47]"
                     required
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label>Description</Label>
+                  <Label className="text-[#235C47]">Description</Label>
                   <Textarea
                     value={formData.description}
                     onChange={(e) =>
                       setFormData({ ...formData, description: e.target.value })
                     }
+                    className="border-[#235C47]/20 focus:border-[#235C47] focus:ring-[#235C47]"
                     required
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label>Features (comma-separated)</Label>
+                  <Label className="text-[#235C47]">Features (comma-separated)</Label>
                   <Textarea
                     value={formData.features}
                     onChange={(e) =>
                       setFormData({ ...formData, features: e.target.value })
                     }
+                    className="border-[#235C47]/20 focus:border-[#235C47] focus:ring-[#235C47]"
                     required
                   />
                 </div>
                 <div className="grid grid-cols-3 gap-4">
                   <div className="space-y-2">
-                    <Label>Agent Name</Label>
+                    <Label className="text-[#235C47]">Agent Name</Label>
                     <Input
                       value={formData.agentName}
                       onChange={(e) =>
                         setFormData({ ...formData, agentName: e.target.value })
                       }
+                      className="border-[#235C47]/20 focus:border-[#235C47] focus:ring-[#235C47]"
                       required
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label>Agent Phone</Label>
+                    <Label className="text-[#235C47]">Agent Phone</Label>
                     <Input
                       value={formData.agentPhone}
                       onChange={(e) =>
                         setFormData({ ...formData, agentPhone: e.target.value })
                       }
+                      className="border-[#235C47]/20 focus:border-[#235C47] focus:ring-[#235C47]"
                       required
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label>Agent Email</Label>
+                    <Label className="text-[#235C47]">Agent Email</Label>
                     <Input
                       type="email"
                       value={formData.agentEmail}
                       onChange={(e) =>
                         setFormData({ ...formData, agentEmail: e.target.value })
                       }
+                      className="border-[#235C47]/20 focus:border-[#235C47] focus:ring-[#235C47]"
                       required
                     />
                   </div>
                 </div>
-                <Button type="submit" className="w-full">
+                <Button type="submit" className="w-full bg-[#235C47] text-white hover:bg-[#235C47]/90">
                   {editingProperty ? "Update" : "Add"} Property
                 </Button>
               </form>
@@ -425,7 +437,7 @@ const PropertiesManagement = () => {
 
         <div className="grid grid-cols-1 gap-6">
           {properties.map((property) => (
-            <Card key={property.id} className="card-shadow">
+            <Card key={property.id} className="border border-[#235C47]/20 bg-[#F9F7F6]">
               <CardContent className="p-6">
                 <div className="flex gap-6">
                   <Image
@@ -438,10 +450,10 @@ const PropertiesManagement = () => {
                   <div className="flex-1 space-y-2">
                     <div className="flex justify-between items-start">
                       <div>
-                        <h3 className="text-xl font-serif font-bold">
+                        <h3 className="text-xl font-serif font-bold text-[#235C47]">
                           {property.title}
                         </h3>
-                        <p className="text-muted-foreground">
+                        <p className="text-[#235C47]/70">
                           {property.location}
                         </p>
                       </div>
@@ -449,6 +461,7 @@ const PropertiesManagement = () => {
                         <Button
                           variant="outline"
                           size="sm"
+                          className="border-[#235C47]/20 text-[#235C47] hover:bg-[#235C47]/10"
                           onClick={() => handleEdit(property)}
                         >
                           <Pencil className="w-4 h-4" />
@@ -456,23 +469,24 @@ const PropertiesManagement = () => {
                         <Button
                           variant="outline"
                           size="sm"
+                          className="border-[#235C47]/20 text-[#235C47] hover:bg-[#235C47]/10"
                           onClick={() => handleDelete(property.id)}
                         >
                           <Trash2 className="w-4 h-4" />
                         </Button>
                       </div>
                     </div>
-                    <p className="text-2xl font-bold text-primary">
+                    <p className="text-2xl font-bold text-[#235C47]">
                       ${property.price.toLocaleString()}
                       {property.status === "rent" ? "/month" : ""}
                     </p>
-                    <div className="flex gap-4 text-sm text-muted-foreground">
+                    <div className="flex gap-4 text-sm text-[#235C47]/70">
                       <span>{property.bedrooms} beds</span>
                       <span>{property.bathrooms} baths</span>
                       <span>{property.area} sq ft</span>
                       <span className="capitalize">{property.type}</span>
                     </div>
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <div className="flex items-center gap-2 text-sm text-[#235C47]/70">
                       <Eye className="w-4 h-4" />
                       <span>{property.impressions} views</span>
                     </div>
@@ -483,7 +497,7 @@ const PropertiesManagement = () => {
           ))}
         </div>
       </div>
-    </AdminLayout>
+    </div>
   );
 };
 
