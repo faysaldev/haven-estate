@@ -1,5 +1,7 @@
+import PropertiesManagement from "@/src/Pages/Admin/PropertiesManagement";
+
 function page() {
-  return <div>page</div>;
+  return <PropertiesManagement />;
 }
 
 export default page;

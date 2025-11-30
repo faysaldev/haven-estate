@@ -1,3 +1,5 @@
+"use client";
+
 import AdminLayout from "@/src/layout/AdminLayout";
 import { useState } from "react";
 import { Button } from "@/src/components/ui/button";
@@ -17,7 +19,7 @@ const ViewingsManagement = () => {
       date: "2024-12-10",
       time: "10:00 AM",
       status: "pending",
-      createdAt: "2024-11-25T09:30:00Z"
+      createdAt: "2024-11-25T09:30:00Z",
     },
     {
       id: "2",
@@ -28,7 +30,7 @@ const ViewingsManagement = () => {
       date: "2024-12-12",
       time: "02:00 PM",
       status: "confirmed",
-      createdAt: "2024-11-24T14:22:00Z"
+      createdAt: "2024-11-24T14:22:00Z",
     },
     {
       id: "3",
@@ -39,7 +41,7 @@ const ViewingsManagement = () => {
       date: "2024-12-15",
       time: "11:00 AM",
       status: "pending",
-      createdAt: "2024-11-23T10:15:00Z"
+      createdAt: "2024-11-23T10:15:00Z",
     },
     {
       id: "4",
@@ -50,16 +52,16 @@ const ViewingsManagement = () => {
       date: "2024-12-08",
       time: "03:30 PM",
       status: "cancelled",
-      createdAt: "2024-11-22T16:45:00Z"
-    }
+      createdAt: "2024-11-22T16:45:00Z",
+    },
   ]);
 
   const handleStatusChange = (
     id: string,
     status: "pending" | "confirmed" | "cancelled"
   ) => {
-    setScheduledViewings(prevViewings =>
-      prevViewings.map(viewing =>
+    setScheduledViewings((prevViewings) =>
+      prevViewings.map((viewing) =>
         viewing.id === id ? { ...viewing, status } : viewing
       )
     );
@@ -67,8 +69,8 @@ const ViewingsManagement = () => {
 
   const handleDelete = (id: string) => {
     if (confirm("Are you sure you want to delete this viewing?")) {
-      setScheduledViewings(prevViewings =>
-        prevViewings.filter(viewing => viewing.id !== id)
+      setScheduledViewings((prevViewings) =>
+        prevViewings.filter((viewing) => viewing.id !== id)
       );
     }
   };

@@ -1,5 +1,5 @@
-function page() {
-  return <div>page</div>;
-}
+import ViewingsManagement from "@/src/Pages/Admin/ViewingsManagement";
 
-export default page;
+export default function AdminPageProperties() {
+  return <ViewingsManagement />;
+}

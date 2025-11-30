@@ -1,3 +1,4 @@
+"use client";
 import AdminLayout from "@/src/layout/AdminLayout";
 import { useState } from "react";
 import { Button } from "@/src/components/ui/button";
@@ -17,7 +18,7 @@ const BookingsManagement = () => {
       moveInDate: "2024-12-15",
       amount: 2450,
       status: "pending",
-      createdAt: "2024-11-20T10:30:00Z"
+      createdAt: "2024-11-20T10:30:00Z",
     },
     {
       id: "2",
@@ -28,7 +29,7 @@ const BookingsManagement = () => {
       moveInDate: "2024-12-20",
       amount: 3200,
       status: "confirmed",
-      createdAt: "2024-11-18T14:22:00Z"
+      createdAt: "2024-11-18T14:22:00Z",
     },
     {
       id: "3",
@@ -39,7 +40,7 @@ const BookingsManagement = () => {
       moveInDate: "2024-12-25",
       amount: 1850,
       status: "cancelled",
-      createdAt: "2024-11-22T09:15:00Z"
+      createdAt: "2024-11-22T09:15:00Z",
     },
     {
       id: "4",
@@ -50,16 +51,16 @@ const BookingsManagement = () => {
       moveInDate: "2025-01-10",
       amount: 2800,
       status: "pending",
-      createdAt: "2024-11-25T16:45:00Z"
-    }
+      createdAt: "2024-11-25T16:45:00Z",
+    },
   ]);
 
   const handleStatusChange = (
     id: string,
     status: "pending" | "confirmed" | "cancelled"
   ) => {
-    setBookings(prevBookings =>
-      prevBookings.map(booking =>
+    setBookings((prevBookings) =>
+      prevBookings.map((booking) =>
         booking.id === id ? { ...booking, status } : booking
       )
     );
@@ -67,8 +68,8 @@ const BookingsManagement = () => {
 
   const handleDelete = (id: string) => {
     if (confirm("Are you sure you want to delete this booking?")) {
-      setBookings(prevBookings =>
-        prevBookings.filter(booking => booking.id !== id)
+      setBookings((prevBookings) =>
+        prevBookings.filter((booking) => booking.id !== id)
       );
     }
   };

@@ -1,3 +1,4 @@
+"use client";
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import Image from "next/image";
@@ -42,14 +43,15 @@ const PropertiesManagement = () => {
       bathrooms: 2,
       area: 1200,
       image: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9",
-      description: "Beautiful modern apartment in the heart of downtown with stunning city views.",
+      description:
+        "Beautiful modern apartment in the heart of downtown with stunning city views.",
       features: ["Swimming Pool", "Gym", "Parking", "Security"],
       agent: {
         name: "John Smith",
         phone: "+1 (555) 123-4567",
         email: "john.smith@realestate.com",
       },
-      impressions: 245
+      impressions: 245,
     },
     {
       id: "2",
@@ -62,14 +64,15 @@ const PropertiesManagement = () => {
       bathrooms: 3,
       area: 2800,
       image: "https://images.unsplash.com/photo-1575517111839-3a3843ee7f5d",
-      description: "Stunning waterfront villa with private beach access and panoramic ocean views.",
+      description:
+        "Stunning waterfront villa with private beach access and panoramic ocean views.",
       features: ["Private Beach", "Pool", "Garden", "Garage"],
       agent: {
         name: "Sarah Johnson",
         phone: "+1 (555) 987-6543",
         email: "sarah.j@realestate.com",
       },
-      impressions: 312
+      impressions: 312,
     },
     {
       id: "3",
@@ -82,14 +85,15 @@ const PropertiesManagement = () => {
       bathrooms: 2,
       area: 1800,
       image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c",
-      description: "Charming family home in a quiet neighborhood with excellent schools nearby.",
+      description:
+        "Charming family home in a quiet neighborhood with excellent schools nearby.",
       features: ["Yard", "Fireplace", "Garage", "Basement"],
       agent: {
         name: "Michael Brown",
         phone: "+1 (555) 456-7890",
         email: "m.brown@realestate.com",
       },
-      impressions: 178
+      impressions: 178,
     },
     {
       id: "4",
@@ -102,15 +106,16 @@ const PropertiesManagement = () => {
       bathrooms: 1,
       area: 900,
       image: "https://images.unsplash.com/photo-1613977257363-707ba9348227",
-      description: "Stylish loft in the heart of the city with high ceilings and modern amenities.",
+      description:
+        "Stylish loft in the heart of the city with high ceilings and modern amenities.",
       features: ["High Ceilings", "Exposed Brick", "Rooftop Access"],
       agent: {
         name: "Emily Davis",
         phone: "+1 (555) 234-5678",
         email: "emily.d@realestate.com",
       },
-      impressions: 156
-    }
+      impressions: 156,
+    },
   ]);
   const [editingProperty, setEditingProperty] = useState<string | null>(null);
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
@@ -152,15 +157,17 @@ const PropertiesManagement = () => {
         phone: formData.agentPhone,
         email: formData.agentEmail,
       },
-      impressions: 0 // New properties start with 0 impressions
+      impressions: 0, // New properties start with 0 impressions
     };
 
     if (editingProperty) {
-      setProperties(prevProperties =>
-        prevProperties.map(p => p.id === editingProperty ? { ...property } : p)
+      setProperties((prevProperties) =>
+        prevProperties.map((p) =>
+          p.id === editingProperty ? { ...property } : p
+        )
       );
     } else {
-      setProperties(prevProperties => [...prevProperties, property]);
+      setProperties((prevProperties) => [...prevProperties, property]);
     }
 
     setIsAddDialogOpen(false);
@@ -210,8 +217,8 @@ const PropertiesManagement = () => {
 
   const handleDelete = (id: string) => {
     if (confirm("Are you sure you want to delete this property?")) {
-      setProperties(prevProperties =>
-        prevProperties.filter(property => property.id !== id)
+      setProperties((prevProperties) =>
+        prevProperties.filter((property) => property.id !== id)
       );
     }
   };

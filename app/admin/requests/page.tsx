@@ -1,5 +1,7 @@
+import RequestsManagement from "@/src/Pages/Admin/RequestsManagement";
+
 function page() {
-  return <div>page</div>;
+  return <RequestsManagement />;
 }
 
 export default page;

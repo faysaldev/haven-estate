@@ -1,5 +1,7 @@
+import BookingsManagement from "@/src/Pages/Admin/BookingsManagement";
+
 function page() {
-  return <div>page</div>;
+  return <BookingsManagement />;
 }
 
 export default page;
