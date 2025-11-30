@@ -1,5 +1,5 @@
-function page() {
-  return <div>page</div>;
-}
+import Dashboard from "@/src/Pages/Admin/Dashboard";
 
-export default page;
+export default function AdminPage() {
+  return <Dashboard />;
+}
