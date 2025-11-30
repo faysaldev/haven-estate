@@ -29,18 +29,18 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
   ];
 
   return (
-    <div className="min-h-screen bg-background flex">
+    <div className="min-h-screen bg-white flex">
       {/* Sidebar */}
-      <aside className="w-64 border-r border-border bg-card fixed h-full">
-        <div className="p-6 border-b border-border">
+      <aside className="w-64 border-r border-[#235C47]/20 bg-[#F9F7F6] fixed h-full">
+        <div className="p-6 border-b border-[#235C47]/20">
           <Link
             href="/"
-            className="flex items-center gap-2 text-2xl font-serif font-bold text-primary"
+            className="flex items-center gap-2 text-2xl font-serif font-bold text-[#235C47]"
           >
             <Home className="w-6 h-6" />
             Haven Estates
           </Link>
-          <p className="text-sm text-muted-foreground mt-1">Admin Panel</p>
+          <p className="text-sm text-[#235C47]/70 mt-1">Admin Panel</p>
         </div>
 
         <nav className="p-4 space-y-2">
@@ -55,8 +55,8 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
                 className={cn(
                   "flex items-center gap-3 px-4 py-3 rounded-lg transition-colors",
                   isActive
-                    ? "bg-primary text-primary-foreground"
-                    : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                    ? "bg-[#235C47] text-white"
+                    : "text-[#235C47]/70 hover:bg-[#235C47]/10 hover:text-[#235C47]"
                 )}
               >
                 <Icon className="w-5 h-5" />
@@ -68,7 +68,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 ml-64 p-8">{children}</main>
+      <main className="flex-1 ml-64 p-8 bg-white">{children}</main>
     </div>
   );
 };
