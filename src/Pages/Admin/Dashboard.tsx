@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 import {
   Card,
   CardContent,
@@ -137,42 +138,36 @@ const Dashboard = () => {
       value: properties.length,
       icon: Building2,
       trend: "+12%",
-      color: "text-blue-500",
     },
     {
       title: "Scheduled Viewings",
       value: scheduledViewings.length,
       icon: Calendar,
       trend: "+8%",
-      color: "text-green-500",
     },
     {
       title: "Info Requests",
       value: infoRequests.length,
       icon: MessageSquare,
       trend: "+15%",
-      color: "text-purple-500",
     },
     {
       title: "Bookings",
       value: bookings.length,
       icon: CreditCard,
       trend: "+20%",
-      color: "text-amber-500",
     },
     {
       title: "Total Impressions",
       value: totalImpressions,
       icon: Eye,
       trend: "+25%",
-      color: "text-pink-500",
     },
     {
       title: "Revenue",
       value: `$${totalRevenue.toLocaleString()}`,
       icon: TrendingUp,
       trend: "+18%",
-      color: "text-emerald-500",
     },
   ];
 
@@ -194,10 +189,10 @@ const Dashboard = () => {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-4xl font-serif font-bold text-foreground mb-2">
+        <h1 className="text-4xl font-serif font-bold text-[#235C47] mb-2">
           Dashboard
         </h1>
-        <p className="text-muted-foreground">
+        <p className="text-[#235C47]/70">
           Welcome to Haven Estates Admin Panel
         </p>
       </div>
@@ -207,17 +202,17 @@ const Dashboard = () => {
         {stats.map((stat) => {
           const Icon = stat.icon;
           return (
-            <Card key={stat.title} className="card-shadow">
+            <Card key={stat.title} className="border border-[#235C47]/20 bg-[#F9F7F6]">
               <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground">
+                <CardTitle className="text-sm font-medium text-[#235C47]/70">
                   {stat.title}
                 </CardTitle>
-                <Icon className={cn("w-5 h-5", stat.color)} />
+                <Icon className="w-5 h-5 text-[#235C47]" />
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold">{stat.value}</div>
-                <p className="text-xs text-muted-foreground mt-1">
-                  <span className="text-green-500 font-medium">
+                <div className="text-3xl font-bold text-[#235C47]">{stat.value}</div>
+                <p className="text-xs text-[#235C47]/70 mt-1">
+                  <span className="text-[#235C47] font-medium">
                     {stat.trend}
                   </span>{" "}
                   from last month
@@ -229,9 +224,9 @@ const Dashboard = () => {
       </div>
 
       {/* Recent Activity */}
-      <Card className="card-shadow">
+      <Card className="border border-[#235C47]/20 bg-[#F9F7F6]">
         <CardHeader>
-          <CardTitle className="text-2xl font-serif">Recent Activity</CardTitle>
+          <CardTitle className="text-2xl font-serif text-[#235C47]">Recent Activity</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
@@ -239,32 +234,32 @@ const Dashboard = () => {
               recentActivity.map((activity, index) => (
                 <div
                   key={index}
-                  className="flex items-start gap-4 border-b border-border pb-4 last:border-0 last:pb-0"
+                  className="flex items-start gap-4 border-b border-[#235C47]/20 pb-4 last:border-0 last:pb-0"
                 >
                   <div
                     className={cn(
                       "w-10 h-10 rounded-lg flex items-center justify-center",
                       activity.type === "Viewing"
-                        ? "bg-green-500/10"
-                        : "bg-purple-500/10"
+                        ? "bg-[#235C47]/10"
+                        : "bg-[#235C47]/10"
                     )}
                   >
                     {activity.type === "Viewing" ? (
-                      <Calendar className="w-5 h-5 text-green-500" />
+                      <Calendar className="w-5 h-5 text-[#235C47]" />
                     ) : (
-                      <MessageSquare className="w-5 h-5 text-purple-500" />
+                      <MessageSquare className="w-5 h-5 text-[#235C47]" />
                     )}
                   </div>
                   <div className="flex-1">
-                    <p className="text-sm font-medium">{activity.title}</p>
-                    <p className="text-xs text-muted-foreground mt-1">
+                    <p className="text-sm font-medium text-[#235C47]">{activity.title}</p>
+                    <p className="text-xs text-[#235C47]/70 mt-1">
                       {activity.time}
                     </p>
                   </div>
                 </div>
               ))
             ) : (
-              <p className="text-muted-foreground text-center py-8">
+              <p className="text-[#235C47]/70 text-center py-8">
                 No recent activity
               </p>
             )}
@@ -273,9 +268,9 @@ const Dashboard = () => {
       </Card>
 
       {/* Top Properties by Impressions */}
-      <Card className="card-shadow">
+      <Card className="border border-[#235C47]/20 bg-[#F9F7F6]">
         <CardHeader>
-          <CardTitle className="text-2xl font-serif">
+          <CardTitle className="text-2xl font-serif text-[#235C47]">
             Top Properties by Views
           </CardTitle>
         </CardHeader>
@@ -287,26 +282,28 @@ const Dashboard = () => {
               .map((property) => (
                 <div
                   key={property.id}
-                  className="flex items-center justify-between border-b border-border pb-4 last:border-0 last:pb-0"
+                  className="flex items-center justify-between border-b border-[#235C47]/20 pb-4 last:border-0 last:pb-0"
                 >
                   <div className="flex items-center gap-4">
-                    <img
+                    <Image
                       src={property.image}
                       alt={property.title}
                       className="w-16 h-16 rounded-lg object-cover"
+                      width={64}
+                      height={64}
                     />
                     <div>
-                      <p className="font-medium">{property.title}</p>
-                      <p className="text-sm text-muted-foreground">
+                      <p className="font-medium text-[#235C47]">{property.title}</p>
+                      <p className="text-sm text-[#235C47]/70">
                         {property.location}
                       </p>
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className="text-lg font-bold">
+                    <p className="text-lg font-bold text-[#235C47]">
                       {property.impressions || 0}
                     </p>
-                    <p className="text-xs text-muted-foreground">views</p>
+                    <p className="text-xs text-[#235C47]/70">views</p>
                   </div>
                 </div>
               ))}
