@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef } from "react";
 import { Button } from "@/src/components/ui/button";
 import { Input } from "@/src/components/ui/input";
 import { Label } from "@/src/components/ui/label";
@@ -18,22 +18,29 @@ interface ScheduleViewingDialogProps {
 }
 
 export const ScheduleViewingDialog = ({ property, trigger }: ScheduleViewingDialogProps) => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [date, setDate] = useState("");
-  const [time, setTime] = useState("");
+  const nameRef = useRef<HTMLInputElement>(null);
+  const emailRef = useRef<HTMLInputElement>(null);
+  const phoneRef = useRef<HTMLInputElement>(null);
+  const dateRef = useRef<HTMLInputElement>(null);
+  const timeRef = useRef<HTMLInputElement>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission here
+
+    // Get values from refs
+    const name = nameRef.current?.value || "";
+    const email = emailRef.current?.value || "";
+    const phone = phoneRef.current?.value || "";
+    const date = dateRef.current?.value || "";
+    const time = timeRef.current?.value || "";
+
+    // Log the form values
     console.log({ name, email, phone, date, time });
-    // Reset form after submission
-    setName("");
-    setEmail("");
-    setPhone("");
-    setDate("");
-    setTime("");
+
+    // Reset the form
+    if (e.target instanceof HTMLFormElement) {
+      e.target.reset();
+    }
   };
 
   return (
@@ -54,15 +61,14 @@ export const ScheduleViewingDialog = ({ property, trigger }: ScheduleViewingDial
               <User className="absolute left-3 top-3 w-4 h-4 text-[#235C47]/60" />
               <Input
                 id="name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                ref={nameRef}
                 className="pl-10 border-[#235C47]/20 focus:border-[#235C47] focus:ring-[#235C47] bg-[#F9F7F6]"
                 placeholder="Enter your full name"
                 required
               />
             </div>
           </div>
-          
+
           <div className="space-y-2">
             <Label htmlFor="email" className="text-[#235C47]">Email</Label>
             <div className="relative">
@@ -70,30 +76,28 @@ export const ScheduleViewingDialog = ({ property, trigger }: ScheduleViewingDial
               <Input
                 id="email"
                 type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                ref={emailRef}
                 className="pl-10 border-[#235C47]/20 focus:border-[#235C47] focus:ring-[#235C47] bg-[#F9F7F6]"
                 placeholder="Enter your email"
                 required
               />
             </div>
           </div>
-          
+
           <div className="space-y-2">
             <Label htmlFor="phone" className="text-[#235C47]">Phone Number</Label>
             <div className="relative">
               <Phone className="absolute left-3 top-3 w-4 h-4 text-[#235C47]/60" />
               <Input
                 id="phone"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
+                ref={phoneRef}
                 className="pl-10 border-[#235C47]/20 focus:border-[#235C47] focus:ring-[#235C47] bg-[#F9F7F6]"
                 placeholder="Enter your phone number"
                 required
               />
             </div>
           </div>
-          
+
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label htmlFor="date" className="text-[#235C47]">Date</Label>
@@ -102,14 +106,13 @@ export const ScheduleViewingDialog = ({ property, trigger }: ScheduleViewingDial
                 <Input
                   id="date"
                   type="date"
-                  value={date}
-                  onChange={(e) => setDate(e.target.value)}
+                  ref={dateRef}
                   className="pl-10 border-[#235C47]/20 focus:border-[#235C47] focus:ring-[#235C47] bg-[#F9F7F6]"
                   required
                 />
               </div>
             </div>
-            
+
             <div className="space-y-2">
               <Label htmlFor="time" className="text-[#235C47]">Time</Label>
               <div className="relative">
@@ -117,15 +120,14 @@ export const ScheduleViewingDialog = ({ property, trigger }: ScheduleViewingDial
                 <Input
                   id="time"
                   type="time"
-                  value={time}
-                  onChange={(e) => setTime(e.target.value)}
+                  ref={timeRef}
                   className="pl-10 border-[#235C47]/20 focus:border-[#235C47] focus:ring-[#235C47] bg-[#F9F7F6]"
                   required
                 />
               </div>
             </div>
           </div>
-          
+
           <Button
             type="submit"
             className="w-full bg-[#235C47] hover:bg-[#235C47]/90 text-white mt-4"

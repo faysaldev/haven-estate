@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef } from "react";
 import { Button } from "@/src/components/ui/button";
 import { Input } from "@/src/components/ui/input";
 import { Label } from "@/src/components/ui/label";
@@ -19,20 +19,27 @@ interface RequestInfoDialogProps {
 }
 
 export const RequestInfoDialog = ({ property, trigger }: RequestInfoDialogProps) => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [message, setMessage] = useState("");
+  const nameRef = useRef<HTMLInputElement>(null);
+  const emailRef = useRef<HTMLInputElement>(null);
+  const phoneRef = useRef<HTMLInputElement>(null);
+  const messageRef = useRef<HTMLTextAreaElement>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission here
+
+    // Get values from refs
+    const name = nameRef.current?.value || "";
+    const email = emailRef.current?.value || "";
+    const phone = phoneRef.current?.value || "";
+    const message = messageRef.current?.value || "";
+
+    // Log the form values
     console.log({ name, email, phone, message });
-    // Reset form after submission
-    setName("");
-    setEmail("");
-    setPhone("");
-    setMessage("");
+
+    // Reset the form
+    if (e.target instanceof HTMLFormElement) {
+      e.target.reset();
+    }
   };
 
   return (
@@ -53,15 +60,14 @@ export const RequestInfoDialog = ({ property, trigger }: RequestInfoDialogProps)
               <User className="absolute left-3 top-3 w-4 h-4 text-[#235C47]/60" />
               <Input
                 id="info-name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                ref={nameRef}
                 className="pl-10 border-[#235C47]/20 focus:border-[#235C47] focus:ring-[#235C47] bg-[#F9F7F6]"
                 placeholder="Enter your full name"
                 required
               />
             </div>
           </div>
-          
+
           <div className="space-y-2">
             <Label htmlFor="info-email" className="text-[#235C47]">Email</Label>
             <div className="relative">
@@ -69,45 +75,42 @@ export const RequestInfoDialog = ({ property, trigger }: RequestInfoDialogProps)
               <Input
                 id="info-email"
                 type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                ref={emailRef}
                 className="pl-10 border-[#235C47]/20 focus:border-[#235C47] focus:ring-[#235C47] bg-[#F9F7F6]"
                 placeholder="Enter your email"
                 required
               />
             </div>
           </div>
-          
+
           <div className="space-y-2">
             <Label htmlFor="info-phone" className="text-[#235C47]">Phone Number</Label>
             <div className="relative">
               <Phone className="absolute left-3 top-3 w-4 h-4 text-[#235C47]/60" />
               <Input
                 id="info-phone"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
+                ref={phoneRef}
                 className="pl-10 border-[#235C47]/20 focus:border-[#235C47] focus:ring-[#235C47] bg-[#F9F7F6]"
                 placeholder="Enter your phone number"
                 required
               />
             </div>
           </div>
-          
+
           <div className="space-y-2">
             <Label htmlFor="message" className="text-[#235C47]">Message</Label>
             <div className="relative">
               <MessageSquare className="absolute left-3 top-3 w-4 h-4 text-[#235C47]/60" />
               <Textarea
                 id="message"
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
+                ref={messageRef}
                 className="pl-10 min-h-[100px] border-[#235C47]/20 focus:border-[#235C47] focus:ring-[#235C47] bg-[#F9F7F6]"
                 placeholder="Enter your message"
                 required
               />
             </div>
           </div>
-          
+
           <Button
             type="submit"
             className="w-full bg-[#235C47] hover:bg-[#235C47]/90 text-white mt-4"
