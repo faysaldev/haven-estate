@@ -11,6 +11,7 @@ import {
   MessageSquare,
   CreditCard,
   Home,
+  Settings,
 } from "lucide-react";
 
 interface AdminLayoutProps {
@@ -26,6 +27,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
     { icon: Calendar, label: "Viewings", path: "/admin/viewings" },
     { icon: MessageSquare, label: "Requests", path: "/admin/requests" },
     { icon: CreditCard, label: "Bookings", path: "/admin/bookings" },
+    { icon: Settings, label: "General", path: "/admin/general" },
   ];
 
   return (
