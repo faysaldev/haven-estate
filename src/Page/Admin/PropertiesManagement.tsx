@@ -1,10 +1,6 @@
 "use client";
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
-import Image from "next/image";
 import { Button } from "@/src/components/ui/button";
-import { Input } from "@/src/components/ui/input";
-import { Card, CardContent } from "@/src/components/ui/card";
 import {
   Dialog,
   DialogContent,
@@ -12,25 +8,14 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/src/components/ui/dialog";
-import { Label } from "@/src/components/ui/label";
-import { Textarea } from "@/src/components/ui/textarea";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/src/components/ui/select";
-import { Plus, Pencil, Trash2, Eye } from "lucide-react";
-
-// Function to generate a unique ID
-const generateId = () => {
-  return Date.now().toString() + Math.random().toString(36).substr(2, 9);
-};
+import { Plus } from "lucide-react";
+import { PropertyList } from "@/src/components/property-management/PropertyList";
+import { PropertyForm } from "@/src/components/property-management/PropertyForm";
+import { Property } from "@/src/components/property-management/types";
 
 const PropertiesManagement = () => {
   // Mock properties data
-  const [properties, setProperties] = useState([
+  const [properties, setProperties] = useState<Property[]>([
     {
       id: "1",
       title: "Modern Downtown Apartment",
@@ -116,386 +101,85 @@ const PropertiesManagement = () => {
       impressions: 156,
     },
   ]);
-  const [editingProperty, setEditingProperty] = useState<string | null>(null);
+
+  const [editingProperty, setEditingProperty] = useState<Property | null>(null);
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
-  const [formData, setFormData] = useState({
-    title: "",
-    price: "",
-    location: "",
-    type: "house",
-    status: "sale" as "sale" | "rent",
-    bedrooms: "",
-    bathrooms: "",
-    area: "",
-    image: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9",
-    description: "",
-    features: "",
-    agentName: "",
-    agentPhone: "",
-    agentEmail: "",
-  });
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleAddProperty = () => {
+    setEditingProperty(null);
+    setIsAddDialogOpen(true);
+  };
 
-    const property = {
-      id: editingProperty || generateId(),
-      title: formData.title,
-      price: parseFloat(formData.price),
-      location: formData.location,
-      type: formData.type,
-      status: formData.status,
-      bedrooms: formData.bedrooms ? parseInt(formData.bedrooms) : 0,
-      bathrooms: formData.bathrooms ? parseInt(formData.bathrooms) : 0,
-      area: parseFloat(formData.area),
-      image: formData.image,
-      description: formData.description,
-      features: formData.features.split(",").map((f) => f.trim()),
-      agent: {
-        name: formData.agentName,
-        phone: formData.agentPhone,
-        email: formData.agentEmail,
-      },
-      impressions: 0, // New properties start with 0 impressions
-    };
+  const handleEdit = (property: Property) => {
+    setEditingProperty(property);
+    setIsAddDialogOpen(true);
+  };
 
+  const handleSave = (property: Property) => {
     if (editingProperty) {
-      setProperties((prevProperties) =>
-        prevProperties.map((p) =>
-          p.id === editingProperty ? { ...property } : p
-        )
+      // Update existing property
+      setProperties(prev =>
+        prev.map(p => p.id === property.id ? property : p)
       );
     } else {
-      setProperties((prevProperties) => [...prevProperties, property]);
+      // Add new property
+      setProperties(prev => [...prev, property]);
     }
-
     setIsAddDialogOpen(false);
-    setEditingProperty(null);
-    resetForm();
-  };
-
-  const resetForm = () => {
-    setFormData({
-      title: "",
-      price: "",
-      location: "",
-      type: "house",
-      status: "sale",
-      bedrooms: "",
-      bathrooms: "",
-      area: "",
-      image: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9",
-      description: "",
-      features: "",
-      agentName: "",
-      agentPhone: "",
-      agentEmail: "",
-    });
-  };
-
-  const handleEdit = (property: any) => {
-    setFormData({
-      title: property.title,
-      price: property.price.toString(),
-      location: property.location,
-      type: property.type,
-      status: property.status,
-      bedrooms: property.bedrooms?.toString() || "",
-      bathrooms: property.bathrooms?.toString() || "",
-      area: property.area.toString(),
-      image: property.image,
-      description: property.description,
-      features: property.features.join(", "),
-      agentName: property.agent.name,
-      agentPhone: property.agent.phone,
-      agentEmail: property.agent.email,
-    });
-    setEditingProperty(property.id);
-    setIsAddDialogOpen(true);
   };
 
   const handleDelete = (id: string) => {
     if (confirm("Are you sure you want to delete this property?")) {
-      setProperties((prevProperties) =>
-        prevProperties.filter((property) => property.id !== id)
-      );
+      setProperties(prev => prev.filter(property => property.id !== id));
     }
   };
 
+  const handleCancel = () => {
+    setIsAddDialogOpen(false);
+    setEditingProperty(null);
+  };
+
   return (
-    <div className="min-h-screen bg-white p-8">
+    <div className="min-h-screen bg-white p-4 md:p-8">
       <div className="max-w-6xl mx-auto space-y-6">
-        <div className="flex justify-between items-center">
-          <div>
-            <h1 className="text-4xl font-serif font-bold text-[#235C47]">Properties</h1>
-            <p className="text-[#235C47]/70 mt-1">
-              Manage all property listings
-            </p>
-          </div>
+        <div className="mb-8">
+          <h1 className="text-3xl md:text-4xl font-serif font-bold text-[#235C47]">Properties Management</h1>
+          <p className="text-[#235C47]/80 mt-2">
+            Manage all property listings
+          </p>
+        </div>
+
+        <div className="flex justify-end">
           <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
             <DialogTrigger asChild>
               <Button
-                onClick={() => {
-                  resetForm();
-                  setEditingProperty(null);
-                }}
+                onClick={handleAddProperty}
                 className="bg-[#235C47] text-white hover:bg-[#235C47]/90"
               >
                 <Plus className="w-4 h-4 mr-2" />
                 Add Property
               </Button>
             </DialogTrigger>
-            <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto border border-[#235C47]/20 bg-white">
+            <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto border border-[#235C47]/20 bg-white">
               <DialogHeader>
                 <DialogTitle className="text-[#235C47]">
-                  {editingProperty ? "Edit" : "Add"} Property
+                  {editingProperty ? "Edit Property" : "Add Property"}
                 </DialogTitle>
               </DialogHeader>
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label className="text-[#235C47]">Title</Label>
-                    <Input
-                      value={formData.title}
-                      onChange={(e) =>
-                        setFormData({ ...formData, title: e.target.value })
-                      }
-                      className="border-[#235C47]/20 focus:border-[#235C47] focus:ring-[#235C47]"
-                      required
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label className="text-[#235C47]">Price</Label>
-                    <Input
-                      type="number"
-                      value={formData.price}
-                      onChange={(e) =>
-                        setFormData({ ...formData, price: e.target.value })
-                      }
-                      className="border-[#235C47]/20 focus:border-[#235C47] focus:ring-[#235C47]"
-                      required
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label className="text-[#235C47]">Location</Label>
-                    <Input
-                      value={formData.location}
-                      onChange={(e) =>
-                        setFormData({ ...formData, location: e.target.value })
-                      }
-                      className="border-[#235C47]/20 focus:border-[#235C47] focus:ring-[#235C47]"
-                      required
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label className="text-[#235C47]">Type</Label>
-                    <Select
-                      value={formData.type}
-                      onValueChange={(value) =>
-                        setFormData({ ...formData, type: value })
-                      }
-                    >
-                      <SelectTrigger className="border-[#235C47]/20 focus:border-[#235C47] focus:ring-[#235C47]">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent className="bg-white border-[#235C47]/20">
-                        <SelectItem value="house">House</SelectItem>
-                        <SelectItem value="apartment">Apartment</SelectItem>
-                        <SelectItem value="condo">Condo</SelectItem>
-                        <SelectItem value="land">Land</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div className="space-y-2">
-                    <Label className="text-[#235C47]">Status</Label>
-                    <Select
-                      value={formData.status}
-                      onValueChange={(value: "sale" | "rent") =>
-                        setFormData({ ...formData, status: value })
-                      }
-                    >
-                      <SelectTrigger className="border-[#235C47]/20 focus:border-[#235C47] focus:ring-[#235C47]">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent className="bg-white border-[#235C47]/20">
-                        <SelectItem value="sale">For Sale</SelectItem>
-                        <SelectItem value="rent">For Rent</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div className="space-y-2">
-                    <Label className="text-[#235C47]">Area (sq ft)</Label>
-                    <Input
-                      type="number"
-                      value={formData.area}
-                      onChange={(e) =>
-                        setFormData({ ...formData, area: e.target.value })
-                      }
-                      className="border-[#235C47]/20 focus:border-[#235C47] focus:ring-[#235C47]"
-                      required
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label className="text-[#235C47]">Bedrooms</Label>
-                    <Input
-                      type="number"
-                      value={formData.bedrooms}
-                      onChange={(e) =>
-                        setFormData({ ...formData, bedrooms: e.target.value })
-                      }
-                      className="border-[#235C47]/20 focus:border-[#235C47] focus:ring-[#235C47]"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label className="text-[#235C47]">Bathrooms</Label>
-                    <Input
-                      type="number"
-                      value={formData.bathrooms}
-                      onChange={(e) =>
-                        setFormData({ ...formData, bathrooms: e.target.value })
-                      }
-                      className="border-[#235C47]/20 focus:border-[#235C47] focus:ring-[#235C47]"
-                    />
-                  </div>
-                </div>
-                <div className="space-y-2">
-                  <Label className="text-[#235C47]">Image URL</Label>
-                  <Input
-                    value={formData.image}
-                    onChange={(e) =>
-                      setFormData({ ...formData, image: e.target.value })
-                    }
-                    className="border-[#235C47]/20 focus:border-[#235C47] focus:ring-[#235C47]"
-                    required
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label className="text-[#235C47]">Description</Label>
-                  <Textarea
-                    value={formData.description}
-                    onChange={(e) =>
-                      setFormData({ ...formData, description: e.target.value })
-                    }
-                    className="border-[#235C47]/20 focus:border-[#235C47] focus:ring-[#235C47]"
-                    required
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label className="text-[#235C47]">Features (comma-separated)</Label>
-                  <Textarea
-                    value={formData.features}
-                    onChange={(e) =>
-                      setFormData({ ...formData, features: e.target.value })
-                    }
-                    className="border-[#235C47]/20 focus:border-[#235C47] focus:ring-[#235C47]"
-                    required
-                  />
-                </div>
-                <div className="grid grid-cols-3 gap-4">
-                  <div className="space-y-2">
-                    <Label className="text-[#235C47]">Agent Name</Label>
-                    <Input
-                      value={formData.agentName}
-                      onChange={(e) =>
-                        setFormData({ ...formData, agentName: e.target.value })
-                      }
-                      className="border-[#235C47]/20 focus:border-[#235C47] focus:ring-[#235C47]"
-                      required
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label className="text-[#235C47]">Agent Phone</Label>
-                    <Input
-                      value={formData.agentPhone}
-                      onChange={(e) =>
-                        setFormData({ ...formData, agentPhone: e.target.value })
-                      }
-                      className="border-[#235C47]/20 focus:border-[#235C47] focus:ring-[#235C47]"
-                      required
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label className="text-[#235C47]">Agent Email</Label>
-                    <Input
-                      type="email"
-                      value={formData.agentEmail}
-                      onChange={(e) =>
-                        setFormData({ ...formData, agentEmail: e.target.value })
-                      }
-                      className="border-[#235C47]/20 focus:border-[#235C47] focus:ring-[#235C47]"
-                      required
-                    />
-                  </div>
-                </div>
-                <Button type="submit" className="w-full bg-[#235C47] text-white hover:bg-[#235C47]/90">
-                  {editingProperty ? "Update" : "Add"} Property
-                </Button>
-              </form>
+              <PropertyForm
+                property={editingProperty || undefined}
+                onSave={handleSave}
+                onCancel={handleCancel}
+              />
             </DialogContent>
           </Dialog>
         </div>
 
-        <div className="grid grid-cols-1 gap-6">
-          {properties.map((property) => (
-            <Card key={property.id} className="border border-[#235C47]/20 bg-[#F9F7F6]">
-              <CardContent className="p-6">
-                <div className="flex gap-6">
-                  <Image
-                    src={property.image}
-                    alt={property.title}
-                    className="w-48 h-32 object-cover rounded-lg"
-                    width={192}
-                    height={128}
-                  />
-                  <div className="flex-1 space-y-2">
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <h3 className="text-xl font-serif font-bold text-[#235C47]">
-                          {property.title}
-                        </h3>
-                        <p className="text-[#235C47]/70">
-                          {property.location}
-                        </p>
-                      </div>
-                      <div className="flex gap-2">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="border-[#235C47]/20 text-[#235C47] hover:bg-[#235C47]/10"
-                          onClick={() => handleEdit(property)}
-                        >
-                          <Pencil className="w-4 h-4" />
-                        </Button>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="border-[#235C47]/20 text-[#235C47] hover:bg-[#235C47]/10"
-                          onClick={() => handleDelete(property.id)}
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </Button>
-                      </div>
-                    </div>
-                    <p className="text-2xl font-bold text-[#235C47]">
-                      ${property.price.toLocaleString()}
-                      {property.status === "rent" ? "/month" : ""}
-                    </p>
-                    <div className="flex gap-4 text-sm text-[#235C47]/70">
-                      <span>{property.bedrooms} beds</span>
-                      <span>{property.bathrooms} baths</span>
-                      <span>{property.area} sq ft</span>
-                      <span className="capitalize">{property.type}</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-sm text-[#235C47]/70">
-                      <Eye className="w-4 h-4" />
-                      <span>{property.impressions} views</span>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+        <PropertyList
+          properties={properties}
+          onEdit={handleEdit}
+          onDelete={handleDelete}
+        />
       </div>
     </div>
   );
