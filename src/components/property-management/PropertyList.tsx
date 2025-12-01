@@ -8,16 +8,23 @@ interface PropertyListProps {
   onDelete: (id: string) => void;
 }
 
-export const PropertyList = ({ properties, onEdit, onDelete }: PropertyListProps) => {
+export const PropertyList = ({
+  properties,
+  onEdit,
+  onDelete,
+}: PropertyListProps) => {
   if (properties.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-16">
         <div className="bg-[#F9F7F6] p-6 rounded-full mb-4">
           <Home className="w-12 h-12 text-[#235C47]/70" />
         </div>
-        <h3 className="text-xl font-semibold text-[#235C47] mb-2">No properties yet</h3>
+        <h3 className="text-xl font-semibold text-[#235C47] mb-2">
+          No properties yet
+        </h3>
         <p className="text-[#235C47]/70 max-w-md text-center">
-          You don't have any properties listed at the moment. Add a property to get started.
+          You don{`'`}t have any properties listed at the moment. Add a property
+          to get started.
         </p>
       </div>
     );

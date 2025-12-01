@@ -3,10 +3,10 @@ import { Card, CardContent } from "@/src/components/ui/card";
 import { Badge } from "@/src/components/ui/badge";
 import { Calendar, Mail, Phone, Trash2 } from "lucide-react";
 import { format } from "date-fns";
-import { Viewing } from "./types";
+import { PropertyViewing } from "./types";
 
 interface ViewingCardProps {
-  viewing: Viewing;
+  viewing: PropertyViewing;
   onStatusChange: (
     id: string,
     status: "pending" | "confirmed" | "cancelled"

@@ -1,4 +1,4 @@
-export interface Viewing {
+export interface PropertyViewing {
   id: string;
   propertyTitle: string;
   userName: string;

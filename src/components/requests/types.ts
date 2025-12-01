@@ -1,4 +1,4 @@
-export interface Request {
+export interface InfoRequest {
   id: string;
   propertyTitle: string;
   userName: string;

@@ -1,9 +1,10 @@
+import { Card, CardContent } from "@/src/components/ui/card";
 import { MessageSquare } from "lucide-react";
-import { Request } from "./types";
+import { InfoRequest } from "./types";
 import { RequestCard } from "./RequestCard";
 
 interface RequestListProps {
-  requests: Request[];
+  requests: InfoRequest[];
   onStatusChange: (id: string, status: "pending" | "responded") => void;
   onDelete: (id: string) => void;
 }

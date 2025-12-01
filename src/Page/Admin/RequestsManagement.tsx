@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 import { RequestList } from "@/src/components/requests/RequestList";
-import { Request } from "@/src/components/requests/types";
+import { InfoRequest } from "@/src/components/requests/types";
 
 const RequestsManagement = () => {
   // Mock info requests data
-  const [infoRequests, setInfoRequests] = useState<Request[]>([
+  const [infoRequests, setInfoRequests] = useState<InfoRequest[]>([
     {
       id: "1",
       propertyTitle: "Modern Downtown Apartment",

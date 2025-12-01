@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 import { ViewingList } from "@/src/components/viewings/ViewingList";
-import { Viewing } from "@/src/components/viewings/types";
+import { PropertyViewing } from "@/src/components/viewings/types";
 
 const ViewingsManagement = () => {
   // Mock scheduled viewings data
-  const [scheduledViewings, setScheduledViewings] = useState<Viewing[]>([
+  const [scheduledViewings, setScheduledViewings] = useState<PropertyViewing[]>([
     {
       id: "1",
       propertyTitle: "Modern Downtown Apartment",

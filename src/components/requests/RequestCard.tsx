@@ -3,9 +3,10 @@ import { Card, CardContent } from "@/src/components/ui/card";
 import { Badge } from "@/src/components/ui/badge";
 import { Mail, Phone, Trash2 } from "lucide-react";
 import { format } from "date-fns";
+import { InfoRequest } from "./types";
 
 interface RequestCardProps {
-  request: Request;
+  request: InfoRequest;
   onStatusChange: (id: string, status: "pending" | "responded") => void;
   onDelete: (id: string) => void;
 }

@@ -1,9 +1,9 @@
 import { Calendar } from "lucide-react";
-import { Viewing } from "./types";
+import { PropertyViewing } from "./types";
 import { ViewingCard } from "./ViewingCard";
 
 interface ViewingListProps {
-  viewings: Viewing[];
+  viewings: PropertyViewing[];
   onStatusChange: (
     id: string,
     status: "pending" | "confirmed" | "cancelled"
