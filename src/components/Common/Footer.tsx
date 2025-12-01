@@ -62,7 +62,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  href="/privacy"
+                  href="/privacy-policy"
                   className="text-[#235C47]/80 hover:text-[#235C47] transition-smooth"
                 >
                   Privacy Policy
@@ -70,7 +70,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  href="/terms"
+                  href="/terms-conditions"
                   className="text-[#235C47]/80 hover:text-[#235C47] transition-smooth"
                 >
                   Terms & Conditions
