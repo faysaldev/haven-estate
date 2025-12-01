@@ -32,7 +32,10 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
             <Badge className="bg-[#235C47] text-white font-medium">
               For {property.status === "sale" ? "Sale" : "Rent"}
             </Badge>
-            <Badge variant="outline" className="bg-white/80 text-[#235C47] capitalize border-[#235C47]/30">
+            <Badge
+              variant="outline"
+              className="bg-white/80 text-[#235C47] capitalize border-[#235C47]/30"
+            >
               {property.type}
             </Badge>
           </div>

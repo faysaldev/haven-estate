@@ -1,6 +1,6 @@
 "use client";
 
-import PropertyDetail from "@/src/Pages/PropertyDetails/PropertyDetailsPage";
+import PropertyDetail from "@/src/Page/PropertyDetails/PropertyDetailsPage";
 
 export default function PropertyDetailPage() {
   return <PropertyDetail />;

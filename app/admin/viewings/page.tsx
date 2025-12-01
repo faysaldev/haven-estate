@@ -1,4 +1,4 @@
-import ViewingsManagement from "@/src/Pages/Admin/ViewingsManagement";
+import ViewingsManagement from "@/src/Page/Admin/ViewingsManagement";
 
 export default function AdminPageProperties() {
   return <ViewingsManagement />;

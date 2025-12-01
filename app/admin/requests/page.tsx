@@ -1,4 +1,4 @@
-import RequestsManagement from "@/src/Pages/Admin/RequestsManagement";
+import RequestsManagement from "@/src/Page/Admin/RequestsManagement";
 
 function page() {
   return <RequestsManagement />;

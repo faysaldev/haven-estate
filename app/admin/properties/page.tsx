@@ -1,4 +1,4 @@
-import PropertiesManagement from "@/src/Pages/Admin/PropertiesManagement";
+import PropertiesManagement from "@/src/Page/Admin/PropertiesManagement";
 
 function page() {
   return <PropertiesManagement />;

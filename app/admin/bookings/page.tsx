@@ -1,4 +1,4 @@
-import BookingsManagement from "@/src/Pages/Admin/BookingsManagement";
+import BookingsManagement from "@/src/Page/Admin/BookingsManagement";
 
 function page() {
   return <BookingsManagement />;
