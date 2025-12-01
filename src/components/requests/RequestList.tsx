@@ -1,4 +1,3 @@
-import { Card, CardContent } from "@/src/components/ui/card";
 import { MessageSquare } from "lucide-react";
 import { InfoRequest } from "./types";
 import { RequestCard } from "./RequestCard";

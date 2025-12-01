@@ -27,10 +27,16 @@ const PropertiesManagement = () => {
       bathrooms: 2,
       area: 1200,
       image: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9",
+      images: [
+        "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9",
+        "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2",
+        "https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e"
+      ],
       description:
         "Beautiful modern apartment in the heart of downtown with stunning city views.",
       features: ["Swimming Pool", "Gym", "Parking", "Security"],
       agent: {
+        id: "1",
         name: "John Smith",
         phone: "+1 (555) 123-4567",
         email: "john.smith@realestate.com",
@@ -48,10 +54,16 @@ const PropertiesManagement = () => {
       bathrooms: 3,
       area: 2800,
       image: "https://images.unsplash.com/photo-1575517111839-3a3843ee7f5d",
+      images: [
+        "https://images.unsplash.com/photo-1575517111839-3a3843ee7f5d",
+        "https://images.unsplash.com/photo-1449824913935-59a10b8d200d",
+        "https://images.unsplash.com/photo-1503376780353-7e6692767b70"
+      ],
       description:
         "Stunning waterfront villa with private beach access and panoramic ocean views.",
       features: ["Private Beach", "Pool", "Garden", "Garage"],
       agent: {
+        id: "2",
         name: "Sarah Johnson",
         phone: "+1 (555) 987-6543",
         email: "sarah.j@realestate.com",
@@ -69,10 +81,16 @@ const PropertiesManagement = () => {
       bathrooms: 2,
       area: 1800,
       image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c",
+      images: [
+        "https://images.unsplash.com/photo-1600585154340-be6161a56a0c",
+        "https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e",
+        "https://images.unsplash.com/photo-1564013799919-ab600027ffc6"
+      ],
       description:
         "Charming family home in a quiet neighborhood with excellent schools nearby.",
       features: ["Yard", "Fireplace", "Garage", "Basement"],
       agent: {
+        id: "3",
         name: "Michael Brown",
         phone: "+1 (555) 456-7890",
         email: "m.brown@realestate.com",
@@ -90,10 +108,16 @@ const PropertiesManagement = () => {
       bathrooms: 1,
       area: 900,
       image: "https://images.unsplash.com/photo-1613977257363-707ba9348227",
+      images: [
+        "https://images.unsplash.com/photo-1613977257363-707ba9348227",
+        "https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e",
+        "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2"
+      ],
       description:
         "Stylish loft in the heart of the city with high ceilings and modern amenities.",
       features: ["High Ceilings", "Exposed Brick", "Rooftop Access"],
       agent: {
+        id: "4",
         name: "Emily Davis",
         phone: "+1 (555) 234-5678",
         email: "emily.d@realestate.com",
