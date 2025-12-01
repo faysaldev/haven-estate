@@ -1,13 +1,11 @@
 "use client";
 import { useState } from "react";
-import { Button } from "@/src/components/ui/button";
-import { Card, CardContent } from "@/src/components/ui/card";
-import { Badge } from "@/src/components/ui/badge";
-import { CreditCard, Mail, Phone, Trash2, Calendar } from "lucide-react";
+import { BookingList } from "@/src/components/booking-management/BookingList";
+import { Booking } from "@/src/components/booking-management/types";
 
 const BookingsManagement = () => {
   // Mock booking data
-  const [bookings, setBookings] = useState([
+  const [bookings, setBookings] = useState<Booking[]>([
     {
       id: "1",
       propertyTitle: "Modern Downtown Apartment",
@@ -73,135 +71,21 @@ const BookingsManagement = () => {
     }
   };
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "confirmed":
-        return "bg-green-500/10 text-green-500 border-green-500/20";
-      case "cancelled":
-        return "bg-red-500/10 text-red-500 border-red-500/20";
-      default:
-        return "bg-[#235C47]/10 text-[#235C47] border border-[#235C47]/20";
-    }
-  };
-
   return (
-    <div className="min-h-screen bg-white p-8">
+    <div className="min-h-screen bg-white p-4 md:p-8">
       <div className="max-w-6xl mx-auto space-y-6">
-        <div>
-          <h1 className="text-4xl font-serif font-bold text-[#235C47]">Bookings</h1>
-          <p className="text-[#235C47]/70 mt-1">
+        <div className="mb-8">
+          <h1 className="text-3xl md:text-4xl font-serif font-bold text-[#235C47]">Bookings Management</h1>
+          <p className="text-[#235C47]/80 mt-2">
             Manage property bookings and reservations
           </p>
         </div>
 
-        <div className="grid gap-6">
-          {bookings.length === 0 ? (
-            <Card className="border border-[#235C47]/20 bg-[#F9F7F6]">
-              <CardContent className="p-12 text-center">
-                <CreditCard className="w-12 h-12 mx-auto text-[#235C47]/70 mb-4" />
-                <p className="text-[#235C47]/70">No bookings yet</p>
-              </CardContent>
-            </Card>
-          ) : (
-            bookings.map((booking) => (
-              <Card key={booking.id} className="border border-[#235C47]/20 bg-[#F9F7F6]">
-                <CardContent className="p-6">
-                  <div className="flex justify-between items-start mb-4">
-                    <div>
-                      <h3 className="text-xl font-serif font-bold text-[#235C47] mb-1">
-                        {booking.propertyTitle}
-                      </h3>
-                      <Badge
-                        className={getStatusColor(booking.status)}
-                        variant="outline"
-                      >
-                        {booking.status}
-                      </Badge>
-                    </div>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="border-[#235C47]/20 text-[#235C47] hover:bg-[#235C47]/10"
-                      onClick={() => handleDelete(booking.id)}
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </Button>
-                  </div>
-
-                  <div className="grid md:grid-cols-2 gap-4 mb-4">
-                    <div className="space-y-2">
-                      <p className="font-medium text-[#235C47]">Client Information</p>
-                      <div className="space-y-1 text-sm text-[#235C47]/70">
-                        <p className="font-medium text-[#235C47]">
-                          {booking.userName}
-                        </p>
-                        <div className="flex items-center gap-2">
-                          <Mail className="w-4 h-4 text-[#235C47]/70" />
-                          <a
-                            href={`mailto:${booking.userEmail}`}
-                            className="hover:text-[#235C47]"
-                          >
-                            {booking.userEmail}
-                          </a>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Phone className="w-4 h-4 text-[#235C47]/70" />
-                          <a
-                            href={`tel:${booking.userPhone}`}
-                            className="hover:text-[#235C47]"
-                          >
-                            {booking.userPhone}
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="space-y-2">
-                      <p className="font-medium text-[#235C47]">Booking Details</p>
-                      <div className="space-y-1 text-sm text-[#235C47]/70">
-                        <div className="flex items-center gap-2">
-                          <Calendar className="w-4 h-4 text-[#235C47]/70" />
-                          <span>Move-in: {booking.moveInDate}</span>
-                        </div>
-                        <p className="text-lg font-bold text-[#235C47]">
-                          ${booking.amount.toLocaleString()}
-                        </p>
-                        <p>
-                          Booked:{" "}
-                          {new Date(booking.createdAt).toLocaleDateString()}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {booking.status === "pending" && (
-                    <div className="flex gap-2">
-                      <Button
-                        size="sm"
-                        className="bg-[#235C47] text-white hover:bg-[#235C47]/90"
-                        onClick={() =>
-                          handleStatusChange(booking.id, "confirmed")
-                        }
-                      >
-                        Confirm
-                      </Button>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="border-[#235C47] text-[#235C47] hover:bg-[#235C47]/10"
-                        onClick={() =>
-                          handleStatusChange(booking.id, "cancelled")
-                        }
-                      >
-                        Cancel
-                      </Button>
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
-            ))
-          )}
-        </div>
+        <BookingList
+          bookings={bookings}
+          onStatusChange={handleStatusChange}
+          onDelete={handleDelete}
+        />
       </div>
     </div>
   );
