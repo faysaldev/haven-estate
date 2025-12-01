@@ -14,7 +14,8 @@ import {
   TrendingUp,
   Eye,
 } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { StatsGrid } from "@/src/components/dashboard/StatsGrid";
+import { RecentActivity } from "@/src/components/dashboard/RecentActivity";
 
 // Mock data
 const mockProperties = [
@@ -197,75 +198,9 @@ const Dashboard = () => {
         </p>
       </div>
 
-      {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {stats.map((stat) => {
-          const Icon = stat.icon;
-          return (
-            <Card key={stat.title} className="border border-[#235C47]/20 bg-[#F9F7F6]">
-              <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-sm font-medium text-[#235C47]/70">
-                  {stat.title}
-                </CardTitle>
-                <Icon className="w-5 h-5 text-[#235C47]" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-3xl font-bold text-[#235C47]">{stat.value}</div>
-                <p className="text-xs text-[#235C47]/70 mt-1">
-                  <span className="text-[#235C47] font-medium">
-                    {stat.trend}
-                  </span>{" "}
-                  from last month
-                </p>
-              </CardContent>
-            </Card>
-          );
-        })}
-      </div>
+      <StatsGrid stats={stats} />
 
-      {/* Recent Activity */}
-      <Card className="border border-[#235C47]/20 bg-[#F9F7F6]">
-        <CardHeader>
-          <CardTitle className="text-2xl font-serif text-[#235C47]">Recent Activity</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            {recentActivity.length > 0 ? (
-              recentActivity.map((activity, index) => (
-                <div
-                  key={index}
-                  className="flex items-start gap-4 border-b border-[#235C47]/20 pb-4 last:border-0 last:pb-0"
-                >
-                  <div
-                    className={cn(
-                      "w-10 h-10 rounded-lg flex items-center justify-center",
-                      activity.type === "Viewing"
-                        ? "bg-[#235C47]/10"
-                        : "bg-[#235C47]/10"
-                    )}
-                  >
-                    {activity.type === "Viewing" ? (
-                      <Calendar className="w-5 h-5 text-[#235C47]" />
-                    ) : (
-                      <MessageSquare className="w-5 h-5 text-[#235C47]" />
-                    )}
-                  </div>
-                  <div className="flex-1">
-                    <p className="text-sm font-medium text-[#235C47]">{activity.title}</p>
-                    <p className="text-xs text-[#235C47]/70 mt-1">
-                      {activity.time}
-                    </p>
-                  </div>
-                </div>
-              ))
-            ) : (
-              <p className="text-[#235C47]/70 text-center py-8">
-                No recent activity
-              </p>
-            )}
-          </div>
-        </CardContent>
-      </Card>
+      <RecentActivity activity={recentActivity} />
 
       {/* Top Properties by Impressions */}
       <Card className="border border-[#235C47]/20 bg-[#F9F7F6]">
