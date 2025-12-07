@@ -9,7 +9,21 @@ const propertiesApi = baseApi.injectEndpoints({
         body: propertiesBody,
       }),
     }),
+    updateProperties: builder.mutation({
+      query: (propertiesBody) => ({
+        url: "/properties",
+        method: "POST",
+        body: propertiesBody,
+      }),
+    }),
+    getProperties: builder.query({
+      query: () => ({
+        url: "/properties",
+        method: "GET",
+      }),
+    }),
   }),
 });
 
-export const { useCreatePropertiesMutation } = propertiesApi;
+export const { useCreatePropertiesMutation, useGetPropertiesQuery } =
+  propertiesApi;
