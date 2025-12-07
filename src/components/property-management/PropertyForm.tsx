@@ -12,6 +12,7 @@ import {
 } from "@/src/components/ui/select";
 import { Property } from "./types";
 import { Agent } from "./Agent";
+import { useCreatePropertiesMutation } from "@/src/redux/features/Admin/Properties/propertiesApi";
 
 interface PropertyFormProps {
   property?: Property;
@@ -19,7 +20,11 @@ interface PropertyFormProps {
   onCancel: () => void;
 }
 
-export const PropertyForm = ({ property, onSave, onCancel }: PropertyFormProps) => {
+export const PropertyForm = ({
+  property,
+  onSave,
+  onCancel,
+}: PropertyFormProps) => {
   const isEditing = !!property;
 
   // Sample agents data - in a real app, this would come from an API
@@ -56,18 +61,27 @@ export const PropertyForm = ({ property, onSave, onCancel }: PropertyFormProps) 
     },
   ];
 
-  const [selectedAgentId, setSelectedAgentId] = useState(property?.agent?.id || agents[0]?.id || "");
+  const [selectedAgentId, setSelectedAgentId] = useState(
+    property?.agent?.id || agents[0]?.id || ""
+  );
+  const [createProperties] = useCreatePropertiesMutation();
 
   const [title, setTitle] = useState(property?.title || "");
   const [price, setPrice] = useState(property?.price?.toString() || "");
   const [location, setLocation] = useState(property?.location || "");
   const [type, setType] = useState(property?.type || "house");
   const [status, setStatus] = useState(property?.status || "sale");
-  const [bedrooms, setBedrooms] = useState(property?.bedrooms?.toString() || "");
-  const [bathrooms, setBathrooms] = useState(property?.bathrooms?.toString() || "");
+  const [bedrooms, setBedrooms] = useState(
+    property?.bedrooms?.toString() || ""
+  );
+  const [bathrooms, setBathrooms] = useState(
+    property?.bathrooms?.toString() || ""
+  );
   const [area, setArea] = useState(property?.area?.toString() || "");
   const [description, setDescription] = useState(property?.description || "");
-  const [features, setFeatures] = useState(property?.features?.join(", ") || "");
+  const [features, setFeatures] = useState(
+    property?.features?.join(", ") || ""
+  );
   const [imageFiles, setImageFiles] = useState<File[]>([]);
   const [imagePreviews, setImagePreviews] = useState<string[]>(
     property?.images || (property?.image ? [property.image] : [])
@@ -91,7 +105,7 @@ export const PropertyForm = ({ property, onSave, onCancel }: PropertyFormProps) 
 
       // Create previews
       const newPreviews = [...imagePreviews];
-      files.forEach(file => {
+      files.forEach((file) => {
         const previewUrl = URL.createObjectURL(file);
         newPreviews.push(previewUrl);
       });
@@ -125,7 +139,7 @@ export const PropertyForm = ({ property, onSave, onCancel }: PropertyFormProps) 
     e.preventDefault();
 
     // Find the selected agent
-    const selectedAgent = agents.find(agent => agent.id === selectedAgentId);
+    const selectedAgent = agents.find((agent) => agent.id === selectedAgentId);
 
     if (!selectedAgent) {
       alert("Please select an agent");
@@ -153,7 +167,7 @@ export const PropertyForm = ({ property, onSave, onCancel }: PropertyFormProps) 
 
     // Add image files to FormData
     imageFiles.forEach((file, index) => {
-      formData.append("images", file);
+      formData.append("image", file);
     });
 
     // Log the form data for debugging (remove in production if not needed)
@@ -163,7 +177,9 @@ export const PropertyForm = ({ property, onSave, onCancel }: PropertyFormProps) 
 
     // Create the property object based on the form data
     const newProperty: Property = {
-      id: property?.id || Date.now().toString() + Math.random().toString(36).substr(2, 9),
+      id:
+        property?.id ||
+        Date.now().toString() + Math.random().toString(36).substr(2, 9),
       title,
       price: parseFloat(price),
       location,
@@ -222,10 +238,7 @@ export const PropertyForm = ({ property, onSave, onCancel }: PropertyFormProps) 
 
           <div className="space-y-2">
             <Label className="text-[#235C47]">Type</Label>
-            <Select
-              value={type}
-              onValueChange={setType}
-            >
+            <Select value={type} onValueChange={setType}>
               <SelectTrigger className="border-[#235C47]/20 focus:border-[#235C47] focus:ring-[#235C47]">
                 <SelectValue />
               </SelectTrigger>
@@ -242,10 +255,7 @@ export const PropertyForm = ({ property, onSave, onCancel }: PropertyFormProps) 
         <div className="space-y-4">
           <div className="space-y-2">
             <Label className="text-[#235C47]">Status</Label>
-            <Select
-              value={status}
-              onValueChange={setStatus}
-            >
+            <Select value={status} onValueChange={setStatus}>
               <SelectTrigger className="border-[#235C47]/20 focus:border-[#235C47] focus:ring-[#235C47]">
                 <SelectValue />
               </SelectTrigger>
@@ -295,7 +305,9 @@ export const PropertyForm = ({ property, onSave, onCancel }: PropertyFormProps) 
               onClick={triggerFileInput}
             >
               <p className="text-[#235C47]/70 mb-1">Click to upload images</p>
-              <p className="text-[#235C47]/50 text-sm">JPG, PNG (Max 8 files)</p>
+              <p className="text-[#235C47]/50 text-sm">
+                JPG, PNG (Max 8 files)
+              </p>
             </div>
             <Input
               type="file"
@@ -326,8 +338,17 @@ export const PropertyForm = ({ property, onSave, onCancel }: PropertyFormProps) 
                   className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
                   onClick={() => handleRemoveImage(index)}
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-                    <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-4 w-4"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                      clipRule="evenodd"
+                    />
                   </svg>
                 </button>
               </div>
