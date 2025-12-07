@@ -26,11 +26,8 @@ const GeneralSettings = () => {
   const [updatePrivacyPolicy] = useUpdatePrivacyPolicyMutation();
   const [updateTermsConditions] = useUpdateTermsConditionsMutation();
   const { data: allAgents } = useGetAgentsQuery({});
-  console.log(allAgents);
   const { data: allTermsConditions } = useGetTermsConditionsQuery({});
   const { data: allPrivacyPolicy } = useGetPrivacyPolicyQuery({});
-  console.log(allPrivacyPolicy);
-  console.log(allTermsConditions);
 
   // State for privacy policy and terms & conditions
   const [privacyPolicy, setPrivacyPolicy] = useState<string>(
