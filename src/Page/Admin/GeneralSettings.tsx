@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/src/components/ui/button";
 import { PlusCircle } from "lucide-react";
 import { PolicyForm } from "@/src/components/settings/PolicyForm";
@@ -19,6 +19,7 @@ import {
   useUpdatePrivacyPolicyMutation,
   useUpdateTermsConditionsMutation,
 } from "@/src/redux/features/Admin/Generals/generalApi";
+import { Agents } from "@/src/types/admin.type";
 
 const GeneralSettings = () => {
   const [createAgents] = useCreateAgentsMutation();
@@ -32,8 +33,12 @@ const GeneralSettings = () => {
   console.log(allTermsConditions);
 
   // State for privacy policy and terms & conditions
-  const [privacyPolicy, setPrivacyPolicy] = useState<string>("");
-  const [termsConditions, setTermsConditions] = useState<string>("");
+  const [privacyPolicy, setPrivacyPolicy] = useState<string>(
+    allPrivacyPolicy?.privacy || ""
+  );
+  const [termsConditions, setTermsConditions] = useState<string>(
+    allTermsConditions?.terms || ""
+  );
 
   // State for agent dialog
   const [isAgentDialogOpen, setIsAgentDialogOpen] = useState(false);
@@ -43,58 +48,86 @@ const GeneralSettings = () => {
   const [agentNumber, setAgentNumber] = useState("");
   const [agentEmail, setAgentEmail] = useState("");
 
-  // State for agents list
-  const [agents, setAgents] = useState<
-    Array<{ id: number; name: string; number: string; email: string }>
-  >([]);
+  // Format agents data for the AgentList component
+  const agents =
+    allAgents?.map((agent: Agents) => ({
+      id: agent._id,
+      name: agent.name,
+      number: agent.number,
+      email: agent.email,
+    })) || [];
+
+  // Update local state when API data changes
+  useEffect(() => {
+    if (allPrivacyPolicy) {
+      setPrivacyPolicy(allPrivacyPolicy);
+    }
+  }, [allPrivacyPolicy]);
+
+  useEffect(() => {
+    if (allTermsConditions) {
+      setTermsConditions(allTermsConditions);
+    }
+  }, [allTermsConditions]);
 
   // Handle saving privacy policy
-  const handleSavePrivacyPolicy = () => {
-    // Here we would typically make an API call to save the privacy policy
-    console.log("Saving Privacy Policy:", privacyPolicy);
-    // Show a success message to the user
-    alert("Privacy Policy saved successfully!");
+  const handleSavePrivacyPolicy = async () => {
+    if (!privacyPolicy.trim()) {
+      alert("Please enter privacy policy content");
+      return;
+    }
+
+    try {
+      await updatePrivacyPolicy({ privacy: privacyPolicy }).unwrap();
+      alert("Privacy Policy updated successfully!");
+    } catch (error) {
+      console.error("Error updating privacy policy:", error);
+      alert("Failed to update privacy policy");
+    }
   };
 
   // Handle saving terms & conditions
-  const handleSaveTermsConditions = () => {
-    // Here we would typically make an API call to save the terms & conditions
-    console.log("Saving Terms & Conditions:", termsConditions);
-    // Show a success message to the user
-    alert("Terms & Conditions saved successfully!");
+  const handleSaveTermsConditions = async () => {
+    if (!termsConditions.trim()) {
+      alert("Please enter terms & conditions content");
+      return;
+    }
+
+    try {
+      await updateTermsConditions({ terms: termsConditions }).unwrap();
+      alert("Terms & Conditions updated successfully!");
+    } catch (error) {
+      console.error("Error updating terms & conditions:", error);
+      alert("Failed to update terms & conditions");
+    }
   };
 
   // Handle adding new agent
-  const handleAddAgent = () => {
+  const handleAddAgent = async () => {
     if (!agentName || !agentNumber || !agentEmail) {
       alert("Please fill all fields");
       return;
     }
 
-    // Here we would typically make an API call to add the agent
-    console.log("Adding Agent:", {
-      name: agentName,
-      number: agentNumber,
-      email: agentEmail,
-    });
+    try {
+      const agentData = {
+        name: agentName,
+        number: agentNumber,
+        email: agentEmail,
+      };
 
-    // Add agent to the list
-    const newAgent = {
-      id: agents.length + 1,
-      name: agentName,
-      number: agentNumber,
-      email: agentEmail,
-    };
+      await createAgents(agentData).unwrap();
+      alert("Agent added successfully!");
 
-    setAgents([...agents, newAgent]);
-
-    // Reset form fields and close dialog
-    setAgentName("");
-    setAgentNumber("");
-    setAgentEmail("");
-    setIsAgentDialogOpen(false);
-
-    alert("Agent added successfully!");
+      // Reset form fields and close dialog
+      setAgentName("");
+      setAgentNumber("");
+      setAgentEmail("");
+      setIsAgentDialogOpen(false);
+    } catch (error) {
+      console.error("Error adding agent:", error);
+      alert("Failed to add agent");
+    }
   };
 
   const handleCancel = () => {
