@@ -174,7 +174,7 @@ const SignUpPage = () => {
           Already have an account?{" "}
           <button
             onClick={() => router.push("/auth/signin")}
-            className="font-medium text-[#235C47] hover:text-[#1a4a38] focus:outline-none"
+            className="font-medium underline text-[#235C47] hover:text-[#1a4a38] focus:outline-none"
           >
             Sign In
           </button>

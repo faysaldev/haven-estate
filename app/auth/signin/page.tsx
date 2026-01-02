@@ -113,7 +113,7 @@ const SignInPage = () => {
           Don{`'`}t have an account?{" "}
           <button
             onClick={() => router.push("/auth/signup")}
-            className="font-medium cursor-pointer text-[#235C47] hover:text-[#1a4a38] focus:outline-none"
+            className="font-medium underline cursor-pointer text-[#235C47] hover:text-[#1a4a38] focus:outline-none"
           >
             Sign Up
           </button>
@@ -122,7 +122,7 @@ const SignInPage = () => {
           Forgot your password?{" "}
           <button
             onClick={() => router.push("/auth/forgot-password")}
-            className="font-medium text-[#235C47] hover:text-[#1a4a38] focus:outline-none"
+            className="font-medium underline text-[#235C47] hover:text-[#1a4a38] focus:outline-none"
           >
             Reset Password
           </button>

@@ -36,6 +36,26 @@ const OTPVerificationPage = () => {
     }
   };
 
+  // Handle paste event
+  const handlePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    const pasteData = e.clipboardData
+      .getData("text/plain")
+      .replace(/\D/g, "")
+      .substring(0, 6);
+
+    const newOtp = Array(6).fill("");
+    for (let i = 0; i < pasteData.length; i++) {
+      newOtp[i] = pasteData[i];
+    }
+
+    setOtp(newOtp);
+
+    // Focus on the last filled input or the first empty one
+    const lastFilledIndex = Math.min(pasteData.length, 5);
+    inputRefs.current[lastFilledIndex]?.focus();
+  };
+
   // Handle key down events
   const handleKeyDown = (
     e: React.KeyboardEvent<HTMLInputElement>,
@@ -104,6 +124,7 @@ const OTPVerificationPage = () => {
                 maxLength={1}
                 value={digit}
                 onChange={(e) => handleChange(e, index)}
+                onPaste={index === 0 ? handlePaste : undefined}
                 onKeyDown={(e) => handleKeyDown(e, index)}
                 className="w-12 h-12 text-center text-2xl border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#235C47] focus:border-[#235C47]"
               />
@@ -120,7 +141,7 @@ const OTPVerificationPage = () => {
               <button
                 type="button"
                 onClick={handleResendOTP}
-                className="text-sm text-[#235C47] hover:text-[#1a4a38] font-medium"
+                className="text-sm text-[#235C47] cursor-pointer hover:text-[#1a4a38] font-medium"
               >
                 Resend Code
               </button>
