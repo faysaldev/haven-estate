@@ -14,7 +14,6 @@ export const PropertyCard = ({
   onEdit,
   onDelete,
 }: PropertyCardProps) => {
-  console.log(property);
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden transition-all duration-200 hover:shadow-md">
       <div className="p-6">
