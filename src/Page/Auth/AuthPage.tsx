@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import SignUpForm from "@/src/components/Auth/SignUpForm";
 import SignInForm from "@/src/components/Auth/SignInForm";
 import ForgotPasswordForm from "@/src/components/Auth/ForgotPasswordForm";
+import OTPVerification from "@/src/components/Auth/OTPVerification";
 
 interface FormData {
   name: string;
@@ -15,6 +16,7 @@ interface FormData {
 function AuthPage() {
   const [isSignUp, setIsSignUp] = useState(true);
   const [showForgotPassword, setShowForgotPassword] = useState(false);
+  const [showOTPVerification, setShowOTPVerification] = useState(false);
   const [formData, setFormData] = useState<FormData>({
     name: "",
     email: "",
@@ -84,8 +86,11 @@ function AuthPage() {
       // In a real application, you would handle the authentication here
       console.log("Form submitted:", { ...formData, confirmPassword });
 
-      // Reset form after successful submission
-      if (!showForgotPassword) {
+      // For signup, show OTP verification after successful form submission
+      if (isSignUp && !showForgotPassword && !showOTPVerification) {
+        setShowOTPVerification(true);
+      } else {
+        // Reset form after successful submission for non-signup forms
         setFormData({
           name: "",
           email: "",
@@ -112,6 +117,29 @@ function AuthPage() {
     }
   };
 
+  const handleOTPVerify = (otp: string) => {
+    // In a real application, you would verify the OTP with your backend
+    console.log("Verifying OTP:", otp);
+    alert("Account verified successfully!");
+
+    // After successful verification, reset the form and go back to sign in
+    setShowOTPVerification(false);
+    setIsSignUp(false);
+    setFormData({
+      name: "",
+      email: "",
+      password: "",
+      phoneNumber: "",
+    });
+    setConfirmPassword("");
+  };
+
+  const handleResendOTP = () => {
+    // In a real application, you would resend the OTP to the user
+    console.log("Resending OTP to:", formData.email);
+    alert("OTP has been resent to your email!");
+  };
+
   // Render the appropriate form based on the current state
   if (showForgotPassword) {
     return (
@@ -124,6 +152,17 @@ function AuthPage() {
           setShowForgotPassword(false);
           setIsSignUp(false);
         }}
+      />
+    );
+  }
+
+  if (showOTPVerification) {
+    return (
+      <OTPVerification
+        email={formData.email}
+        onVerify={handleOTPVerify}
+        onResendOTP={handleResendOTP}
+        onBackToSignUp={() => setShowOTPVerification(false)}
       />
     );
   }
