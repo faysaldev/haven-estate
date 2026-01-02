@@ -20,6 +20,7 @@ import {
   useUpdateTermsConditionsMutation,
 } from "@/src/redux/features/Admin/Generals/generalApi";
 import { Agents } from "@/src/types/admin.type";
+import { toast } from "sonner";
 
 const GeneralSettings = () => {
   const [createAgents] = useCreateAgentsMutation();
@@ -113,14 +114,17 @@ const GeneralSettings = () => {
         email: agentEmail,
       };
 
-      await createAgents(agentData).unwrap();
-      alert("Agent added successfully!");
-
-      // Reset form fields and close dialog
-      setAgentName("");
-      setAgentNumber("");
-      setAgentEmail("");
-      setIsAgentDialogOpen(false);
+      const newAgents = await createAgents(agentData).unwrap();
+      if (newAgents.code == 200) {
+        toast.success("Agent added successfully!");
+        // Reset form fields and close dialog
+        setAgentName("");
+        setAgentNumber("");
+        setAgentEmail("");
+        setIsAgentDialogOpen(false);
+      } else {
+        toast.error("Failed to add agent");
+      }
     } catch (error) {
       console.error("Error adding agent:", error);
       alert("Failed to add agent");

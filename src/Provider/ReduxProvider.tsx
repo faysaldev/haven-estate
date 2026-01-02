@@ -2,9 +2,15 @@
 
 import { store } from "@/src/redux/store/store";
 import { Provider } from "react-redux";
+import { Toaster } from "sonner";
 
 const ReduxProvider = ({ children }: { children: React.ReactNode }) => {
-  return <Provider store={store}>{children}</Provider>;
+  return (
+    <Provider store={store}>
+      {children}
+      <Toaster position="top-right" />
+    </Provider>
+  );
 };
 
 export default ReduxProvider;

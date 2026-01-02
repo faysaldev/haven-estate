@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useRef, ChangeEvent } from "react";
 import { Button } from "@/src/components/ui/button";
 import { Input } from "@/src/components/ui/input";
@@ -11,8 +12,9 @@ import {
   SelectValue,
 } from "@/src/components/ui/select";
 import { Property } from "./types";
-import { Agent } from "./Agent";
+import { AgentsResponse } from "./Agent";
 import { useCreatePropertiesMutation } from "@/src/redux/features/Admin/Properties/propertiesApi";
+import { useGetAgentsQuery } from "@/src/redux/features/Admin/Generals/generalApi";
 
 interface PropertyFormProps {
   property?: Property;
@@ -26,44 +28,12 @@ export const PropertyForm = ({
   onCancel,
 }: PropertyFormProps) => {
   const isEditing = !!property;
-
-  // Sample agents data - in a real app, this would come from an API
-  const agents: Agent[] = [
-    {
-      id: "1",
-      name: "John Smith",
-      phone: "+1 (555) 123-4567",
-      email: "john.smith@realestate.com",
-    },
-    {
-      id: "2",
-      name: "Sarah Johnson",
-      phone: "+1 (555) 987-6543",
-      email: "sarah.j@realestate.com",
-    },
-    {
-      id: "3",
-      name: "Michael Brown",
-      phone: "+1 (555) 456-7890",
-      email: "m.brown@realestate.com",
-    },
-    {
-      id: "4",
-      name: "Emily Davis",
-      phone: "+1 (555) 234-5678",
-      email: "emily.d@realestate.com",
-    },
-    {
-      id: "5",
-      name: "Robert Wilson",
-      phone: "+1 (555) 876-5432",
-      email: "robert.w@realestate.com",
-    },
-  ];
-
-  const [selectedAgentId, setSelectedAgentId] = useState(
-    property?.agent?.id || agents[0]?.id || ""
-  );
+  const {
+    data: allAgents,
+    isLoading: agentsLoading,
+    isError: agentsError,
+  } = useGetAgentsQuery({});
+  const [selectedAgentId, setSelectedAgentId] = useState("");
   const [createProperties] = useCreatePropertiesMutation();
 
   const [title, setTitle] = useState(property?.title || "");
@@ -135,11 +105,14 @@ export const PropertyForm = ({
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     // Find the selected agent
-    const selectedAgent = agents.find((agent) => agent.id === selectedAgentId);
+    const selectedAgent = allAgents.find(
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (agent: any) => agent._id === selectedAgentId
+    );
 
     if (!selectedAgent) {
       alert("Please select an agent");
@@ -160,46 +133,25 @@ export const PropertyForm = ({
     formData.append("area", area);
     formData.append("description", description);
     formData.append("features", features);
-    formData.append("agentId", selectedAgent.id);
-    formData.append("agentName", selectedAgent.name);
-    formData.append("agentPhone", selectedAgent.phone);
-    formData.append("agentEmail", selectedAgent.email);
+    formData.append("agent", selectedAgent._id);
 
     // Add image files to FormData
-    imageFiles.forEach((file, index) => {
+    imageFiles.forEach((file) => {
       formData.append("image", file);
     });
 
-    // Log the form data for debugging (remove in production if not needed)
-    for (let [key, value] of formData.entries()) {
-      console.log(key, value);
+    try {
+      // Call the createProperties mutation
+      const result = await createProperties(formData).unwrap();
+      console.log("Property created successfully:", result);
+    } catch (error) {
+      console.error("Failed to create property:", error);
+      alert("Failed to create property. Please try again.");
     }
-
-    // Create the property object based on the form data
-    const newProperty: Property = {
-      id:
-        property?.id ||
-        Date.now().toString() + Math.random().toString(36).substr(2, 9),
-      title,
-      price: parseFloat(price),
-      location,
-      type,
-      status: status as "sale" | "rent",
-      bedrooms: bedrooms ? parseInt(bedrooms) : 0,
-      bathrooms: bathrooms ? parseInt(bathrooms) : 0,
-      area: parseFloat(area),
-      // Use the first image as the main image
-      image: imagePreviews.length > 0 ? imagePreviews[0] : "",
-      // Add the rest of images if there are more than one
-      images: imagePreviews.length > 1 ? imagePreviews.slice(1) : undefined,
-      description,
-      features: features.split(",").map((f) => f.trim()),
-      agent: selectedAgent,
-      impressions: property?.impressions || 0,
-    };
-
-    onSave(newProperty);
   };
+
+  if (agentsLoading) return <div>Loading agents...</div>;
+  if (agentsError) return <div>Error loading agents</div>;
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
@@ -384,9 +336,9 @@ export const PropertyForm = ({
             <SelectValue placeholder="Select an agent" />
           </SelectTrigger>
           <SelectContent className="bg-white border-[#235C47]/20">
-            {agents.map((agent) => (
-              <SelectItem key={agent.id} value={agent.id}>
-                {agent.name} - {agent.email}
+            {allAgents.map((agent: AgentsResponse) => (
+              <SelectItem key={agent._id} value={agent._id}>
+                {agent.name} - {agent.email?.trim()}
               </SelectItem>
             ))}
           </SelectContent>

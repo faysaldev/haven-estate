@@ -5,7 +5,7 @@ import { RootState } from "@/src/redux/store/store";
 export const baseApi = createApi({
   reducerPath: "baseApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: `${process.env.NEXT_PUBLIC_BASE_URL}`,
+    baseUrl: `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/`,
     prepareHeaders: (headers, { getState }) => {
       const token = (getState() as RootState).auth.token?.replace(/['"]+/g, "");
       if (token) {
@@ -14,6 +14,12 @@ export const baseApi = createApi({
       return headers;
     },
   }),
-  tagTypes: ["user", "agents", "termsConditions", "privacyPolicy"],
+  tagTypes: [
+    "user",
+    "agents",
+    "termsConditions",
+    "privacyPolicy",
+    "properties",
+  ],
   endpoints: () => ({}),
 });

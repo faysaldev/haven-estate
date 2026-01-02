@@ -12,9 +12,13 @@ import { Plus } from "lucide-react";
 import { PropertyList } from "@/src/components/property-management/PropertyList";
 import { PropertyForm } from "@/src/components/property-management/PropertyForm";
 import { Property } from "@/src/components/property-management/types";
+import { useGetPropertiesQuery } from "@/src/redux/features/Admin/Properties/propertiesApi";
 
 const PropertiesManagement = () => {
   // Mock properties data
+  const { data: allProperties } = useGetPropertiesQuery({});
+  console.log(allProperties);
+
   const [properties, setProperties] = useState<Property[]>([
     {
       id: "1",
@@ -210,26 +214,3 @@ const PropertiesManagement = () => {
 };
 
 export default PropertiesManagement;
-
-// {
-//   "title": "Luxury Villa in California",
-//   "price": 850000,
-//   "location": "California, USA",
-//   "type": "luxury",
-//   "status": "sale",
-//   "bedrooms": 5,
-//   "bathrooms": 4,
-//   "area": 4000,
-//   "image": "https://example.com/images/luxury-villa.jpg",
-//   "images": [
-//     "https://example.com/images/luxury-villa1.jpg",
-//     "https://example.com/images/luxury-villa2.jpg"
-//   ],
-//   "description": "A beautiful luxury villa with stunning ocean views.",
-//   "features": ["Swimming Pool", "Gym", "Sauna", "Private Beach"],
-//   "agent": {
-//     "name": "John Doe",
-//     "phone": "+1 123 456 7890",
-//     "email": "johndoe@example.com"
-//   }
-// }
