@@ -20,9 +20,10 @@ const propertiesApi = baseApi.injectEndpoints({
       invalidatesTags: ["properties"],
     }),
     getProperties: builder.query({
-      query: () => ({
+      query: (params) => ({
         url: "/properties",
         method: "GET",
+        params: params || {},
       }),
       providesTags: ["properties"],
     }),

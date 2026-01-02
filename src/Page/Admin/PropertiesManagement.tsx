@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/src/components/ui/button";
 import {
   Dialog,
@@ -8,127 +8,28 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/src/components/ui/dialog";
-import { Plus } from "lucide-react";
+import { Plus, ChevronLeft, ChevronRight } from "lucide-react";
 import { PropertyList } from "@/src/components/property-management/PropertyList";
 import { PropertyForm } from "@/src/components/property-management/PropertyForm";
 import { Property } from "@/src/components/property-management/types";
 import { useGetPropertiesQuery } from "@/src/redux/features/Admin/Properties/propertiesApi";
 
 const PropertiesManagement = () => {
-  // Mock properties data
-  const { data: allProperties } = useGetPropertiesQuery({});
-  console.log(allProperties);
-
-  const [properties, setProperties] = useState<Property[]>([
-    {
-      id: "1",
-      title: "Modern Downtown Apartment",
-      price: 450000,
-      location: "Downtown, New York",
-      type: "apartment",
-      status: "sale",
-      bedrooms: 2,
-      bathrooms: 2,
-      area: 1200,
-      image: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9",
-      images: [
-        "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9",
-        "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2",
-        "https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e",
-      ],
-      description:
-        "Beautiful modern apartment in the heart of downtown with stunning city views.",
-      features: ["Swimming Pool", "Gym", "Parking", "Security"],
-      agent: {
-        id: "1",
-        name: "John Smith",
-        phone: "+1 (555) 123-4567",
-        email: "john.smith@realestate.com",
-      },
-      impressions: 245,
-    },
-    {
-      id: "2",
-      title: "Luxury Waterfront Villa",
-      price: 850000,
-      location: "Miami Beach, Florida",
-      type: "house",
-      status: "sale",
-      bedrooms: 4,
-      bathrooms: 3,
-      area: 2800,
-      image: "https://images.unsplash.com/photo-1575517111839-3a3843ee7f5d",
-      images: [
-        "https://images.unsplash.com/photo-1575517111839-3a3843ee7f5d",
-        "https://images.unsplash.com/photo-1449824913935-59a10b8d200d",
-        "https://images.unsplash.com/photo-1503376780353-7e6692767b70",
-      ],
-      description:
-        "Stunning waterfront villa with private beach access and panoramic ocean views.",
-      features: ["Private Beach", "Pool", "Garden", "Garage"],
-      agent: {
-        id: "2",
-        name: "Sarah Johnson",
-        phone: "+1 (555) 987-6543",
-        email: "sarah.j@realestate.com",
-      },
-      impressions: 312,
-    },
-    {
-      id: "3",
-      title: "Suburban Family Home",
-      price: 320000,
-      location: "Portland, Oregon",
-      type: "house",
-      status: "rent",
-      bedrooms: 3,
-      bathrooms: 2,
-      area: 1800,
-      image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c",
-      images: [
-        "https://images.unsplash.com/photo-1600585154340-be6161a56a0c",
-        "https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e",
-        "https://images.unsplash.com/photo-1564013799919-ab600027ffc6",
-      ],
-      description:
-        "Charming family home in a quiet neighborhood with excellent schools nearby.",
-      features: ["Yard", "Fireplace", "Garage", "Basement"],
-      agent: {
-        id: "3",
-        name: "Michael Brown",
-        phone: "+1 (555) 456-7890",
-        email: "m.brown@realestate.com",
-      },
-      impressions: 178,
-    },
-    {
-      id: "4",
-      title: "City Center Loft",
-      price: 2800,
-      location: "Chicago, Illinois",
-      type: "apartment",
-      status: "rent",
-      bedrooms: 1,
-      bathrooms: 1,
-      area: 900,
-      image: "https://images.unsplash.com/photo-1613977257363-707ba9348227",
-      images: [
-        "https://images.unsplash.com/photo-1613977257363-707ba9348227",
-        "https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e",
-        "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2",
-      ],
-      description:
-        "Stylish loft in the heart of the city with high ceilings and modern amenities.",
-      features: ["High Ceilings", "Exposed Brick", "Rooftop Access"],
-      agent: {
-        id: "4",
-        name: "Emily Davis",
-        phone: "+1 (555) 234-5678",
-        email: "emily.d@realestate.com",
-      },
-      impressions: 156,
-    },
-  ]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const {
+    data: allProperties,
+    isLoading,
+    isError,
+  } = useGetPropertiesQuery({
+    page: currentPage,
+    limit: 10,
+  });
+  const pagination = allProperties?.data?.pagination || {
+    currentPage: 1,
+    totalPages: 1,
+    totalItems: 0,
+    itemsPerPage: 10,
+  };
 
   const [editingProperty, setEditingProperty] = useState<Property | null>(null);
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
@@ -144,21 +45,11 @@ const PropertiesManagement = () => {
   };
 
   const handleSave = (property: Property) => {
-    if (editingProperty) {
-      // Update existing property
-      setProperties((prev) =>
-        prev.map((p) => (p.id === property.id ? property : p))
-      );
-    } else {
-      // Add new property
-      setProperties((prev) => [...prev, property]);
-    }
     setIsAddDialogOpen(false);
   };
 
   const handleDelete = (id: string) => {
     if (confirm("Are you sure you want to delete this property?")) {
-      setProperties((prev) => prev.filter((property) => property.id !== id));
     }
   };
 
@@ -166,6 +57,36 @@ const PropertiesManagement = () => {
     setIsAddDialogOpen(false);
     setEditingProperty(null);
   };
+
+  const handlePageChange = (newPage: number) => {
+    if (newPage >= 1 && newPage <= pagination.totalPages) {
+      setCurrentPage(newPage);
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-white p-4 md:p-8 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#235C47] mx-auto"></div>
+          <p className="mt-4 text-[#235C47]">Loading properties...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="min-h-screen bg-white p-4 md:p-8 flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-xl font-semibold text-red-600">
+            Error loading properties
+          </h2>
+          <p className="text-gray-600">Please try again later</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-white p-4 md:p-8">
@@ -204,10 +125,86 @@ const PropertiesManagement = () => {
         </div>
 
         <PropertyList
-          properties={properties}
+          properties={allProperties?.data?.data || []}
           onEdit={handleEdit}
           onDelete={handleDelete}
         />
+
+        {/* Pagination Controls */}
+        {pagination.totalPages > 1 && (
+          <div className="flex items-center justify-between">
+            <div className="text-sm text-[#235C47]">
+              Showing{" "}
+              {(pagination.currentPage - 1) * pagination.itemsPerPage + 1} to{" "}
+              {Math.min(
+                pagination.currentPage * pagination.itemsPerPage,
+                pagination.totalItems
+              )}{" "}
+              of {pagination.totalItems} properties
+            </div>
+            <div className="flex items-center space-x-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => handlePageChange(currentPage - 1)}
+                disabled={currentPage === 1}
+                className="border-[#235C47] text-[#235C47] hover:bg-[#235C47]/10"
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </Button>
+
+              <div className="flex space-x-1">
+                {Array.from(
+                  { length: Math.min(5, pagination.totalPages) },
+                  (_, i) => {
+                    let pageNum;
+                    if (pagination.totalPages <= 5) {
+                      // Show all pages if total pages <= 5
+                      pageNum = i + 1;
+                    } else if (currentPage <= 3) {
+                      // Show first 5 pages if current page is in first 3
+                      pageNum = i + 1;
+                    } else if (currentPage >= pagination.totalPages - 2) {
+                      // Show last 5 pages if current page is in last 3
+                      pageNum = pagination.totalPages - 4 + i;
+                    } else {
+                      // Show 2 before and 2 after current page
+                      pageNum = currentPage - 2 + i;
+                    }
+
+                    return (
+                      <Button
+                        key={pageNum}
+                        variant={
+                          currentPage === pageNum ? "default" : "outline"
+                        }
+                        size="sm"
+                        onClick={() => handlePageChange(pageNum)}
+                        className={
+                          currentPage === pageNum
+                            ? "bg-[#235C47] border-[#235C47] hover:bg-[#235C47]/90"
+                            : "border-[#235C47] text-[#235C47] hover:bg-[#235C47]/10"
+                        }
+                      >
+                        {pageNum}
+                      </Button>
+                    );
+                  }
+                )}
+              </div>
+
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => handlePageChange(currentPage + 1)}
+                disabled={currentPage === pagination.totalPages}
+                className="border-[#235C47] text-[#235C47] hover:bg-[#235C47]/10"
+              >
+                <ChevronRight className="h-4 w-4" />
+              </Button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

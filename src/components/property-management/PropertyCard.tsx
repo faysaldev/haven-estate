@@ -9,7 +9,12 @@ interface PropertyCardProps {
   onDelete: (id: string) => void;
 }
 
-export const PropertyCard = ({ property, onEdit, onDelete }: PropertyCardProps) => {
+export const PropertyCard = ({
+  property,
+  onEdit,
+  onDelete,
+}: PropertyCardProps) => {
+  console.log(property);
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden transition-all duration-200 hover:shadow-md">
       <div className="p-6">
@@ -29,9 +34,7 @@ export const PropertyCard = ({ property, onEdit, onDelete }: PropertyCardProps) 
                 <h3 className="text-xl font-serif font-bold text-[#235C47]">
                   {property.title}
                 </h3>
-                <p className="text-[#235C47]/70">
-                  {property.location}
-                </p>
+                <p className="text-[#235C47]/70">{property.location}</p>
               </div>
               <div className="flex gap-2">
                 <Button
