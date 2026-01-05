@@ -11,6 +11,7 @@ import {
 } from "@/src/components/ui/dialog";
 import { User, Mail, Phone, DollarSign, Calendar } from "lucide-react";
 import { Property } from "../types";
+import { useAppSelector } from "@/src/redux/hooks";
 
 interface BookPropertyDialogProps {
   property: Property;
@@ -23,6 +24,7 @@ export const BookPropertyDialog = ({ property, trigger }: BookPropertyDialogProp
   const phoneRef = useRef<HTMLInputElement>(null);
   const dateRef = useRef<HTMLInputElement>(null);
   const priceRef = useRef<HTMLInputElement>(null);
+  const showLoginToast = useAppSelector((state) => state.auth.showLoginToast);
 
   const formatPrice = (price: number) => {
     if (property.status === "rent") {
@@ -49,6 +51,11 @@ export const BookPropertyDialog = ({ property, trigger }: BookPropertyDialogProp
       e.target.reset();
     }
   };
+
+  // Don't render the dialog if login toast is showing
+  if (showLoginToast) {
+    return <>{trigger}</>;
+  }
 
   return (
     <Dialog>

@@ -12,6 +12,7 @@ import {
 } from "@/src/components/ui/dialog";
 import { User, Mail, Phone, MessageSquare } from "lucide-react";
 import { Property } from "../types";
+import { useAppSelector } from "@/src/redux/hooks";
 
 interface RequestInfoDialogProps {
   property: Property;
@@ -23,6 +24,7 @@ export const RequestInfoDialog = ({ property, trigger }: RequestInfoDialogProps)
   const emailRef = useRef<HTMLInputElement>(null);
   const phoneRef = useRef<HTMLInputElement>(null);
   const messageRef = useRef<HTMLTextAreaElement>(null);
+  const showLoginToast = useAppSelector((state) => state.auth.showLoginToast);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -41,6 +43,11 @@ export const RequestInfoDialog = ({ property, trigger }: RequestInfoDialogProps)
       e.target.reset();
     }
   };
+
+  // Don't render the dialog if login toast is showing
+  if (showLoginToast) {
+    return <>{trigger}</>;
+  }
 
   return (
     <Dialog>

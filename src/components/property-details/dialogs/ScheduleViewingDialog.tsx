@@ -11,6 +11,7 @@ import {
 } from "@/src/components/ui/dialog";
 import { Calendar, Clock, User, Mail, Phone } from "lucide-react";
 import { Property } from "../types";
+import { useAppSelector } from "@/src/redux/hooks";
 
 interface ScheduleViewingDialogProps {
   property: Property;
@@ -23,6 +24,7 @@ export const ScheduleViewingDialog = ({ property, trigger }: ScheduleViewingDial
   const phoneRef = useRef<HTMLInputElement>(null);
   const dateRef = useRef<HTMLInputElement>(null);
   const timeRef = useRef<HTMLInputElement>(null);
+  const showLoginToast = useAppSelector((state) => state.auth.showLoginToast);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -42,6 +44,11 @@ export const ScheduleViewingDialog = ({ property, trigger }: ScheduleViewingDial
       e.target.reset();
     }
   };
+
+  // Don't render the dialog if login toast is showing
+  if (showLoginToast) {
+    return <>{trigger}</>;
+  }
 
   return (
     <Dialog>
