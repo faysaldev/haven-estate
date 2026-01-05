@@ -1,13 +1,23 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
+import {
+  useResendVerificationMutation,
+  useVerifyEmailMutation,
+} from "@/src/redux/features/auth/authApi";
+import { toast } from "sonner";
 
 const OTPVerificationPage = () => {
   const router = useRouter();
+  const [verifiedEmail, { isLoading: isVerifying }] = useVerifyEmailMutation();
+  const [resendVerifyEmail, { isLoading: isResending }] =
+    useResendVerificationMutation();
   const email = new URLSearchParams(window.location.search).get("email");
   const [otp, setOtp] = useState<string[]>(["", "", "", "", "", ""]);
-  const [timeLeft, setTimeLeft] = useState<number>(300); // 5 minutes in seconds
+  const [timeLeft, setTimeLeft] = useState<number>(10); // 5 minutes in seconds
+  const [apiError, setApiError] = useState<string | null>(null);
   const inputRefs = useRef<Array<HTMLInputElement | null>>([]);
 
   // Timer effect
@@ -76,27 +86,41 @@ const OTPVerificationPage = () => {
       .padStart(2, "0")}`;
   };
 
-  // Handle OTP submission
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setApiError(null);
     const otpCode = otp.join("");
-    if (otpCode.length === 6) {
-      // In a real application, you would verify the OTP with your backend
-      console.log("Verifying OTP:", otpCode);
-      alert("Account verified successfully!");
+    if (otpCode.length === 6 && email) {
+      try {
+        const result = await verifiedEmail({
+          email: email,
+          code: otpCode,
+        }).unwrap();
 
-      // After successful verification, redirect to sign in
-      router.push("/auth/signin");
+        router.push("/auth/signin");
+      } catch (error: any) {
+        setApiError(
+          error.data?.error || "An error occurred during OTP verification"
+        );
+      }
     }
   };
 
   // Handle resend OTP
-  const handleResendOTP = () => {
-    if (timeLeft === 0) {
-      // In a real application, you would resend the OTP to the user
-      console.log("Resending OTP");
-      alert("OTP has been resent!");
-      setTimeLeft(300); // Reset timer to 5 minutes
+  const handleResendOTP = async () => {
+    if (timeLeft === 0 && email) {
+      try {
+        const result = await resendVerifyEmail({ email: email }).unwrap();
+        toast.success(
+          result.data.message || "OTP has been resent to your email."
+        );
+        setTimeLeft(300); // Reset timer to 5 minutes
+      } catch (error: any) {
+        console.error("OTP resend failed:", error);
+        setApiError(
+          error.data?.error || "An error occurred while resending OTP"
+        );
+      }
     }
   };
 
@@ -112,6 +136,15 @@ const OTPVerificationPage = () => {
       </div>
 
       <form onSubmit={handleSubmit} className="mt-8 space-y-6">
+        {apiError && (
+          <div
+            className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
+            role="alert"
+          >
+            <span className="block sm:inline">{apiError}</span>
+          </div>
+        )}
+
         <div className="space-y-4">
           <div className="flex justify-center space-x-2">
             {otp.map((digit, index) => (
@@ -128,6 +161,7 @@ const OTPVerificationPage = () => {
                 onPaste={index === 0 ? handlePaste : undefined}
                 onKeyDown={(e) => handleKeyDown(e, index)}
                 className="w-12 h-12 text-center text-2xl border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#235C47] focus:border-[#235C47]"
+                disabled={isVerifying}
               />
             ))}
           </div>
@@ -142,9 +176,14 @@ const OTPVerificationPage = () => {
               <button
                 type="button"
                 onClick={handleResendOTP}
-                className="text-sm text-[#235C47] cursor-pointer hover:text-[#1a4a38] font-medium"
+                disabled={isResending}
+                className={`text-sm font-medium ${
+                  isResending
+                    ? "text-gray-400 cursor-not-allowed"
+                    : "text-[#235C47] cursor-pointer hover:text-[#1a4a38]"
+                }`}
               >
-                Resend Code
+                {isResending ? "Sending..." : "Resend Code"}
               </button>
             )}
           </div>
@@ -153,9 +192,14 @@ const OTPVerificationPage = () => {
         <div>
           <button
             type="submit"
-            className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-[#FFFFFF] bg-[#235C47] hover:bg-[#1a4a38] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#235C47]"
+            disabled={isVerifying}
+            className={`w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-[#FFFFFF] ${
+              isVerifying
+                ? "bg-[#cccccc] cursor-not-allowed"
+                : "bg-[#235C47] hover:bg-[#1a4a38]"
+            } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#235C47]`}
           >
-            Verify Account
+            {isVerifying ? "Verifying..." : "Verify Account"}
           </button>
         </div>
       </form>

@@ -50,8 +50,9 @@ const authApi = baseApi.injectEndpoints({
     }),
     resendVerification: builder.mutation({
       query: ({ email }) => ({
-        url: `/auth/resend-verification/${email}`,
-        method: "GET",
+        url: `/auth/resend-verification/`,
+        method: "POST",
+        body: { email },
       }),
     }),
 
@@ -60,16 +61,6 @@ const authApi = baseApi.injectEndpoints({
         url: `/auth//check-user/${email}`,
         method: "GET",
       }),
-    }),
-    GoogleLogin: builder.mutation({
-      query: (data) => {
-        // console.log("Google login data:", data);
-        return {
-          url: `/auth/google`,
-          method: "POST",
-          body: data,
-        };
-      },
     }),
   }),
 });
@@ -81,7 +72,6 @@ export const {
   useResitPasswordMutation,
   useChangePasswordMutation,
   useVerifyEmailMutation,
-  useGoogleLoginMutation,
   useResendVerificationMutation,
   useCheckUserExistMutation,
 } = authApi;
