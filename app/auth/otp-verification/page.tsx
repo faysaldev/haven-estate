@@ -5,9 +5,16 @@ import { useRouter } from "next/navigation";
 
 const OTPVerificationPage = () => {
   const router = useRouter();
+  const email = new URLSearchParams(window.location.search).get("email");
   const [otp, setOtp] = useState<string[]>(["", "", "", "", "", ""]);
   const [timeLeft, setTimeLeft] = useState<number>(300); // 5 minutes in seconds
   const inputRefs = useRef<Array<HTMLInputElement | null>>([]);
+
+  useEffect(() => {
+    if (!email) {
+      router.push("/auth/signin");
+    }
+  }, []);
 
   // Timer effect
   useEffect(() => {

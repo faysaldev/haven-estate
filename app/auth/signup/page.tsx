@@ -1,26 +1,32 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import FormInput from "@/src/components/Auth/FormInput";
+import { useRegisterMutation } from "@/src/redux/features/auth/authApi";
 
 interface FormData {
   name: string;
   email: string;
   password: string;
   phoneNumber: string;
+  role: string;
 }
 
 const SignUpPage = () => {
   const router = useRouter();
+  const [createUser, { isLoading, isError, error }] = useRegisterMutation();
   const [formData, setFormData] = useState<FormData>({
     name: "",
     email: "",
     password: "",
     phoneNumber: "",
+    role: "user",
   });
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [apiError, setApiError] = useState<string | null>(null);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -69,15 +75,32 @@ const SignUpPage = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setApiError(null); // Clear any previous API errors
 
     if (validateForm()) {
-      // In a real application, you would handle the authentication here
-      console.log("Sign up submitted:", { ...formData, confirmPassword });
+      try {
+        // Call the createUser mutation with the required data format
+        const result = await createUser({
+          name: formData.name,
+          email: formData.email,
+          password: formData.password,
+          phoneNumber: formData.phoneNumber,
+          role: formData.role,
+        }).unwrap();
 
-      // Redirect to OTP verification page after successful sign up
-      router.push("/auth/otp-verification");
+        console.log("User created successfully:", result);
+
+        // Redirect to OTP verification page after successful sign up
+        router.push(
+          "/auth/otp-verification?email=" + encodeURIComponent(formData.email)
+        );
+      } catch (error: any) {
+        console.error("Sign up failed:", error);
+        // Set the API error to display to the user
+        setApiError(error.data?.error || "An error occurred during sign up");
+      }
     }
   };
 
@@ -89,6 +112,15 @@ const SignUpPage = () => {
       </div>
 
       <form onSubmit={handleSubmit} className="mt-8 space-y-6">
+        {apiError && (
+          <div
+            className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
+            role="alert"
+          >
+            <span className="block sm:inline">{apiError}</span>
+          </div>
+        )}
+
         <FormInput
           id="name"
           name="name"
@@ -162,9 +194,14 @@ const SignUpPage = () => {
         <div>
           <button
             type="submit"
-            className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-[#FFFFFF] bg-[#235C47] hover:bg-[#1a4a38] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#235C47]"
+            disabled={isLoading}
+            className={`w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-[#FFFFFF] ${
+              isLoading
+                ? "bg-[#cccccc] cursor-not-allowed"
+                : "bg-[#235C47] hover:bg-[#1a4a38]"
+            } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#235C47]`}
           >
-            Sign Up
+            {isLoading ? "Signing Up..." : "Sign Up"}
           </button>
         </div>
       </form>
