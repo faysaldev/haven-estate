@@ -10,12 +10,6 @@ const OTPVerificationPage = () => {
   const [timeLeft, setTimeLeft] = useState<number>(300); // 5 minutes in seconds
   const inputRefs = useRef<Array<HTMLInputElement | null>>([]);
 
-  useEffect(() => {
-    if (!email) {
-      router.push("/auth/signin");
-    }
-  }, []);
-
   // Timer effect
   useEffect(() => {
     let timer: NodeJS.Timeout;

@@ -1,8 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import FormInput from "@/src/components/Auth/FormInput";
+import { useLoginMutation } from "@/src/redux/features/auth/authApi";
+import { toast } from "sonner";
 
 interface FormData {
   email: string;
@@ -11,11 +14,13 @@ interface FormData {
 
 const SignInPage = () => {
   const router = useRouter();
+  const [loginUser, { isLoading, isError, error }] = useLoginMutation();
   const [formData, setFormData] = useState<FormData>({
     email: "",
     password: "",
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [apiError, setApiError] = useState<string | null>(null);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -52,16 +57,35 @@ const SignInPage = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setApiError(null);
 
     if (validateForm()) {
-      // In a real application, you would handle the authentication here
-      console.log("Sign in submitted:", formData);
+      try {
+        const result = await loginUser({
+          email: formData.email,
+          password: formData.password,
+          fcmToken: "fms demo...",
+        }).unwrap();
 
-      // Redirect to dashboard or home page after successful sign in
-      // router.push('/dashboard');
-      alert("Sign in successful!");
+        console.log("Sign in successful:", result);
+        router.push("/admin");
+      } catch (error: any) {
+        if (
+          error.data?.error ==
+          "Email is not verified. Please check your email to verify."
+        ) {
+          router.push(
+            "/auth/otp-verification?email=" + encodeURIComponent(formData.email)
+          );
+          toast.error(
+            "Email is not verified. Please check your email to verify."
+          );
+        } else {
+          setApiError(error.data?.error || "An error occurred during sign in");
+        }
+      }
     }
   };
 
@@ -73,6 +97,15 @@ const SignInPage = () => {
       </div>
 
       <form onSubmit={handleSubmit} className="mt-8 space-y-6">
+        {apiError && (
+          <div
+            className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
+            role="alert"
+          >
+            <span className="block sm:inline">{apiError}</span>
+          </div>
+        )}
+
         <FormInput
           id="email"
           name="email"
@@ -101,9 +134,14 @@ const SignInPage = () => {
         <div>
           <button
             type="submit"
-            className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-[#FFFFFF] bg-[#235C47] hover:bg-[#1a4a38] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#235C47]"
+            disabled={isLoading}
+            className={`w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-[#FFFFFF] ${
+              isLoading
+                ? "bg-[#cccccc] cursor-not-allowed"
+                : "bg-[#235C47] hover:bg-[#1a4a38]"
+            } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#235C47]`}
           >
-            Sign In
+            {isLoading ? "Signing In..." : "Sign In"}
           </button>
         </div>
       </form>
