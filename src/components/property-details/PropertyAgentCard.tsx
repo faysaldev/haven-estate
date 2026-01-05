@@ -5,12 +5,36 @@ import { Property } from "./types";
 import { ScheduleViewingDialog } from "./dialogs/ScheduleViewingDialog";
 import { RequestInfoDialog } from "./dialogs/RequestInfoDialog";
 import { BookPropertyDialog } from "./dialogs/BookPropertyDialog";
+import { useAppSelector, useAppDispatch } from "@/src/redux/hooks";
+import { selectCurrentUser } from "@/src/redux/features/auth/authSlice";
+import { showLoginToast } from "@/src/redux/features/auth/authSlice";
 
 interface PropertyAgentCardProps {
   property: Property;
 }
 
 export const PropertyAgentCard = ({ property }: PropertyAgentCardProps) => {
+  const user = useAppSelector(selectCurrentUser);
+  const dispatch = useAppDispatch();
+
+  const handleScheduleViewing = () => {
+    if (!user) {
+      dispatch(showLoginToast("schedule a viewing"));
+    }
+  };
+
+  const handleRequestInfo = () => {
+    if (!user) {
+      dispatch(showLoginToast("request information"));
+    }
+  };
+
+  const handleBookProperty = () => {
+    if (!user) {
+      dispatch(showLoginToast("book this property"));
+    }
+  };
+
   return (
     <Card className="card-shadow sticky top-32 border-[#235C47]/20">
       <CardContent className="p-6 space-y-6">
@@ -48,41 +72,44 @@ export const PropertyAgentCard = ({ property }: PropertyAgentCardProps) => {
             </div>
           </div>
 
-          <ScheduleViewingDialog 
-            property={property} 
+          <ScheduleViewingDialog
+            property={property}
             trigger={
               <Button
                 className="w-full bg-[#235C47] hover:bg-[#235C47]/90 text-white"
                 size="lg"
+                onClick={handleScheduleViewing}
               >
                 Schedule Viewing
               </Button>
-            } 
+            }
           />
-          
-          <RequestInfoDialog 
-            property={property} 
+
+          <RequestInfoDialog
+            property={property}
             trigger={
               <Button
                 variant="outline"
                 className="w-full border-[#235C47] text-[#235C47] hover:bg-[#F9F7F6] hover:text-[#235C47]"
                 size="lg"
+                onClick={handleRequestInfo}
               >
                 Request Info
               </Button>
-            } 
+            }
           />
-          
-          <BookPropertyDialog 
-            property={property} 
+
+          <BookPropertyDialog
+            property={property}
             trigger={
               <Button
                 className="w-full bg-[#235C47] hover:bg-[#235C47]/90 text-white"
                 size="lg"
+                onClick={handleBookProperty}
               >
                 Book Property
               </Button>
-            } 
+            }
           />
         </div>
       </CardContent>

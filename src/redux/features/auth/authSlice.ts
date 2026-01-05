@@ -16,11 +16,15 @@ interface User {
 type TAuthState = {
   user: User | null;
   token: string | null;
+  showLoginToast: boolean;
+  loginToastAction: string;
 };
 
 const initialState: TAuthState = {
   user: null,
   token: null,
+  showLoginToast: false,
+  loginToastAction: "",
 };
 
 const authSlice = createSlice({
@@ -36,10 +40,18 @@ const authSlice = createSlice({
       state.user = null;
       state.token = null;
     },
+    showLoginToast: (state, action: PayloadAction<string>) => {
+      state.showLoginToast = true;
+      state.loginToastAction = action.payload;
+    },
+    hideLoginToast: (state) => {
+      state.showLoginToast = false;
+      state.loginToastAction = "";
+    },
   },
 });
 
-export const { setUser, logout } = authSlice.actions;
+export const { setUser, logout, showLoginToast, hideLoginToast } = authSlice.actions;
 
 export default authSlice.reducer;
 
