@@ -12,10 +12,14 @@ import { Plus, ChevronLeft, ChevronRight } from "lucide-react";
 import { PropertyList } from "@/src/components/property-management/PropertyList";
 import { PropertyForm } from "@/src/components/property-management/PropertyForm";
 import { Property } from "@/src/components/property-management/types";
-import { useGetPropertiesQuery } from "@/src/redux/features/Admin/Properties/propertiesApi";
+import {
+  useDeletePropertiesMutation,
+  useGetPropertiesQuery,
+} from "@/src/redux/features/Admin/Properties/propertiesApi";
 
 const PropertiesManagement = () => {
   const [currentPage, setCurrentPage] = useState(1);
+  const [deleteProperties] = useDeletePropertiesMutation();
   const {
     data: allProperties,
     isLoading,
@@ -33,6 +37,8 @@ const PropertiesManagement = () => {
 
   const [editingProperty, setEditingProperty] = useState<Property | null>(null);
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [propertyToDelete, setPropertyToDelete] = useState<string | null>(null);
 
   const handleAddProperty = () => {
     setEditingProperty(null);
@@ -49,8 +55,28 @@ const PropertiesManagement = () => {
   };
 
   const handleDelete = (id: string) => {
-    if (confirm("Are you sure you want to delete this property?")) {
+    setPropertyToDelete(id);
+    setDeleteModalOpen(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (propertyToDelete) {
+      try {
+        await deleteProperties(propertyToDelete).unwrap();
+        // The property list will automatically update due to RTK Query cache invalidation
+        setDeleteModalOpen(false);
+        setPropertyToDelete(null);
+      } catch (error) {
+        console.error("Failed to delete property:", error);
+        setDeleteModalOpen(false);
+        setPropertyToDelete(null);
+      }
     }
+  };
+
+  const handleCancelDelete = () => {
+    setDeleteModalOpen(false);
+    setPropertyToDelete(null);
   };
 
   const handleCancel = () => {
@@ -206,6 +232,38 @@ const PropertiesManagement = () => {
           </div>
         )}
       </div>
+
+      {/* Delete Confirmation Modal */}
+      {deleteModalOpen && (
+        <div className="fixed inset-0 bg-[#0000008a] bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 w-full max-w-md mx-4 border border-[#235C47]/20">
+            <h3 className="text-lg font-semibold text-[#235C47] mb-2">
+              Confirm Delete
+            </h3>
+            <p className="text-gray-600 mb-6">
+              Are you sure you want to delete this property? This action cannot
+              be undone.
+            </p>
+
+            <div className="flex justify-end space-x-3">
+              <button
+                type="button"
+                onClick={handleCancelDelete}
+                className="px-4 py-2 border border-[#235C47] text-[#235C47] rounded-md hover:bg-[#F9F7F6] focus:outline-none focus:ring-2 focus:ring-[#235C47]/50"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={handleConfirmDelete}
+                className="px-4 py-2 bg-[#235C47] text-white rounded-md hover:bg-[#235C47]/90 focus:outline-none focus:ring-2 focus:ring-[#235C47]/50"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

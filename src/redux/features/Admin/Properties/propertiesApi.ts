@@ -19,6 +19,13 @@ const propertiesApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["properties"],
     }),
+    deleteProperties: builder.mutation({
+      query: (propertiesId) => ({
+        url: `/properties/${propertiesId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["properties"],
+    }),
     getProperties: builder.query({
       query: (params) => ({
         url: "/properties",
@@ -30,5 +37,9 @@ const propertiesApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useCreatePropertiesMutation, useGetPropertiesQuery } =
-  propertiesApi;
+export const {
+  useCreatePropertiesMutation,
+  useGetPropertiesQuery,
+  useUpdatePropertiesMutation,
+  useDeletePropertiesMutation,
+} = propertiesApi;
