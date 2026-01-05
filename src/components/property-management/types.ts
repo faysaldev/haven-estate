@@ -11,7 +11,7 @@ export interface Property {
   bathrooms: number;
   area: number;
   image: string;
-  images?: string[];
+  images: string[];
   description: string;
   features: string[];
   agent: Agent;

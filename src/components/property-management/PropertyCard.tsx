@@ -20,7 +20,7 @@ export const PropertyCard = ({
         <div className="flex gap-6">
           <div className="relative w-48 h-32 flex-shrink-0">
             <Image
-              src={property.image}
+              src={"https://faysal9500.sobhoy.com/" + property.images[0]}
               alt={property.title}
               className="w-full h-full object-cover rounded-lg"
               fill
