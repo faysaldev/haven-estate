@@ -131,7 +131,7 @@ const SignUpPage = () => {
           type="password"
           value={formData.password}
           onChange={handleInputChange}
-          placeholder="••••••••"
+          placeholder="••••••••••••••"
           label="Password"
           error={errors.password}
           required
@@ -152,7 +152,7 @@ const SignUpPage = () => {
               });
             }
           }}
-          placeholder="••••••••"
+          placeholder="••••••••••••••"
           label="Confirm Password"
           error={errors.confirmPassword}
           required
