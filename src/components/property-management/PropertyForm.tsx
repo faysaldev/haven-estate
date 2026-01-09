@@ -13,7 +13,10 @@ import {
 } from "@/src/components/ui/select";
 import { Property } from "./types";
 import { AgentsResponse } from "./Agent";
-import { useCreatePropertiesMutation } from "@/src/redux/features/Admin/Properties/propertiesApi";
+import {
+  useCreatePropertiesMutation,
+  useUpdatePropertiesMutation,
+} from "@/src/redux/features/Admin/Properties/propertiesApi";
 import { useGetAgentsQuery } from "@/src/redux/features/Admin/Generals/generalApi";
 import Image from "next/image";
 import { XIcon } from "lucide-react";
@@ -35,8 +38,11 @@ export const PropertyForm = ({
     isLoading: agentsLoading,
     isError: agentsError,
   } = useGetAgentsQuery({});
-  const [selectedAgentId, setSelectedAgentId] = useState("");
+  const [selectedAgentId, setSelectedAgentId] = useState(
+    property?.agent?.id || ""
+  );
   const [createProperties] = useCreatePropertiesMutation();
+  const [updateProperty] = useUpdatePropertiesMutation();
 
   const [title, setTitle] = useState(property?.title || "");
   const [price, setPrice] = useState(property?.price?.toString() || "");
@@ -64,13 +70,21 @@ export const PropertyForm = ({
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const files = Array.from(e.target.files);
-      const newFiles = [...imageFiles, ...files];
+
+      // Calculate total images after adding new ones
+      const totalImagesAfterUpload = imagePreviews.length + files.length;
 
       // Limit to 8 images total
-      if (newFiles.length > 8) {
-        alert("You can upload a maximum of 8 images");
+      if (totalImagesAfterUpload > 8) {
+        alert(
+          `You can upload a maximum of 8 images. You can add up to ${
+            8 - imagePreviews.length
+          } more image(s).`
+        );
         return;
       }
+
+      const newFiles = [...imageFiles, ...files];
 
       // Update file list
       setImageFiles(newFiles);
@@ -87,6 +101,12 @@ export const PropertyForm = ({
   };
 
   const handleRemoveImage = (index: number) => {
+    // Prevent removing the last image if there's only one
+    if (imagePreviews.length <= 1) {
+      alert("You must have at least 1 image for the property");
+      return;
+    }
+
     const newImagePreviews = [...imagePreviews];
     const newImageFiles = [...imageFiles];
 
@@ -110,6 +130,12 @@ export const PropertyForm = ({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    // Validate that there's at least 1 image
+    if (imagePreviews.length < 1) {
+      alert("You must have at least 1 image for the property");
+      return;
+    }
+
     // Find the selected agent
     const selectedAgent = allAgents.find(
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -121,34 +147,157 @@ export const PropertyForm = ({
       return;
     }
 
-    // Create FormData to send to the backend
-    const formData = new FormData();
+    // If editing, log the changes
+    if (isEditing && property) {
+      const changes: Record<string, any> = {};
 
-    // Add text fields to FormData
-    formData.append("title", title);
-    formData.append("price", price);
-    formData.append("location", location);
-    formData.append("type", type);
-    formData.append("status", status);
-    formData.append("bedrooms", bedrooms);
-    formData.append("bathrooms", bathrooms);
-    formData.append("area", area);
-    formData.append("description", description);
-    formData.append("features", features);
-    formData.append("agent", selectedAgent._id);
+      if (title !== property.title) changes.title = title;
+      if (price !== property.price?.toString()) changes.price = price;
+      if (location !== property.location) changes.location = location;
+      if (type !== property.type) changes.type = type;
+      if (status !== property.status) changes.status = status;
+      if (bedrooms !== property.bedrooms?.toString())
+        changes.bedrooms = bedrooms;
+      if (bathrooms !== property.bathrooms?.toString())
+        changes.bathrooms = bathrooms;
+      if (area !== property.area?.toString()) changes.area = area;
+      if (description !== property.description)
+        changes.description = description;
+      if (features !== property.features?.join(", "))
+        changes.features = features;
+      if (selectedAgentId !== property.agent?.id)
+        changes.agent = selectedAgent._id;
 
-    // Add image files to FormData
-    imageFiles.forEach((file) => {
-      formData.append("image", file);
-    });
+      // Check if images have changed
+      if (imageFiles.length > 0) {
+        changes.images = imageFiles; // New images added
+      } else if (
+        JSON.stringify(imagePreviews) !==
+        JSON.stringify(
+          property?.images || (property?.image ? [property.image] : [])
+        )
+      ) {
+        changes.images = imagePreviews; // Images were modified
+      }
+
+      console.log("Updated fields:", changes);
+    }
 
     try {
-      // Call the createProperties mutation
-      const result = await createProperties(formData).unwrap();
-      console.log("Property created successfully:", result);
+      console.log(isEditing, property);
+      if (isEditing && property) {
+        console.log("im calling");
+        // For updates, only send changed fields
+        const formData = new FormData();
+        const changes: Record<string, any> = {};
+
+        if (title !== property.title) {
+          formData.append("title", title);
+          changes.title = title;
+        }
+        if (price !== property.price?.toString()) {
+          formData.append("price", price);
+          changes.price = price;
+        }
+        if (location !== property.location) {
+          formData.append("location", location);
+          changes.location = location;
+        }
+        if (type !== property.type) {
+          formData.append("type", type);
+          changes.type = type;
+        }
+        if (status !== property.status) {
+          formData.append("status", status);
+          changes.status = status;
+        }
+        if (bedrooms !== property.bedrooms?.toString()) {
+          formData.append("bedrooms", bedrooms);
+          changes.bedrooms = bedrooms;
+        }
+        if (bathrooms !== property.bathrooms?.toString()) {
+          formData.append("bathrooms", bathrooms);
+          changes.bathrooms = bathrooms;
+        }
+        if (area !== property.area?.toString()) {
+          formData.append("area", area);
+          changes.area = area;
+        }
+        if (description !== property.description) {
+          formData.append("description", description);
+          changes.description = description;
+        }
+        if (features !== property.features?.join(", ")) {
+          formData.append("features", features);
+          changes.features = features;
+        }
+        if (selectedAgentId !== property.agent?.id) {
+          formData.append("agent", selectedAgent._id);
+          changes.agent = selectedAgent._id;
+        }
+
+        // Check if images have changed
+        if (imageFiles.length > 0) {
+          // New images added
+          imageFiles.forEach((file) => {
+            formData.append("image", file);
+          });
+          changes.images = imageFiles;
+        } else if (
+          JSON.stringify(imagePreviews) !==
+          JSON.stringify(
+            property?.images || (property?.image ? [property.image] : [])
+          )
+        ) {
+          // Images were modified (some removed)
+          changes.images = imagePreviews;
+        }
+
+        console.log("this is me calling everything");
+        // Call the updateProperty mutation with only changed fields
+        const result = await updateProperty({
+          id: property._id,
+          data: formData,
+        }).unwrap();
+        console.log("Property updated successfully:", result);
+        onSave(result); // Call onSave with the updated property
+      } else {
+        // For creates, send all fields
+        const formData = new FormData();
+
+        // Add text fields to FormData
+        formData.append("title", title);
+        formData.append("price", price);
+        formData.append("location", location);
+        formData.append("type", type);
+        formData.append("status", status);
+        formData.append("bedrooms", bedrooms);
+        formData.append("bathrooms", bathrooms);
+        formData.append("area", area);
+        formData.append("description", description);
+        formData.append("features", features);
+        formData.append("agent", selectedAgent._id);
+
+        // Add image files to FormData
+        imageFiles.forEach((file) => {
+          formData.append("image", file);
+        });
+
+        // Call the createProperties mutation
+        const result = await createProperties(formData).unwrap();
+        console.log("Property created successfully:", result);
+        onSave(result); // Call onSave with the created property
+      }
     } catch (error) {
-      console.error("Failed to create property:", error);
-      alert("Failed to create property. Please try again.");
+      console.error(
+        isEditing ? "Failed to update property:" : "Failed to create property:",
+        error
+      );
+      alert(
+        isEditing
+          ? "Failed to update property. Please try again."
+          : "Failed to create property. Please try again."
+      );
     }
   };
 
@@ -192,7 +341,12 @@ export const PropertyForm = ({
 
           <div className="space-y-2">
             <Label className="text-[#235C47]">Type</Label>
-            <Select value={type} onValueChange={setType}>
+            <Select
+              value={type}
+              onValueChange={(
+                value: "house" | "apartment" | "condo" | "land"
+              ) => setType(value)}
+            >
               <SelectTrigger className="border-[#235C47]/20 focus:border-[#235C47] focus:ring-[#235C47]">
                 <SelectValue />
               </SelectTrigger>
@@ -209,7 +363,10 @@ export const PropertyForm = ({
         <div className="space-y-4">
           <div className="space-y-2">
             <Label className="text-[#235C47]">Status</Label>
-            <Select value={status} onValueChange={setStatus}>
+            <Select
+              value={status}
+              onValueChange={(value: "sale" | "rent") => setStatus(value)}
+            >
               <SelectTrigger className="border-[#235C47]/20 focus:border-[#235C47] focus:ring-[#235C47]">
                 <SelectValue />
               </SelectTrigger>
@@ -285,7 +442,13 @@ export const PropertyForm = ({
                 <Image
                   width={400}
                   height={200}
-                  src={"https://faysal9500.sobhoy.com/" + preview}
+                  src={
+                    preview.startsWith("blob:")
+                      ? preview // For new image files
+                      : preview.startsWith("http")
+                      ? preview // For full URLs
+                      : preview // For API image paths
+                  }
                   alt={`Preview ${index + 1}`}
                   className="w-full h-32 object-cover rounded-lg border border-[#235C47]/20"
                 />

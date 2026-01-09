@@ -61,6 +61,7 @@ const PropertiesManagement = () => {
 
   const handleConfirmDelete = async () => {
     if (propertyToDelete) {
+      console.log(propertyToDelete);
       try {
         await deleteProperties(propertyToDelete).unwrap();
         // The property list will automatically update due to RTK Query cache invalidation

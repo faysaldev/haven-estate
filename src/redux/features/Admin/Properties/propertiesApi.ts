@@ -12,10 +12,10 @@ const propertiesApi = baseApi.injectEndpoints({
       invalidatesTags: ["properties"],
     }),
     updateProperties: builder.mutation({
-      query: (propertiesBody) => ({
-        url: "/properties",
-        method: "POST",
-        body: propertiesBody,
+      query: ({ id, data }) => ({
+        url: `/properties/${id}`,
+        method: "PUT",
+        body: data,
       }),
       invalidatesTags: ["properties"],
     }),

@@ -1,7 +1,7 @@
 import { Agent } from "./Agent";
 
 export interface Property {
-  id: string;
+  _id: string;
   title: string;
   price: number;
   location: string;

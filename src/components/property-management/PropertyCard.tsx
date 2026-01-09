@@ -20,7 +20,7 @@ export const PropertyCard = ({
         <div className="flex gap-6">
           <div className="relative w-48 h-32 flex-shrink-0">
             <Image
-              src={"https://faysal9500.sobhoy.com/" + property.images[0]}
+              src={property.images[0]}
               alt={property.title}
               className="w-full h-full object-cover rounded-lg"
               fill
@@ -48,7 +48,7 @@ export const PropertyCard = ({
                   variant="outline"
                   size="sm"
                   className="border-[#235C47]/20 text-[#235C47] hover:bg-[#235C47]/10"
-                  onClick={() => onDelete(property.id)}
+                  onClick={() => onDelete(property._id)}
                 >
                   <Trash2 className="w-4 h-4" />
                 </Button>
