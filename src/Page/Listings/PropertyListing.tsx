@@ -180,10 +180,10 @@ const Listings = () => {
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="all">All Types</SelectItem>
-                        <SelectItem value="residential">Residential</SelectItem>
-                        <SelectItem value="commercial">Commercial</SelectItem>
                         <SelectItem value="land">Land</SelectItem>
-                        <SelectItem value="luxury">Luxury</SelectItem>
+                        <SelectItem value="condo">Condo</SelectItem>
+                        <SelectItem value="apartment">Apartment</SelectItem>
+                        <SelectItem value="house">House</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
