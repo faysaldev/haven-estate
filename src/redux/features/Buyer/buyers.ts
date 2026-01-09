@@ -16,10 +16,18 @@ const buyersApi = baseApi.injectEndpoints({
         body: RequestBody,
       }),
     }),
+    createBookingRequest: builder.mutation({
+      query: (bookingsBody) => ({
+        url: "/bookings",
+        method: "POST",
+        body: bookingsBody,
+      }),
+    }),
   }),
 });
 
 export const {
   useCreateScheduleViewingMutation,
   useCreateRequestViewingMutation,
+  useCreateBookingRequestMutation,
 } = buyersApi;

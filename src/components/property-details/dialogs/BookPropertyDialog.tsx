@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useState } from "react";
 import { Button } from "@/src/components/ui/button";
 import { Input } from "@/src/components/ui/input";
 import { Label } from "@/src/components/ui/label";
@@ -9,9 +9,11 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/src/components/ui/dialog";
-import { User, Mail, Phone, DollarSign, Calendar } from "lucide-react";
+import { User, Mail, Phone, DollarSign } from "lucide-react";
 import { useAppSelector } from "@/src/redux/hooks";
 import { Property } from "@/src/utils/properties";
+import { useCreateBookingRequestMutation } from "@/src/redux/features/Buyer/buyers";
+import { toast } from "sonner";
 
 interface BookPropertyDialogProps {
   property: Property;
@@ -22,11 +24,7 @@ export const BookPropertyDialog = ({
   property,
   trigger,
 }: BookPropertyDialogProps) => {
-  const nameRef = useRef<HTMLInputElement>(null);
-  const emailRef = useRef<HTMLInputElement>(null);
-  const phoneRef = useRef<HTMLInputElement>(null);
-  const dateRef = useRef<HTMLInputElement>(null);
-  const priceRef = useRef<HTMLInputElement>(null);
+  const [createBooking] = useCreateBookingRequestMutation();
   const showLoginToast = useAppSelector((state) => state.auth.showLoginToast);
 
   const formatPrice = (price: number) => {
@@ -36,22 +34,49 @@ export const BookPropertyDialog = ({
     return `$${price.toLocaleString()}`;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Get values from refs
-    const name = nameRef.current?.value || "";
-    const email = emailRef.current?.value || "";
-    const phone = phoneRef.current?.value || "";
-    const date = dateRef.current?.value || "";
-    const price = priceRef.current?.value || property.price.toString();
+    const form = e.target as HTMLFormElement;
+    const formData = new FormData(form);
 
-    // Log the form values
-    console.log({ name, email, phone, date, price });
+    // Extract values from FormData
+    const name = formData.get("name") as string;
+    const email = formData.get("email") as string;
+    const phone = formData.get("phone") as string;
+    const amount = formData.get("amount") as string;
 
-    // Reset the form
-    if (e.target instanceof HTMLFormElement) {
-      e.target.reset();
+    // Validate that amount doesn't exceed property price
+    const amountValue = parseFloat(amount);
+    if (amountValue > property.price) {
+      toast.error(
+        `Amount cannot exceed property price of $${property.price.toLocaleString()}`
+      );
+      return;
+    }
+
+    try {
+      // Prepare the data in the required format
+      const bookingData = {
+        name,
+        email,
+        phone,
+        property: property._id,
+        amount: amountValue,
+      };
+
+      // Call the createBooking mutation
+      const result = await createBooking(bookingData).unwrap();
+
+      // Show success message
+      toast.success("Property booked successfully!");
+      console.log("Booking result:", result);
+
+      // Reset the form
+      form.reset();
+    } catch (error) {
+      console.error("Error booking property:", error);
+      toast.error("Failed to book property. Please try again.");
     }
   };
 
@@ -78,7 +103,7 @@ export const BookPropertyDialog = ({
               <User className="absolute left-3 top-3 w-4 h-4 text-[#235C47]/60" />
               <Input
                 id="book-name"
-                ref={nameRef}
+                name="name"
                 className="pl-10 border-[#235C47]/20 focus:border-[#235C47] focus:ring-[#235C47] bg-[#F9F7F6]"
                 placeholder="Enter your full name"
                 required
@@ -94,8 +119,8 @@ export const BookPropertyDialog = ({
               <Mail className="absolute left-3 top-3 w-4 h-4 text-[#235C47]/60" />
               <Input
                 id="book-email"
+                name="email"
                 type="email"
-                ref={emailRef}
                 className="pl-10 border-[#235C47]/20 focus:border-[#235C47] focus:ring-[#235C47] bg-[#F9F7F6]"
                 placeholder="Enter your email"
                 required
@@ -111,7 +136,7 @@ export const BookPropertyDialog = ({
               <Phone className="absolute left-3 top-3 w-4 h-4 text-[#235C47]/60" />
               <Input
                 id="book-phone"
-                ref={phoneRef}
+                name="phone"
                 className="pl-10 border-[#235C47]/20 focus:border-[#235C47] focus:ring-[#235C47] bg-[#F9F7F6]"
                 placeholder="Enter your phone number"
                 required
@@ -120,34 +145,19 @@ export const BookPropertyDialog = ({
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="book-date" className="text-[#235C47]">
-              Booking Date
-            </Label>
-            <div className="relative">
-              <Calendar className="absolute left-3 top-3 w-4 h-4 text-[#235C47]/60" />
-              <Input
-                id="book-date"
-                type="date"
-                ref={dateRef}
-                className="pl-10 border-[#235C47]/20 focus:border-[#235C47] focus:ring-[#235C47] bg-[#F9F7F6]"
-                required
-              />
-            </div>
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="book-price" className="text-[#235C47]">
-              Price
+            <Label htmlFor="book-amount" className="text-[#235C47]">
+              Amount
             </Label>
             <div className="relative">
               <DollarSign className="absolute left-3 top-3 w-4 h-4 text-[#235C47]/60" />
               <Input
-                id="book-price"
+                id="book-amount"
+                name="amount"
                 type="number"
-                ref={priceRef}
                 className="pl-10 border-[#235C47]/20 focus:border-[#235C47] focus:ring-[#235C47] bg-[#F9F7F6]"
-                placeholder="Enter price"
-                defaultValue={property.price.toString()}
+                placeholder="Enter amount"
+                min="1"
+                max={property.price.toString()}
                 required
               />
             </div>
