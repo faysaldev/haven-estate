@@ -15,6 +15,8 @@ import { Property } from "./types";
 import { AgentsResponse } from "./Agent";
 import { useCreatePropertiesMutation } from "@/src/redux/features/Admin/Properties/propertiesApi";
 import { useGetAgentsQuery } from "@/src/redux/features/Admin/Generals/generalApi";
+import Image from "next/image";
+import { XIcon } from "lucide-react";
 
 interface PropertyFormProps {
   property?: Property;
@@ -280,8 +282,10 @@ export const PropertyForm = ({
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
             {imagePreviews.map((preview, index) => (
               <div key={index} className="relative group">
-                <img
-                  src={preview}
+                <Image
+                  width={400}
+                  height={200}
+                  src={"https://faysal9500.sobhoy.com/" + preview}
                   alt={`Preview ${index + 1}`}
                   className="w-full h-32 object-cover rounded-lg border border-[#235C47]/20"
                 />
@@ -290,18 +294,7 @@ export const PropertyForm = ({
                   className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
                   onClick={() => handleRemoveImage(index)}
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-4 w-4"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
+                  <XIcon className="h-4 w-4" />
                 </button>
               </div>
             ))}

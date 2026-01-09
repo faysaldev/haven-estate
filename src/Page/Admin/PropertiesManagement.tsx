@@ -14,7 +14,7 @@ import { PropertyForm } from "@/src/components/property-management/PropertyForm"
 import { Property } from "@/src/components/property-management/types";
 import {
   useDeletePropertiesMutation,
-  useGetPropertiesQuery,
+  useGetAdminPropertiesQuery,
 } from "@/src/redux/features/Admin/Properties/propertiesApi";
 
 const PropertiesManagement = () => {
@@ -24,7 +24,7 @@ const PropertiesManagement = () => {
     data: allProperties,
     isLoading,
     isError,
-  } = useGetPropertiesQuery({
+  } = useGetAdminPropertiesQuery({
     page: currentPage,
     limit: 10,
   });

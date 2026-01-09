@@ -34,6 +34,21 @@ const propertiesApi = baseApi.injectEndpoints({
       }),
       providesTags: ["properties"],
     }),
+    getAdminProperties: builder.query({
+      query: (params) => ({
+        url: "/properties/admin",
+        method: "GET",
+        params: params || {},
+      }),
+      providesTags: ["properties"],
+    }),
+    getSingleProperties: builder.query({
+      query: (propertyId) => ({
+        url: `/properties/${propertyId}`,
+        method: "GET",
+      }),
+      providesTags: ["properties"],
+    }),
   }),
 });
 
@@ -42,4 +57,5 @@ export const {
   useGetPropertiesQuery,
   useUpdatePropertiesMutation,
   useDeletePropertiesMutation,
+  useGetAdminPropertiesQuery,
 } = propertiesApi;
