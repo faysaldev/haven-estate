@@ -6,6 +6,9 @@ import { useRouter } from "next/navigation";
 import FormInput from "@/src/components/Auth/FormInput";
 import { useLoginMutation } from "@/src/redux/features/auth/authApi";
 import { toast } from "sonner";
+import { useDispatch } from "react-redux";
+import { setUser } from "@/src/redux/features/auth/authSlice";
+import { User } from "@/src/redux/features/auth/authSlice";
 
 interface FormData {
   email: string;
@@ -14,7 +17,8 @@ interface FormData {
 
 const SignInPage = () => {
   const router = useRouter();
-  const [loginUser, { isLoading, isError, error }] = useLoginMutation();
+  const [loginUser, { isLoading }] = useLoginMutation();
+  const dispatch = useDispatch();
   const [formData, setFormData] = useState<FormData>({
     email: "",
     password: "",
@@ -68,7 +72,26 @@ const SignInPage = () => {
           password: formData.password,
           fcmToken: "fms demo...",
         }).unwrap();
+        const { user, accessToken } = result.data;
+        const { _id, name, email, role, image, phoneNumber, isEmailVerified } =
+          user;
 
+        const finalUserData: User = {
+          _id,
+          name,
+          email,
+          role,
+          image: image || null,
+          phoneNumber,
+          isEmailVerified,
+        };
+
+        dispatch(
+          setUser({
+            user: finalUserData,
+            token: accessToken,
+          })
+        );
         console.log("Sign in successful:", result);
         router.push("/admin");
       } catch (error: any) {

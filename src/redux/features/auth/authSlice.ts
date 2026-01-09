@@ -1,16 +1,14 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "@/src/redux/store/store"; // Make sure this is correct
 
-interface User {
+export interface User {
   name: string;
   email: string;
   image: string | null; // image might be null
-  password: string;
   role: "user" | "admin";
-  address: string | null;
   phoneNumber: string;
-  isProfileCompleted: boolean;
-  id: string;
+  isEmailVerified: boolean;
+  _id: string;
 }
 
 type TAuthState = {
@@ -51,7 +49,8 @@ const authSlice = createSlice({
   },
 });
 
-export const { setUser, logout, showLoginToast, hideLoginToast } = authSlice.actions;
+export const { setUser, logout, showLoginToast, hideLoginToast } =
+  authSlice.actions;
 
 export default authSlice.reducer;
 
