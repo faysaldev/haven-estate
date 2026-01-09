@@ -13,8 +13,9 @@ export interface Property {
   description: string;
   features: string[];
   agent: {
+    _id: string;
     name: string;
-    phone: string;
+    number: string;
     email: string;
   };
 }
@@ -48,8 +49,9 @@ export const properties: Property[] = [
       "Panoramic Views",
     ],
     agent: {
+      _id: "agent1",
       name: "Sarah Johnson",
-      phone: "+1 (555) 123-4567",
+      number: "+1 (555) 123-4567",
       email: "sarah@havenestates.com",
     },
   },
@@ -79,8 +81,9 @@ export const properties: Property[] = [
       "City Views",
     ],
     agent: {
+      _id: "agent2",
       name: "Michael Chen",
-      phone: "+1 (555) 234-5678",
+      number: "+1 (555) 234-5678",
       email: "michael@havenestates.com",
     },
   },
@@ -110,8 +113,9 @@ export const properties: Property[] = [
       "Near Schools",
     ],
     agent: {
+      _id: "agent3",
       name: "Emily Rodriguez",
-      phone: "+1 (555) 345-6789",
+      number: "+1 (555) 345-6789",
       email: "emily@havenestates.com",
     },
   },
@@ -141,8 +145,9 @@ export const properties: Property[] = [
       "Pet Friendly",
     ],
     agent: {
+      _id: "agent4",
       name: "Dav_id Martinez",
-      phone: "+1 (555) 456-7890",
+      number: "+1 (555) 456-7890",
       email: "dav_id@havenestates.com",
     },
   },
@@ -171,7 +176,8 @@ export const properties: Property[] = [
     ],
     agent: {
       name: "Jennifer Lee",
-      phone: "+1 (555) 567-8901",
+      _id: "agent5",
+      number: "+1 (555) 567-8901",
       email: "jennifer@havenestates.com",
     },
   },
@@ -200,7 +206,8 @@ export const properties: Property[] = [
     ],
     agent: {
       name: "Robert Anderson",
-      phone: "+1 (555) 678-9012",
+      _id: "agent5",
+      number: "+1 (555) 567-8901",
       email: "robert@havenestates.com",
     },
   },

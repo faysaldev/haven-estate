@@ -48,6 +48,7 @@ const propertiesApi = baseApi.injectEndpoints({
         url: `/properties/${propertyId}`,
         method: "GET",
       }),
+      transformResponse: (response) => response.data,
       providesTags: ["properties"],
     }),
   }),
@@ -59,4 +60,5 @@ export const {
   useUpdatePropertiesMutation,
   useDeletePropertiesMutation,
   useGetAdminPropertiesQuery,
+  useGetSinglePropertiesQuery,
 } = propertiesApi;

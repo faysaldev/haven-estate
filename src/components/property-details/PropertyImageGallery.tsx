@@ -1,16 +1,17 @@
+import { Property } from "@/src/utils/properties";
 import Image from "next/image";
-import { Property } from "./types";
-
 interface PropertyImageGalleryProps {
   property: Property;
 }
 
-export const PropertyImageGallery = ({ property }: PropertyImageGalleryProps) => {
+export const PropertyImageGallery = ({
+  property,
+}: PropertyImageGalleryProps) => {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-12">
       <div className="lg:col-span-2 h-[500px] overflow-hidden rounded-xl bg-[#F9F7F6]">
         <Image
-          src={property.image}
+          src={property.images[0]}
           alt={property.title}
           width={800}
           height={500}

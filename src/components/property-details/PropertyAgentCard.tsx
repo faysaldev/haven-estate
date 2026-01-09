@@ -1,13 +1,13 @@
 import { Card, CardContent } from "@/src/components/ui/card";
 import { Button } from "@/src/components/ui/button";
 import { Mail, Phone } from "lucide-react";
-import { Property } from "./types";
 import { ScheduleViewingDialog } from "./dialogs/ScheduleViewingDialog";
 import { RequestInfoDialog } from "./dialogs/RequestInfoDialog";
 import { BookPropertyDialog } from "./dialogs/BookPropertyDialog";
 import { useAppSelector, useAppDispatch } from "@/src/redux/hooks";
 import { selectCurrentUser } from "@/src/redux/features/auth/authSlice";
 import { showLoginToast } from "@/src/redux/features/auth/authSlice";
+import { Property } from "@/src/utils/properties";
 
 interface PropertyAgentCardProps {
   property: Property;
@@ -55,10 +55,10 @@ export const PropertyAgentCard = ({ property }: PropertyAgentCardProps) => {
             <div className="flex items-center gap-2 text-[#235C47]/70">
               <Phone className="w-4 h-4 text-[#235C47]" />
               <a
-                href={`tel:${property.agent.phone}`}
+                href={`tel:${property.agent.number}`}
                 className="hover:text-[#235C47] transition-smooth"
               >
-                {property.agent.phone}
+                {property.agent.number}
               </a>
             </div>
             <div className="flex items-center gap-2 text-[#235C47]/70">

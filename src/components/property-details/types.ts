@@ -1,24 +1,3 @@
-export interface Property {
-  _id: string;
-  title: string;
-  price: number;
-  location: string;
-  type: string;
-  status: "sale" | "rent";
-  bedrooms?: number;
-  bathrooms?: number;
-  area: number;
-  image: string;
-  images?: string[];
-  description: string;
-  features: string[];
-  agent: {
-    name: string;
-    phone: string;
-    email: string;
-  };
-}
-
 export interface ScheduleViewingForm {
   name: string;
   email: string;

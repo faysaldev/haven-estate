@@ -10,15 +10,18 @@ import {
   DialogTrigger,
 } from "@/src/components/ui/dialog";
 import { Calendar, Clock, User, Mail, Phone } from "lucide-react";
-import { Property } from "../types";
 import { useAppSelector } from "@/src/redux/hooks";
+import { Property } from "@/src/utils/properties";
 
 interface ScheduleViewingDialogProps {
   property: Property;
   trigger: React.ReactNode;
 }
 
-export const ScheduleViewingDialog = ({ property, trigger }: ScheduleViewingDialogProps) => {
+export const ScheduleViewingDialog = ({
+  property,
+  trigger,
+}: ScheduleViewingDialogProps) => {
   const nameRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
   const phoneRef = useRef<HTMLInputElement>(null);
@@ -52,9 +55,7 @@ export const ScheduleViewingDialog = ({ property, trigger }: ScheduleViewingDial
 
   return (
     <Dialog>
-      <DialogTrigger asChild>
-        {trigger}
-      </DialogTrigger>
+      <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogContent className="sm:max-w-md bg-white border-[#235C47]/20">
         <DialogHeader>
           <DialogTitle className="text-2xl font-serif text-[#235C47]">
@@ -63,7 +64,9 @@ export const ScheduleViewingDialog = ({ property, trigger }: ScheduleViewingDial
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="name" className="text-[#235C47]">Full Name</Label>
+            <Label htmlFor="name" className="text-[#235C47]">
+              Full Name
+            </Label>
             <div className="relative">
               <User className="absolute left-3 top-3 w-4 h-4 text-[#235C47]/60" />
               <Input
@@ -77,7 +80,9 @@ export const ScheduleViewingDialog = ({ property, trigger }: ScheduleViewingDial
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="email" className="text-[#235C47]">Email</Label>
+            <Label htmlFor="email" className="text-[#235C47]">
+              Email
+            </Label>
             <div className="relative">
               <Mail className="absolute left-3 top-3 w-4 h-4 text-[#235C47]/60" />
               <Input
@@ -92,7 +97,9 @@ export const ScheduleViewingDialog = ({ property, trigger }: ScheduleViewingDial
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="phone" className="text-[#235C47]">Phone Number</Label>
+            <Label htmlFor="phone" className="text-[#235C47]">
+              Phone Number
+            </Label>
             <div className="relative">
               <Phone className="absolute left-3 top-3 w-4 h-4 text-[#235C47]/60" />
               <Input
@@ -107,7 +114,9 @@ export const ScheduleViewingDialog = ({ property, trigger }: ScheduleViewingDial
 
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="date" className="text-[#235C47]">Date</Label>
+              <Label htmlFor="date" className="text-[#235C47]">
+                Date
+              </Label>
               <div className="relative">
                 <Calendar className="absolute left-3 top-3 w-4 h-4 text-[#235C47]/60" />
                 <Input
@@ -121,7 +130,9 @@ export const ScheduleViewingDialog = ({ property, trigger }: ScheduleViewingDial
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="time" className="text-[#235C47]">Time</Label>
+              <Label htmlFor="time" className="text-[#235C47]">
+                Time
+              </Label>
               <div className="relative">
                 <Clock className="absolute left-3 top-3 w-4 h-4 text-[#235C47]/60" />
                 <Input

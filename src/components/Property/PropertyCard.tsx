@@ -11,6 +11,7 @@ interface PropertyCardProps {
 
 const PropertyCard = ({ property }: PropertyCardProps) => {
   const formatPrice = (price: number) => {
+    console.log(price);
     if (property.status === "rent") {
       return `$${price.toLocaleString()}/mo`;
     }
