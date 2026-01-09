@@ -32,6 +32,7 @@ const propertiesApi = baseApi.injectEndpoints({
         method: "GET",
         params: params || {},
       }),
+      transformResponse: (response) => response.data,
       providesTags: ["properties"],
     }),
     getAdminProperties: builder.query({

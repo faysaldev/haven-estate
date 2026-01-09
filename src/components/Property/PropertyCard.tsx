@@ -18,11 +18,11 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
   };
 
   return (
-    <Link href={`/listings/${property.id}`}>
+    <Link href={`/listings/${property._id}`}>
       <Card className="group overflow-hidden card-shadow card-shadow-hover transition-smooth hover:scale-[1.02] cursor-pointer border-border">
         <div className="relative overflow-hidden">
           <Image
-            src={property.image}
+            src={property?.images[0]}
             alt={property.title}
             width={400}
             height={300}

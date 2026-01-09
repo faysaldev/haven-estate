@@ -6,7 +6,7 @@ import PropertyCard from "@/src/components/Property/PropertyCard";
 import { Button } from "@/src/components/ui/button";
 import { Input } from "@/src/components/ui/input";
 import { Search, Home, Building2, TreePine, Crown } from "lucide-react";
-import { properties } from "@/src/utils/properties";
+import { properties, Property } from "@/src/utils/properties";
 import heroImage from "@/assets/hero_image.jpg";
 import Link from "next/link";
 
@@ -103,9 +103,9 @@ const Homepage = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-            {featuredProperties.map((property, index) => (
+            {featuredProperties.map((property: Property, index: number) => (
               <div
-                key={property.id}
+                key={property._id}
                 className="animate-slide-up"
                 style={{ animationDelay: `${index * 150}ms` }}
               >

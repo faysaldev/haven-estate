@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Navbar from "@/src/components/Common/Navbar";
 import Footer from "@/src/components/Common/Footer";
@@ -16,12 +16,15 @@ import {
   SelectValue,
 } from "@/src/components/ui/select";
 import { Slider } from "@/src/components/ui/slider";
-import { properties } from "@/src/utils/properties";
+import { Property } from "@/src/utils/properties";
 import { Search, SlidersHorizontal } from "lucide-react";
+import { useGetPropertiesQuery } from "@/src/redux/features/Admin/Properties/propertiesApi";
 
 const Listings = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
 
   const [searchQuery, setSearchQuery] = useState("");
   const [propertyType, setPropertyType] = useState(
@@ -32,42 +35,22 @@ const Listings = () => {
   );
   const [priceRange, setPriceRange] = useState([0, 5000000]);
 
-  // Use useMemo to filter properties efficiently and prevent unnecessary re-renders
-  const filteredProperties = useMemo(() => {
-    let result = properties;
+  const {
+    data: propertiesData,
+    isLoading,
+    isError,
+  } = useGetPropertiesQuery({
+    page,
+    limit,
+    location: searchQuery || undefined,
+    type: propertyType !== "all" ? propertyType : undefined,
+    status: propertyStatus !== "all" ? propertyStatus : undefined,
+    minPrice: priceRange[0] > 0 ? priceRange[0] : undefined,
+    maxPrice: priceRange[1] < 5000000 ? priceRange[1] : undefined,
+  });
 
-    // Filter by search query
-    if (searchQuery) {
-      result = result.filter(
-        (property) =>
-          property.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          property.location.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-    }
-
-    // Filter by property type
-    if (propertyType !== "all") {
-      result = result.filter((property) => property.type === propertyType);
-    }
-
-    // Filter by property status
-    if (propertyStatus !== "all") {
-      result = result.filter((property) => property.status === propertyStatus);
-    }
-
-    // Filter by price range (for sale properties)
-    result = result.filter((property) => {
-      if (property.status === "sale") {
-        return (
-          property.price >= priceRange[0] && property.price <= priceRange[1]
-        );
-      }
-      return true;
-    });
-
-    return result;
-  }, [searchQuery, propertyType, propertyStatus, priceRange]);
-
+  // Extract properties from API response
+  const apiProperties = propertiesData?.data || [];
   // Update URL parameters when filters change
   useEffect(() => {
     const params = new URLSearchParams();
@@ -85,6 +68,49 @@ const Listings = () => {
     setPropertyType("all");
     setPropertyStatus("all");
     setPriceRange([0, 5000000]);
+  };
+
+  // Function to generate page numbers for pagination
+  const getPageNumbers = () => {
+    const totalPages = propertiesData?.pagination?.totalPages || 1;
+    const delta = 2; // Number of pages to show around current page
+
+    if (totalPages <= 5) {
+      // If total pages is 5 or less, show all pages
+      return Array.from({ length: totalPages }, (_, i) => i + 1);
+    }
+
+    // Otherwise, show first page, last page, current page and delta pages around it
+    const pages = [];
+
+    // Always show first page
+    pages.push(1);
+
+    // Show ellipsis if needed
+    if (page - delta > 2) {
+      pages.push(-1); // Use -1 as placeholder for ellipsis
+    }
+
+    // Show pages around current page
+    for (
+      let i = Math.max(2, page - delta);
+      i <= Math.min(totalPages - 1, page + delta);
+      i++
+    ) {
+      pages.push(i);
+    }
+
+    // Show ellipsis if needed
+    if (page + delta < totalPages - 1) {
+      pages.push(-1); // Use -1 as placeholder for ellipsis
+    }
+
+    // Always show last page (if it's not already included)
+    if (pages[pages.length - 1] !== totalPages) {
+      pages.push(totalPages);
+    }
+
+    return pages;
   };
 
   return (
@@ -213,13 +239,31 @@ const Listings = () => {
                 <p className="text-[#235C47]/80">
                   Showing{" "}
                   <span className="font-semibold text-[#235C47]">
-                    {filteredProperties.length}
+                    {apiProperties.length}
                   </span>{" "}
                   properties
                 </p>
               </div>
 
-              {filteredProperties.length === 0 ? (
+              {isLoading ? (
+                <div className="text-center py-20 bg-[#F9F7F6] p-8 rounded-xl">
+                  <p className="text-xl text-[#235C47]/80">
+                    Loading properties...
+                  </p>
+                </div>
+              ) : isError ? (
+                <div className="text-center py-20 bg-[#F9F7F6] p-8 rounded-xl">
+                  <p className="text-xl text-[#235C47]/80">
+                    Error loading properties
+                  </p>
+                  <Button
+                    onClick={() => window.location.reload()}
+                    className="mt-4 bg-[#235C47] hover:bg-[#235C47]/90 text-white"
+                  >
+                    Retry
+                  </Button>
+                </div>
+              ) : apiProperties.length === 0 ? (
                 <div className="text-center py-20 bg-[#F9F7F6] p-8 rounded-xl">
                   <p className="text-xl text-[#235C47]/80 mb-4">
                     No properties found
@@ -233,9 +277,9 @@ const Listings = () => {
                 </div>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                  {filteredProperties.map((property, index) => (
+                  {apiProperties.map((property: Property, index: number) => (
                     <div
-                      key={property.id}
+                      key={property._id}
                       className="animate-slide-up"
                       style={{ animationDelay: `${index * 50}ms` }}
                     >
@@ -244,6 +288,66 @@ const Listings = () => {
                   ))}
                 </div>
               )}
+
+              {/* Pagination Controls */}
+              {propertiesData?.pagination &&
+                propertiesData.pagination.totalPages > 1 && (
+                  <div className="mt-12 flex items-center justify-center space-x-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setPage(Math.max(1, page - 1))}
+                      disabled={page <= 1}
+                      className="border-[#235C47]/20 text-[#235C47] hover:bg-[#235C47]/10"
+                    >
+                      Previous
+                    </Button>
+
+                    <div className="flex items-center space-x-1">
+                      {getPageNumbers().map((pageNum, index) =>
+                        pageNum === -1 ? (
+                          <span
+                            key={`ellipsis-${index}`}
+                            className="px-2 text-[#235C47]/70"
+                          >
+                            ...
+                          </span>
+                        ) : (
+                          <Button
+                            key={pageNum}
+                            variant={page === pageNum ? "default" : "outline"}
+                            size="sm"
+                            onClick={() => setPage(pageNum)}
+                            className={
+                              page === pageNum
+                                ? "bg-[#235C47] hover:bg-[#235C47]/90 text-white"
+                                : "border-[#235C47]/20 text-[#235C47] hover:bg-[#235C47]/10"
+                            }
+                          >
+                            {pageNum}
+                          </Button>
+                        )
+                      )}
+                    </div>
+
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() =>
+                        setPage(
+                          Math.min(
+                            propertiesData.pagination.totalPages,
+                            page + 1
+                          )
+                        )
+                      }
+                      disabled={page >= propertiesData.pagination.totalPages}
+                      className="border-[#235C47]/20 text-[#235C47] hover:bg-[#235C47]/10"
+                    >
+                      Next
+                    </Button>
+                  </div>
+                )}
             </div>
           </div>
         </div>

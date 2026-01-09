@@ -1,5 +1,5 @@
 export interface Property {
-  id: string;
+  _id: string;
   title: string;
   price: number;
   location: string;
@@ -9,7 +9,7 @@ export interface Property {
   bathrooms?: number;
   area: number;
   image: string;
-  images?: string[];
+  images: string[];
   description: string;
   features: string[];
   agent: {
@@ -21,7 +21,7 @@ export interface Property {
 
 export const properties: Property[] = [
   {
-    id: "1",
+    _id: "1",
     title: "Modern Luxury Villa",
     price: 2850000,
     location: "Beverly Hills, CA",
@@ -54,7 +54,7 @@ export const properties: Property[] = [
     },
   },
   {
-    id: "2",
+    _id: "2",
     title: "Downtown Penthouse",
     price: 1650000,
     location: "Manhattan, NY",
@@ -85,7 +85,7 @@ export const properties: Property[] = [
     },
   },
   {
-    id: "3",
+    _id: "3",
     title: "Suburban Family Home",
     price: 725000,
     location: "Austin, TX",
@@ -116,7 +116,7 @@ export const properties: Property[] = [
     },
   },
   {
-    id: "4",
+    _id: "4",
     title: "Beachfront Condo",
     price: 3500,
     location: "Miami Beach, FL",
@@ -141,13 +141,13 @@ export const properties: Property[] = [
       "Pet Friendly",
     ],
     agent: {
-      name: "David Martinez",
+      name: "Dav_id Martinez",
       phone: "+1 (555) 456-7890",
-      email: "david@havenestates.com",
+      email: "dav_id@havenestates.com",
     },
   },
   {
-    id: "5",
+    _id: "5",
     title: "Commercial Office Space",
     price: 4200000,
     location: "San Francisco, CA",
@@ -160,7 +160,7 @@ export const properties: Property[] = [
       "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80",
     ],
     description:
-      "Prime commercial office space in downtown San Francisco. Modern building with excellent visibility, ample parking, and close proximity to public transportation. Ideal for tech companies or professional services.",
+      "Prime commercial office space in downtown San Francisco. Modern building with excellent visibility, ample parking, and close proximity to public transportation. _Ideal for tech companies or professional services.",
     features: [
       "Central Location",
       "Elevator Access",
@@ -176,7 +176,7 @@ export const properties: Property[] = [
     },
   },
   {
-    id: "6",
+    _id: "6",
     title: "Development Land",
     price: 1200000,
     location: "Scottsdale, AZ",
@@ -189,7 +189,7 @@ export const properties: Property[] = [
       "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&q=80",
     ],
     description:
-      "Prime development land in rapidly growing Scottsdale. Zoned for residential or mixed-use development. Utilities available. Perfect opportunity for developers or investors.",
+      "Prime development land in rap_idly growing Scottsdale. Zoned for res_idential or mixed-use development. Utilities available. Perfect opportunity for developers or investors.",
     features: [
       "Zoned for Development",
       "Utilities Available",
