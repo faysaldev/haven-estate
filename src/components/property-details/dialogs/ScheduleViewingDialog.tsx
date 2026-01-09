@@ -1,4 +1,3 @@
-import { useRef } from "react";
 import { Button } from "@/src/components/ui/button";
 import { Input } from "@/src/components/ui/input";
 import { Label } from "@/src/components/ui/label";
@@ -12,6 +11,8 @@ import {
 import { Calendar, Clock, User, Mail, Phone } from "lucide-react";
 import { useAppSelector } from "@/src/redux/hooks";
 import { Property } from "@/src/utils/properties";
+import { useCreateScheduleViewingMutation } from "@/src/redux/features/Buyer/buyers";
+import { toast } from "sonner";
 
 interface ScheduleViewingDialogProps {
   property: Property;
@@ -22,29 +23,45 @@ export const ScheduleViewingDialog = ({
   property,
   trigger,
 }: ScheduleViewingDialogProps) => {
-  const nameRef = useRef<HTMLInputElement>(null);
-  const emailRef = useRef<HTMLInputElement>(null);
-  const phoneRef = useRef<HTMLInputElement>(null);
-  const dateRef = useRef<HTMLInputElement>(null);
-  const timeRef = useRef<HTMLInputElement>(null);
+  const [createScheduleView] = useCreateScheduleViewingMutation();
   const showLoginToast = useAppSelector((state) => state.auth.showLoginToast);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Get values from refs
-    const name = nameRef.current?.value || "";
-    const email = emailRef.current?.value || "";
-    const phone = phoneRef.current?.value || "";
-    const date = dateRef.current?.value || "";
-    const time = timeRef.current?.value || "";
+    const form = e.target as HTMLFormElement;
+    const formData = new FormData(form);
 
-    // Log the form values
-    console.log({ name, email, phone, date, time });
+    // Extract values from FormData
+    const name = formData.get("name") as string;
+    const email = formData.get("email") as string;
+    const phone = formData.get("phone") as string;
+    const view_date = formData.get("view_date") as string;
+    const view_time = formData.get("view_time") as string;
 
-    // Reset the form
-    if (e.target instanceof HTMLFormElement) {
-      e.target.reset();
+    try {
+      // Prepare the data in the required format
+      const scheduleData = {
+        name,
+        email,
+        phone,
+        view_date,
+        view_time,
+        property_id: property._id,
+      };
+
+      // Call the createScheduleView mutation
+      const result = await createScheduleView(scheduleData).unwrap();
+
+      // Show success message
+      toast.success("Viewing scheduled successfully!");
+      console.log("Schedule viewing result:", result);
+
+      // Reset the form
+      form.reset();
+    } catch (error) {
+      console.error("Error scheduling viewing:", error);
+      toast.error("Failed to schedule viewing. Please try again.");
     }
   };
 
@@ -71,7 +88,7 @@ export const ScheduleViewingDialog = ({
               <User className="absolute left-3 top-3 w-4 h-4 text-[#235C47]/60" />
               <Input
                 id="name"
-                ref={nameRef}
+                name="name"
                 className="pl-10 border-[#235C47]/20 focus:border-[#235C47] focus:ring-[#235C47] bg-[#F9F7F6]"
                 placeholder="Enter your full name"
                 required
@@ -87,8 +104,8 @@ export const ScheduleViewingDialog = ({
               <Mail className="absolute left-3 top-3 w-4 h-4 text-[#235C47]/60" />
               <Input
                 id="email"
+                name="email"
                 type="email"
-                ref={emailRef}
                 className="pl-10 border-[#235C47]/20 focus:border-[#235C47] focus:ring-[#235C47] bg-[#F9F7F6]"
                 placeholder="Enter your email"
                 required
@@ -104,7 +121,7 @@ export const ScheduleViewingDialog = ({
               <Phone className="absolute left-3 top-3 w-4 h-4 text-[#235C47]/60" />
               <Input
                 id="phone"
-                ref={phoneRef}
+                name="phone"
                 className="pl-10 border-[#235C47]/20 focus:border-[#235C47] focus:ring-[#235C47] bg-[#F9F7F6]"
                 placeholder="Enter your phone number"
                 required
@@ -114,15 +131,15 @@ export const ScheduleViewingDialog = ({
 
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="date" className="text-[#235C47]">
+              <Label htmlFor="view_date" className="text-[#235C47]">
                 Date
               </Label>
               <div className="relative">
                 <Calendar className="absolute left-3 top-3 w-4 h-4 text-[#235C47]/60" />
                 <Input
-                  id="date"
+                  id="view_date"
+                  name="view_date"
                   type="date"
-                  ref={dateRef}
                   className="pl-10 border-[#235C47]/20 focus:border-[#235C47] focus:ring-[#235C47] bg-[#F9F7F6]"
                   required
                 />
@@ -130,15 +147,15 @@ export const ScheduleViewingDialog = ({
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="time" className="text-[#235C47]">
+              <Label htmlFor="view_time" className="text-[#235C47]">
                 Time
               </Label>
               <div className="relative">
                 <Clock className="absolute left-3 top-3 w-4 h-4 text-[#235C47]/60" />
                 <Input
-                  id="time"
+                  id="view_time"
+                  name="view_time"
                   type="time"
-                  ref={timeRef}
                   className="pl-10 border-[#235C47]/20 focus:border-[#235C47] focus:ring-[#235C47] bg-[#F9F7F6]"
                   required
                 />

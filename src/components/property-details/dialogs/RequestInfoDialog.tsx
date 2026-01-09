@@ -1,4 +1,3 @@
-import { useRef } from "react";
 import { Button } from "@/src/components/ui/button";
 import { Input } from "@/src/components/ui/input";
 import { Label } from "@/src/components/ui/label";
@@ -11,36 +10,57 @@ import {
   DialogTrigger,
 } from "@/src/components/ui/dialog";
 import { User, Mail, Phone, MessageSquare } from "lucide-react";
-import { Property } from "../types";
 import { useAppSelector } from "@/src/redux/hooks";
+import { Property } from "@/src/utils/properties";
+import { useCreateRequestViewingMutation } from "@/src/redux/features/Buyer/buyers";
+import { toast } from "sonner";
 
 interface RequestInfoDialogProps {
   property: Property;
   trigger: React.ReactNode;
 }
 
-export const RequestInfoDialog = ({ property, trigger }: RequestInfoDialogProps) => {
-  const nameRef = useRef<HTMLInputElement>(null);
-  const emailRef = useRef<HTMLInputElement>(null);
-  const phoneRef = useRef<HTMLInputElement>(null);
-  const messageRef = useRef<HTMLTextAreaElement>(null);
+export const RequestInfoDialog = ({
+  property,
+  trigger,
+}: RequestInfoDialogProps) => {
+  const [createRequestInfo] = useCreateRequestViewingMutation();
   const showLoginToast = useAppSelector((state) => state.auth.showLoginToast);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Get values from refs
-    const name = nameRef.current?.value || "";
-    const email = emailRef.current?.value || "";
-    const phone = phoneRef.current?.value || "";
-    const message = messageRef.current?.value || "";
+    const form = e.target as HTMLFormElement;
+    const formData = new FormData(form);
 
-    // Log the form values
-    console.log({ name, email, phone, message });
+    // Extract values from FormData
+    const name = formData.get("name") as string;
+    const email = formData.get("email") as string;
+    const phone = formData.get("phone") as string;
+    const message = formData.get("message") as string;
 
-    // Reset the form
-    if (e.target instanceof HTMLFormElement) {
-      e.target.reset();
+    try {
+      // Prepare the data in the required format
+      const requestData = {
+        name,
+        email,
+        phone,
+        message,
+        property_id: property._id,
+      };
+
+      // Call the createRequestInfo mutation
+      const result = await createRequestInfo(requestData).unwrap();
+
+      // Show success message
+      toast.success("Information request sent successfully!");
+      console.log("Request info result:", result);
+
+      // Reset the form
+      form.reset();
+    } catch (error) {
+      console.error("Error sending request info:", error);
+      toast.error("Failed to send request. Please try again.");
     }
   };
 
@@ -51,9 +71,7 @@ export const RequestInfoDialog = ({ property, trigger }: RequestInfoDialogProps)
 
   return (
     <Dialog>
-      <DialogTrigger asChild>
-        {trigger}
-      </DialogTrigger>
+      <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogContent className="sm:max-w-md bg-white border-[#235C47]/20">
         <DialogHeader>
           <DialogTitle className="text-2xl font-serif text-[#235C47]">
@@ -62,12 +80,14 @@ export const RequestInfoDialog = ({ property, trigger }: RequestInfoDialogProps)
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="info-name" className="text-[#235C47]">Full Name</Label>
+            <Label htmlFor="info-name" className="text-[#235C47]">
+              Full Name
+            </Label>
             <div className="relative">
               <User className="absolute left-3 top-3 w-4 h-4 text-[#235C47]/60" />
               <Input
                 id="info-name"
-                ref={nameRef}
+                name="name"
                 className="pl-10 border-[#235C47]/20 focus:border-[#235C47] focus:ring-[#235C47] bg-[#F9F7F6]"
                 placeholder="Enter your full name"
                 required
@@ -76,13 +96,15 @@ export const RequestInfoDialog = ({ property, trigger }: RequestInfoDialogProps)
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="info-email" className="text-[#235C47]">Email</Label>
+            <Label htmlFor="info-email" className="text-[#235C47]">
+              Email
+            </Label>
             <div className="relative">
               <Mail className="absolute left-3 top-3 w-4 h-4 text-[#235C47]/60" />
               <Input
                 id="info-email"
+                name="email"
                 type="email"
-                ref={emailRef}
                 className="pl-10 border-[#235C47]/20 focus:border-[#235C47] focus:ring-[#235C47] bg-[#F9F7F6]"
                 placeholder="Enter your email"
                 required
@@ -91,12 +113,14 @@ export const RequestInfoDialog = ({ property, trigger }: RequestInfoDialogProps)
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="info-phone" className="text-[#235C47]">Phone Number</Label>
+            <Label htmlFor="info-phone" className="text-[#235C47]">
+              Phone Number
+            </Label>
             <div className="relative">
               <Phone className="absolute left-3 top-3 w-4 h-4 text-[#235C47]/60" />
               <Input
                 id="info-phone"
-                ref={phoneRef}
+                name="phone"
                 className="pl-10 border-[#235C47]/20 focus:border-[#235C47] focus:ring-[#235C47] bg-[#F9F7F6]"
                 placeholder="Enter your phone number"
                 required
@@ -105,12 +129,14 @@ export const RequestInfoDialog = ({ property, trigger }: RequestInfoDialogProps)
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="message" className="text-[#235C47]">Message</Label>
+            <Label htmlFor="message" className="text-[#235C47]">
+              Message
+            </Label>
             <div className="relative">
               <MessageSquare className="absolute left-3 top-3 w-4 h-4 text-[#235C47]/60" />
               <Textarea
                 id="message"
-                ref={messageRef}
+                name="message"
                 className="pl-10 min-h-[100px] border-[#235C47]/20 focus:border-[#235C47] focus:ring-[#235C47] bg-[#F9F7F6]"
                 placeholder="Enter your message"
                 required
