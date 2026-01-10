@@ -58,6 +58,22 @@ const buyersApi = baseApi.injectEndpoints({
         body: { status: "Completed" },
       }),
     }),
+
+    getProfiles: builder.query({
+      query: () => ({
+        url: `/users/self/in`,
+        method: "GET",
+      }),
+      transformResponse: (res) => res.data,
+    }),
+
+    updateProfile: builder.mutation({
+      query: (profileBody) => ({
+        url: `/users/self/update`,
+        method: "PATCH",
+        body: profileBody,
+      }),
+    }),
   }),
 });
 
@@ -70,4 +86,6 @@ export const {
   useGetMyScheduleViewingQuery,
   useCancelScheduleViewingMutation,
   useUpdateBookingRequestMutation,
+  useGetProfilesQuery,
+  useUpdateProfileMutation,
 } = buyersApi;
