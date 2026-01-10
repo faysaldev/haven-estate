@@ -9,12 +9,26 @@ const buyersApi = baseApi.injectEndpoints({
         body: scheduleBody,
       }),
     }),
+    getMyScheduleViewing: builder.query({
+      query: () => ({
+        url: "/schedule-views/my-schedule",
+        method: "GET",
+      }),
+      transformResponse: (res) => res.data,
+    }),
     createRequestViewing: builder.mutation({
       query: (RequestBody) => ({
         url: "/request-info",
         method: "POST",
         body: RequestBody,
       }),
+    }),
+    getMyRequestViewing: builder.query({
+      query: () => ({
+        url: "/request-info/my-request",
+        method: "GET",
+      }),
+      transformResponse: (res) => res.data,
     }),
     createBookingRequest: builder.mutation({
       query: (bookingsBody) => ({
@@ -23,6 +37,13 @@ const buyersApi = baseApi.injectEndpoints({
         body: bookingsBody,
       }),
     }),
+    getMyBookingRequest: builder.query({
+      query: () => ({
+        url: "/bookings/my-bookings",
+        method: "GET",
+      }),
+      transformResponse: (res) => res.data,
+    }),
   }),
 });
 
@@ -30,4 +51,7 @@ export const {
   useCreateScheduleViewingMutation,
   useCreateRequestViewingMutation,
   useCreateBookingRequestMutation,
+  useGetMyBookingRequestQuery,
+  useGetMyRequestViewingQuery,
+  useGetMyScheduleViewingQuery,
 } = buyersApi;

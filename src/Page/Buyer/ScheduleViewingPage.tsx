@@ -1,5 +1,6 @@
 "use client";
 
+import { useGetMyScheduleViewingQuery } from "@/src/redux/features/Buyer/buyers";
 import { useState } from "react";
 
 interface Viewing {
@@ -14,6 +15,8 @@ interface Viewing {
 }
 
 const ScheduleViewingPage = () => {
+  const { data, isLoading } = useGetMyScheduleViewingQuery({});
+  console.log(data);
   const [viewings, setViewings] = useState<Viewing[]>([
     {
       id: "1",
