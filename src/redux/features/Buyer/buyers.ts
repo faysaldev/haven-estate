@@ -51,6 +51,13 @@ const buyersApi = baseApi.injectEndpoints({
       }),
       transformResponse: (res) => res.data,
     }),
+    updateBookingRequest: builder.mutation({
+      query: (id) => ({
+        url: `/bookings/${id}`,
+        method: "PATCH",
+        body: { status: "Completed" },
+      }),
+    }),
   }),
 });
 
@@ -62,4 +69,5 @@ export const {
   useGetMyRequestViewingQuery,
   useGetMyScheduleViewingQuery,
   useCancelScheduleViewingMutation,
+  useUpdateBookingRequestMutation,
 } = buyersApi;
