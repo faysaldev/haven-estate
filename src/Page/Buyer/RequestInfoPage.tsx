@@ -1,59 +1,55 @@
 "use client";
 
+import { useGetMyRequestViewingQuery } from "@/src/redux/features/Buyer/buyers";
 import { useState } from "react";
-interface Request {
-  id: string;
-  property: string;
-  date: string;
-  status: "pending" | "in-progress" | "completed" | "rejected";
+
+interface Property {
+  _id: string;
+  title: string;
+  price: number;
+  location: string;
+  type: string;
+  status: string;
+  bedrooms: number;
+  bathrooms: number;
+  area: number;
+  createdAt: string;
+}
+
+interface RequestInfo {
+  _id: string;
+  author: string;
+  name: string;
+  email: string;
+  phone: string;
   message: string;
-  response?: string;
+  property_id: Property | null;
+  status: "unread" | "read" | "responded";
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
 }
 
 const RequestInfoPage = () => {
-  const [requests, setRequests] = useState<Request[]>([
-    {
-      id: "1",
-      property: "Modern Downtown Apartment",
-      date: "2023-06-10",
-      status: "completed",
-      message: "Can you provide more details about the amenities?",
-      response:
-        "The property includes a gym, pool, and 24-hour concierge service.",
-    },
-    {
-      id: "2",
-      property: "Suburban Family Home",
-      date: "2023-06-12",
-      status: "in-progress",
-      message: "What is the property tax for this home?",
-    },
-    {
-      id: "3",
-      property: "Luxury Waterfront Villa",
-      date: "2023-06-15",
-      status: "pending",
-      message: "I would like to schedule a viewing for this property.",
-    },
-  ]);
-  const [selectedRequest, setSelectedRequest] = useState<Request | null>(null);
+  const { data, isLoading } = useGetMyRequestViewingQuery({});
+  const [selectedRequest, setSelectedRequest] = useState<RequestInfo | null>(
+    null
+  );
   const [showModal, setShowModal] = useState(false);
 
-  const handleViewDetails = (request: Request) => {
+  const handleViewDetails = (request: RequestInfo) => {
     setSelectedRequest(request);
     setShowModal(true);
   };
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case "pending":
+      case "unread":
         return "bg-yellow-100 text-yellow-800";
-      case "in-progress":
+      case "read":
         return "bg-blue-100 text-blue-800";
-      case "completed":
+      case "responded":
         return "bg-green-100 text-green-800";
-      case "rejected":
-        return "bg-red-100 text-red-800";
       default:
         return "bg-gray-100 text-gray-800";
     }
@@ -72,7 +68,11 @@ const RequestInfoPage = () => {
 
       {/* Requests List */}
       <div className="bg-white p-6 rounded-xl border border-[#235C47]/20">
-        {requests.length > 0 ? (
+        {isLoading ? (
+          <div className="text-center py-8">
+            <p className="text-[#235C47]/70">Loading requests...</p>
+          </div>
+        ) : data?.data && data.data.length > 0 ? (
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-[#235C47]/20">
               <thead>
@@ -92,15 +92,17 @@ const RequestInfoPage = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-[#235C47]/20">
-                {requests.map((request) => (
-                  <tr key={request.id} className="hover:bg-[#F9F7F6]">
+                {data?.data.map((request: RequestInfo) => (
+                  <tr key={request._id} className="hover:bg-[#F9F7F6]">
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm font-medium text-[#235C47]">
-                        {request.property}
+                        {request.property_id
+                          ? request.property_id.title
+                          : "N/A"}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-[#235C47]">
-                      {new Date(request.date).toLocaleDateString()}
+                      {new Date(request.createdAt).toLocaleDateString()}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span
@@ -136,7 +138,7 @@ const RequestInfoPage = () => {
 
       {/* Request Details Modal */}
       {showModal && selectedRequest && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-[#0000003b] bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 w-full max-w-md mx-4 border border-[#235C47]/20">
             <div className="flex justify-between items-start mb-4">
               <h3 className="text-lg font-semibold text-[#235C47]">
@@ -153,13 +155,17 @@ const RequestInfoPage = () => {
             <div className="space-y-4">
               <div>
                 <h4 className="text-sm font-medium text-[#235C47]">Property</h4>
-                <p className="text-[#235C47]/80">{selectedRequest.property}</p>
+                <p className="text-[#235C47]/80">
+                  {selectedRequest.property_id
+                    ? selectedRequest.property_id.title
+                    : "N/A"}
+                </p>
               </div>
 
               <div>
                 <h4 className="text-sm font-medium text-[#235C47]">Date</h4>
                 <p className="text-[#235C47]/80">
-                  {new Date(selectedRequest.date).toLocaleDateString()}
+                  {new Date(selectedRequest.createdAt).toLocaleDateString()}
                 </p>
               </div>
 
@@ -177,21 +183,47 @@ const RequestInfoPage = () => {
 
               <div>
                 <h4 className="text-sm font-medium text-[#235C47]">
-                  Your Request
+                  Your Name
+                </h4>
+                <p className="text-[#235C47]/80">{selectedRequest.name}</p>
+              </div>
+
+              <div>
+                <h4 className="text-sm font-medium text-[#235C47]">
+                  Your Email
+                </h4>
+                <p className="text-[#235C47]/80">{selectedRequest.email}</p>
+              </div>
+
+              <div>
+                <h4 className="text-sm font-medium text-[#235C47]">
+                  Your Phone
+                </h4>
+                <p className="text-[#235C47]/80">{selectedRequest.phone}</p>
+              </div>
+
+              <div>
+                <h4 className="text-sm font-medium text-[#235C47]">
+                  Your Message
                 </h4>
                 <p className="text-[#235C47]/80">{selectedRequest.message}</p>
               </div>
 
-              {selectedRequest.response && (
-                <div>
-                  <h4 className="text-sm font-medium text-[#235C47]">
-                    Response
-                  </h4>
-                  <p className="text-[#235C47]/80">
-                    {selectedRequest.response}
-                  </p>
-                </div>
-              )}
+              {/* Feedback Section */}
+              <div className="pt-4 border-t border-[#235C47]/20">
+                <h4 className="text-sm font-medium text-[#235C47] mb-2">
+                  Feedback
+                </h4>
+                {selectedRequest.status === "responded" ? (
+                  <div className="bg-[#F9F7F6] p-3 rounded-md">
+                    <p className="text-[#235C47]/80">
+                      {selectedRequest.message} - Response provided
+                    </p>
+                  </div>
+                ) : (
+                  <p className="text-[#235C47]/60 italic">No feedback yet</p>
+                )}
+              </div>
             </div>
 
             <div className="flex justify-end space-x-3 mt-6">
