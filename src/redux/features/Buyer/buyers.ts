@@ -16,6 +16,13 @@ const buyersApi = baseApi.injectEndpoints({
       }),
       transformResponse: (res) => res.data,
     }),
+    cancelScheduleViewing: builder.mutation({
+      query: (id) => ({
+        url: `/schedule-views/${id}`,
+        method: "PATCH",
+        body: { status: "Cancelled" },
+      }),
+    }),
     createRequestViewing: builder.mutation({
       query: (RequestBody) => ({
         url: "/request-info",
@@ -54,4 +61,5 @@ export const {
   useGetMyBookingRequestQuery,
   useGetMyRequestViewingQuery,
   useGetMyScheduleViewingQuery,
+  useCancelScheduleViewingMutation,
 } = buyersApi;
