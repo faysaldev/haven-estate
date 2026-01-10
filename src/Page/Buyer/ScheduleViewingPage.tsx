@@ -111,6 +111,9 @@ const ScheduleViewingPage = () => {
                     Property
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-[#235C47] uppercase tracking-wider">
+                    Location
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-[#235C47] uppercase tracking-wider">
                     Date & Time
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-[#235C47] uppercase tracking-wider">
@@ -130,11 +133,11 @@ const ScheduleViewingPage = () => {
                           ? viewing.property_id.title
                           : "N/A"}
                       </div>
-                      <div className="text-sm text-[#235C47]/70">
-                        {viewing.property_id
-                          ? viewing.property_id.location
-                          : "Location not specified"}
-                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-[#235C47]/70">
+                      {viewing.property_id
+                        ? viewing.property_id.location
+                        : "Location not specified"}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-[#235C47]">
                       {new Date(viewing.view_date).toLocaleDateString()} at{" "}
