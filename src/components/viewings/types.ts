@@ -6,6 +6,6 @@ export interface PropertyViewing {
   userPhone: string;
   date: string;
   time: string;
-  status: "pending" | "confirmed" | "cancelled";
+  status: "Scheduled" | "Completed" | "Cancelled";
   createdAt: string;
 }

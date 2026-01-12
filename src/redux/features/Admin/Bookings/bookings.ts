@@ -3,10 +3,10 @@ import { baseApi } from "@/src/redux/baseApi/baseApi";
 const buyersApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     updateScheduleViewing: builder.mutation({
-      query: (scheduleBody) => ({
-        url: "/schedule-views",
-        method: "POST",
-        body: scheduleBody,
+      query: ({ id, status }) => ({
+        url: `/schedule-views/${id}`,
+        method: "PATCH",
+        body: { status },
       }),
     }),
     getAllScheduleViewing: builder.query({

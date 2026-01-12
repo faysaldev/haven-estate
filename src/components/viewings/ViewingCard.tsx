@@ -9,7 +9,7 @@ interface ViewingCardProps {
   viewing: PropertyViewing;
   onStatusChange: (
     id: string,
-    status: "pending" | "confirmed" | "cancelled"
+    status: "Scheduled" | "Completed" | "Cancelled"
   ) => void;
   onDelete: (id: string) => void;
 }
@@ -20,10 +20,11 @@ export const ViewingCard = ({
   onDelete,
 }: ViewingCardProps) => {
   const getStatusColor = (status: string) => {
+    // "Scheduled" | "Completed" | "Cancelled";
     switch (status) {
-      case "confirmed":
+      case "Completed":
         return "bg-green-500/10 text-green-500 border-green-500/20";
-      case "cancelled":
+      case "Cancelled":
         return "bg-red-500/10 text-red-500 border-red-500/20";
       default:
         return "bg-[#235C47]/10 text-[#235C47] border border-[#235C47]/20";
@@ -95,20 +96,20 @@ export const ViewingCard = ({
           </div>
         </div>
 
-        {viewing.status === "pending" && (
-          <div className="flex gap-2">
+        {viewing.status === "Scheduled" && (
+          <div className="flex gap-2 cursor-pointer">
             <Button
               size="sm"
               className="bg-[#235C47] text-white hover:bg-[#235C47]/90"
-              onClick={() => onStatusChange(viewing.id, "confirmed")}
+              onClick={() => onStatusChange(viewing.id, "Completed")}
             >
-              Confirm
+              Completed
             </Button>
             <Button
               variant="outline"
               size="sm"
               className="border-[#235C47] text-[#235C47] hover:bg-[#235C47]/10"
-              onClick={() => onStatusChange(viewing.id, "cancelled")}
+              onClick={() => onStatusChange(viewing.id, "Cancelled")}
             >
               Cancel
             </Button>

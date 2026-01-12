@@ -6,7 +6,7 @@ interface ViewingListProps {
   viewings: PropertyViewing[];
   onStatusChange: (
     id: string,
-    status: "pending" | "confirmed" | "cancelled"
+    status: "Scheduled" | "Completed" | "Cancelled"
   ) => void;
   onDelete: (id: string) => void;
 }

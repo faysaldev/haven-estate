@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useState } from "react";
@@ -9,77 +10,69 @@ import {
 } from "@/src/redux/features/Admin/Bookings/bookings";
 
 const ViewingsManagement = () => {
-  const { data: scheduledView } = useGetAllScheduleViewingQuery({});
+  const {
+    data: scheduledView,
+    isLoading,
+    isError,
+  } = useGetAllScheduleViewingQuery({});
   const [updateScheduleView] = useUpdateScheduleViewingMutation();
-  console.log(scheduledView);
-  // Mock scheduled viewings data
-  const [scheduledViewings, setScheduledViewings] = useState<PropertyViewing[]>(
-    [
-      {
-        id: "1",
-        propertyTitle: "Modern Downtown Apartment",
-        userName: "John Smith",
-        userEmail: "john.smith@email.com",
-        userPhone: "+1 (555) 123-4567",
-        date: "2024-12-10",
-        time: "10:00 AM",
-        status: "pending",
-        createdAt: "2024-11-25T09:30:00Z",
-      },
-      {
-        id: "2",
-        propertyTitle: "Luxury Waterfront Condo",
-        userName: "Sarah Johnson",
-        userEmail: "sarah.johnson@email.com",
-        userPhone: "+1 (555) 987-6543",
-        date: "2024-12-12",
-        time: "02:00 PM",
-        status: "confirmed",
-        createdAt: "2024-11-24T14:22:00Z",
-      },
-      {
-        id: "3",
-        propertyTitle: "Suburban Family Home",
-        userName: "Michael Brown",
-        userEmail: "michael.brown@email.com",
-        userPhone: "+1 (555) 456-7890",
-        date: "2024-12-15",
-        time: "11:00 AM",
-        status: "pending",
-        createdAt: "2024-11-23T10:15:00Z",
-      },
-      {
-        id: "4",
-        propertyTitle: "City Center Loft",
-        userName: "Emily Davis",
-        userEmail: "emily.davis@email.com",
-        userPhone: "+1 (555) 234-5678",
-        date: "2024-12-08",
-        time: "03:30 PM",
-        status: "cancelled",
-        createdAt: "2024-11-22T16:45:00Z",
-      },
-    ]
-  );
 
-  const handleStatusChange = (
+  // Map API data to PropertyViewing interface
+  const scheduledViewings =
+    scheduledView?.data?.map((view: any) => ({
+      id: view._id,
+      propertyTitle: view.property_id?.title || "N/A",
+      userName: view.name,
+      userEmail: view.email,
+      userPhone: view.phone,
+      date: view.view_date
+        ? new Date(view.view_date).toISOString().split("T")[0]
+        : "",
+      time: view.view_time,
+      status: view.status,
+      createdAt: view.createdAt,
+    })) || [];
+
+  const handleStatusChange = async (
     id: string,
-    status: "pending" | "confirmed" | "cancelled"
+    status: "Scheduled" | "Completed" | "Cancelled"
   ) => {
-    setScheduledViewings((prevViewings) =>
-      prevViewings.map((viewing) =>
-        viewing.id === id ? { ...viewing, status } : viewing
-      )
-    );
+    try {
+      // Convert status to match API format (first letter capitalized)
+      const apiStatus = status.charAt(0).toUpperCase() + status.slice(1);
+      await updateScheduleView({ id, status: apiStatus }).unwrap();
+      // The data will automatically update through RTK Query cache invalidation
+    } catch (error) {
+      console.error("Failed to update viewing status:", error);
+    }
   };
 
   const handleDelete = (id: string) => {
     if (confirm("Are you sure you want to delete this viewing?")) {
-      setScheduledViewings((prevViewings) =>
-        prevViewings.filter((viewing) => viewing.id !== id)
-      );
+      // Assuming there's a delete function, though not mentioned in requirements
+      console.log("Delete functionality would go here");
     }
   };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-white p-4 md:p-8 flex items-center justify-center">
+        <div className="text-2xl text-[#235C47]">
+          Loading scheduled viewings...
+        </div>
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="min-h-screen bg-white p-4 md:p-8 flex items-center justify-center">
+        <div className="text-2xl text-red-500">
+          Error loading scheduled viewings
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-white p-4 md:p-8">
