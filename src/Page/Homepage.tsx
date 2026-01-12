@@ -10,12 +10,17 @@ import { Search, Home, Building2, TreePine, Crown } from "lucide-react";
 import { properties, Property } from "@/src/utils/properties";
 import heroImage from "@/assets/hero_image.jpg";
 import Link from "next/link";
+import { useGetFeaturedPropertiesQuery } from "../redux/features/Admin/Properties/propertiesApi";
 
 const Homepage = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [searchQuery, setSearchQuery] = useState(searchParams.get("search") || "");
+  const [searchQuery, setSearchQuery] = useState(
+    searchParams.get("search") || ""
+  );
   const featuredProperties = properties.slice(0, 3);
+  const { data: featuredPropertiesData } = useGetFeaturedPropertiesQuery({});
+  console.log(featuredPropertiesData);
 
   // Update URL when search query changes
   useEffect(() => {
@@ -84,7 +89,7 @@ const Homepage = () => {
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     onKeyDown={(e) => {
-                      if (e.key === 'Enter') {
+                      if (e.key === "Enter") {
                         handleSearch();
                       }
                     }}

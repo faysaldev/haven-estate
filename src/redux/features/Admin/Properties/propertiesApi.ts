@@ -35,6 +35,14 @@ const propertiesApi = baseApi.injectEndpoints({
       transformResponse: (response) => response.data,
       providesTags: ["properties"],
     }),
+    getFeaturedProperties: builder.query({
+      query: (params) => ({
+        url: "/properties/featured-properties",
+        method: "GET",
+        params: params || {},
+      }),
+      transformResponse: (response) => response.data,
+    }),
     getAdminProperties: builder.query({
       query: (params) => ({
         url: "/properties/admin",
@@ -61,4 +69,5 @@ export const {
   useDeletePropertiesMutation,
   useGetAdminPropertiesQuery,
   useGetSinglePropertiesQuery,
+  useGetFeaturedPropertiesQuery,
 } = propertiesApi;
