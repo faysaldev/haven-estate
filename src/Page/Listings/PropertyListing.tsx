@@ -26,7 +26,7 @@ const Listings = () => {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
 
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState(searchParams.get("search") || "");
   const [propertyType, setPropertyType] = useState(
     searchParams.get("type") || "all"
   );
@@ -54,6 +54,7 @@ const Listings = () => {
   // Update URL parameters when filters change
   useEffect(() => {
     const params = new URLSearchParams();
+    if (searchQuery) params.set("search", searchQuery);
     if (propertyType !== "all") params.set("type", propertyType);
     if (propertyStatus !== "all") params.set("status", propertyStatus);
 
@@ -61,7 +62,7 @@ const Listings = () => {
     const queryString = params.toString();
     const newUrl = queryString ? `/listings?${queryString}` : "/listings";
     router.push(newUrl, { scroll: false });
-  }, [propertyType, propertyStatus, router]);
+  }, [searchQuery, propertyType, propertyStatus, router]);
 
   const resetFilters = () => {
     setSearchQuery("");
@@ -162,6 +163,12 @@ const Listings = () => {
                         className="pl-10 border-[#235C47]/20 focus:border-[#235C47] focus:ring-[#235C47]/20"
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') {
+                            // Trigger a page change to update the URL
+                            setPage(1);
+                          }
+                        }}
                       />
                     </div>
                   </div>

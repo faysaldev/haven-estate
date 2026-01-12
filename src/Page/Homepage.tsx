@@ -1,5 +1,6 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import Navbar from "@/src/components/Common/Navbar";
 import Footer from "@/src/components/Common/Footer";
 import PropertyCard from "@/src/components/Property/PropertyCard";
@@ -11,8 +12,38 @@ import heroImage from "@/assets/hero_image.jpg";
 import Link from "next/link";
 
 const Homepage = () => {
-  const [searchQuery, setSearchQuery] = useState("");
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const [searchQuery, setSearchQuery] = useState(searchParams.get("search") || "");
   const featuredProperties = properties.slice(0, 3);
+
+  // Update URL when search query changes
+  useEffect(() => {
+    const params = new URLSearchParams(searchParams.toString());
+
+    if (searchQuery) {
+      params.set("search", searchQuery);
+    } else {
+      params.delete("search");
+    }
+
+    // Update the URL without causing a page refresh
+    const queryString = params.toString();
+    const newUrl = queryString ? `/?${queryString}` : "/";
+    router.push(newUrl, { scroll: false });
+  }, [searchQuery, router, searchParams]);
+
+  const handleSearch = () => {
+    if (searchQuery.trim()) {
+      router.push(`/listings?search=${encodeURIComponent(searchQuery)}`);
+    } else {
+      router.push("/listings");
+    }
+  };
+
+  const handleCategoryClick = (type: string) => {
+    router.push(`/listings?type=${type}`);
+  };
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -52,13 +83,19 @@ const Homepage = () => {
                     className="pl-12 h-14 border-0 focus-visible:ring-0 text-base text-gray-700 bg-white/80"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        handleSearch();
+                      }
+                    }}
                   />
                 </div>
                 <Button
                   size="lg"
                   className="h-14 px-8 bg-[#235C47] hover:bg-[#1a4a38] text-white"
+                  onClick={handleSearch}
                 >
-                  <Link href="/listings">Search</Link>
+                  Search
                 </Button>
               </div>
             </div>
@@ -71,9 +108,9 @@ const Homepage = () => {
                 { icon: TreePine, label: "Land", type: "land" },
                 { icon: Crown, label: "Apartment", type: "apartment" },
               ].map((category) => (
-                <Link
+                <button
                   key={category.type}
-                  href={`/listings?type=${category.type}`}
+                  onClick={() => handleCategoryClick(category.type)}
                   className="group"
                 >
                   <Button
@@ -83,7 +120,7 @@ const Homepage = () => {
                     <category.icon className="w-5 h-5 mr-2 text-[#235C47]" />
                     {category.label}
                   </Button>
-                </Link>
+                </button>
               ))}
             </div>
           </div>
