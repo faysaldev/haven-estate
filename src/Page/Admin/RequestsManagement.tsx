@@ -1,73 +1,94 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useState } from "react";
 import { RequestList } from "@/src/components/requests/RequestList";
-import { InfoRequest } from "@/src/components/requests/types";
+import {
+  useGetAllRequestViewingQuery,
+  useUpdateRequestViewingMutation,
+} from "@/src/redux/features/Admin/Bookings/bookings";
 
 const RequestsManagement = () => {
-  // Mock info requests data
-  const [infoRequests, setInfoRequests] = useState<InfoRequest[]>([
-    {
-      id: "1",
-      propertyTitle: "Modern Downtown Apartment",
-      userName: "John Smith",
-      userEmail: "john.smith@email.com",
-      userPhone: "+1 (555) 123-4567",
-      message:
-        "I'm interested in learning more about this property. Is it still available for viewing this week?",
-      status: "pending",
-      createdAt: "2024-11-25T10:30:00Z",
-    },
-    {
-      id: "2",
-      propertyTitle: "Luxury Waterfront Condo",
-      userName: "Sarah Johnson",
-      userEmail: "sarah.johnson@email.com",
-      userPhone: "+1 (555) 987-6543",
-      message:
-        "Could you please send me more details about the amenities included in this property?",
-      status: "responded",
-      createdAt: "2024-11-24T14:22:00Z",
-    },
-    {
-      id: "3",
-      propertyTitle: "Suburban Family Home",
-      userName: "Michael Brown",
-      userEmail: "michael.brown@email.com",
-      userPhone: "+1 (555) 456-7890",
-      message:
-        "What's the process for scheduling a home inspection? I'm very interested in this property.",
-      status: "pending",
-      createdAt: "2024-11-23T09:15:00Z",
-    },
-    {
-      id: "4",
-      propertyTitle: "City Center Loft",
-      userName: "Emily Davis",
-      userEmail: "emily.davis@email.com",
-      userPhone: "+1 (555) 234-5678",
-      message:
-        "I saw this listing online and would like to know if the price is negotiable.",
-      status: "responded",
-      createdAt: "2024-11-22T16:45:00Z",
-    },
-  ]);
+  const [page, setPage] = useState(1);
+  const {
+    data: requestViewing,
+    isLoading,
+    isError,
+  } = useGetAllRequestViewingQuery({ currentPage: page, itemsPerPage: 10 });
+  const [updateRequestView] = useUpdateRequestViewingMutation();
+  console.log(requestViewing);
 
-  const handleStatusChange = (id: string, status: "pending" | "responded") => {
-    setInfoRequests((prevRequests) =>
-      prevRequests.map((request) =>
-        request.id === id ? { ...request, status } : request
-      )
-    );
+  const mapStatus = (apiStatus: string): "pending" | "responded" => {
+    switch (apiStatus.toLowerCase()) {
+      case "read":
+        return "responded";
+      case "archived":
+        return "responded";
+      default:
+        return "pending";
+    }
+  };
+
+  // Map API data to InfoRequest interface
+  const infoRequests =
+    requestViewing?.data?.map((request: any) => ({
+      id: request._id,
+      propertyTitle: request.property_id?.title || "N/A",
+      userName: request.name,
+      userEmail: request.email,
+      userPhone: request.phone,
+      message: request.message,
+      status: mapStatus(request.status),
+      createdAt: request.createdAt,
+    })) || [];
+
+  const pagination = requestViewing?.pagination || {
+    currentPage: 1,
+    totalPages: 1,
+    totalItems: infoRequests.length,
+    itemsPerPage: 10,
+  };
+
+  const handleStatusChange = async (
+    id: string,
+    status: "pending" | "responded"
+  ) => {
+    try {
+      // Convert status to match API format (lowercase for unread/read/archived)
+      let apiStatus = "unread";
+      if (status === "responded") {
+        apiStatus = "read"; // or "archived" depending on business logic
+      }
+
+      await updateRequestView({ id, body: { status: apiStatus } }).unwrap();
+      // The data will automatically update through RTK Query cache invalidation
+    } catch (error) {
+      console.error("Failed to update request status:", error);
+    }
   };
 
   const handleDelete = (id: string) => {
     if (confirm("Are you sure you want to delete this request?")) {
-      setInfoRequests((prevRequests) =>
-        prevRequests.filter((request) => request.id !== id)
-      );
+      // Delete functionality would go here
+      console.log("Delete functionality would go here");
     }
   };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-white p-4 md:p-8 flex items-center justify-center">
+        <div className="text-2xl text-[#235C47]">Loading requests...</div>
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="min-h-screen bg-white p-4 md:p-8 flex items-center justify-center">
+        <div className="text-2xl text-red-500">Error loading requests</div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-white p-4 md:p-8">
@@ -86,6 +107,40 @@ const RequestsManagement = () => {
           onStatusChange={handleStatusChange}
           onDelete={handleDelete}
         />
+
+        {/* Pagination Controls */}
+        <div className="flex justify-between items-center mt-8">
+          <button
+            onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
+            disabled={page <= 1}
+            className={`px-4 py-2 rounded-md ${
+              page <= 1
+                ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+                : "bg-[#235C47] text-white hover:bg-opacity-90"
+            }`}
+          >
+            Previous
+          </button>
+
+          <span className="text-[#235C47]">
+            Page {pagination.currentPage} of {pagination.totalPages}(
+            {pagination.totalItems} total requests)
+          </span>
+
+          <button
+            onClick={() =>
+              setPage((prev) => Math.min(prev + 1, pagination.totalPages || 1))
+            }
+            disabled={page >= (pagination.totalPages || 1)}
+            className={`px-4 py-2 rounded-md ${
+              page >= (pagination.totalPages || 1)
+                ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+                : "bg-[#235C47] text-white hover:bg-opacity-90"
+            }`}
+          >
+            Next
+          </button>
+        </div>
       </div>
     </div>
   );

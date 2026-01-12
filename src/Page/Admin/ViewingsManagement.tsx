@@ -1,9 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-
-import { useState } from "react";
 import { ViewingList } from "@/src/components/viewings/ViewingList";
-import { PropertyViewing } from "@/src/components/viewings/types";
 import {
   useGetAllScheduleViewingQuery,
   useUpdateScheduleViewingMutation,

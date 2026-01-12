@@ -2,8 +2,21 @@
 import { useState } from "react";
 import { BookingList } from "@/src/components/booking-management/BookingList";
 import { Booking } from "@/src/components/booking-management/types";
+import {
+  useGetAllBookingRequestQuery,
+  useUpdateBookingRequestMutation,
+} from "@/src/redux/features/Admin/Bookings/bookings";
 
 const BookingsManagement = () => {
+  const [page, setPage] = useState(1);
+
+  const {
+    data: bookingViewing,
+    isLoading,
+    isError,
+  } = useGetAllBookingRequestQuery({ currentPage: page, itemsPerPage: 10 });
+  console.log(bookingViewing);
+  const [updateBookingView] = useUpdateBookingRequestMutation();
   // Mock booking data
   const [bookings, setBookings] = useState<Booking[]>([
     {
@@ -75,7 +88,9 @@ const BookingsManagement = () => {
     <div className="min-h-screen bg-white p-4 md:p-8">
       <div className="max-w-6xl mx-auto space-y-6">
         <div className="mb-8">
-          <h1 className="text-3xl md:text-4xl font-serif font-bold text-[#235C47]">Bookings Management</h1>
+          <h1 className="text-3xl md:text-4xl font-serif font-bold text-[#235C47]">
+            Bookings Management
+          </h1>
           <p className="text-[#235C47]/80 mt-2">
             Manage property bookings and reservations
           </p>

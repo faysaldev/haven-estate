@@ -20,6 +20,9 @@ export const baseApi = createApi({
     "termsConditions",
     "privacyPolicy",
     "properties",
+    "requestInfo",
+    "scheduleView",
+    "bookingView",
   ],
   endpoints: () => ({}),
 });

@@ -8,12 +8,14 @@ const buyersApi = baseApi.injectEndpoints({
         method: "PATCH",
         body: { status },
       }),
+      invalidatesTags: ["scheduleView"],
     }),
     getAllScheduleViewing: builder.query({
       query: () => ({
         url: "/schedule-views",
         method: "GET",
       }),
+      providesTags: ["scheduleView"],
       transformResponse: (res) => res.data,
     }),
     cancelScheduleViewing: builder.mutation({
@@ -22,13 +24,15 @@ const buyersApi = baseApi.injectEndpoints({
         method: "PATCH",
         body: { status: "Cancelled" },
       }),
+      invalidatesTags: ["scheduleView"],
     }),
     updateRequestViewing: builder.mutation({
-      query: (RequestBody) => ({
-        url: "/request-info",
-        method: "POST",
-        body: RequestBody,
+      query: ({ id, body }) => ({
+        url: `/request-info/${id}/status`,
+        method: "PATCH",
+        body: body,
       }),
+      invalidatesTags: ["requestInfo"],
     }),
     getAllRequestViewing: builder.query({
       query: () => ({
@@ -36,6 +40,7 @@ const buyersApi = baseApi.injectEndpoints({
         method: "GET",
       }),
       transformResponse: (res) => res.data,
+      providesTags: ["requestInfo"],
     }),
     getAllBookingRequest: builder.query({
       query: () => ({
@@ -43,6 +48,7 @@ const buyersApi = baseApi.injectEndpoints({
         method: "GET",
       }),
       transformResponse: (res) => res.data,
+      providesTags: ["bookingView"],
     }),
     updateBookingRequest: builder.mutation({
       query: (id) => ({
@@ -50,6 +56,7 @@ const buyersApi = baseApi.injectEndpoints({
         method: "PATCH",
         body: { status: "Completed" },
       }),
+      invalidatesTags: ["bookingView"],
     }),
   }),
 });
