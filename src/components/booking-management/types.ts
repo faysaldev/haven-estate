@@ -6,6 +6,6 @@ export interface Booking {
   userPhone: string;
   moveInDate: string;
   amount: number;
-  status: "pending" | "confirmed" | "cancelled";
+  status: "pending" | "confirmed" | "completed" | "cancelled";
   createdAt: string;
 }

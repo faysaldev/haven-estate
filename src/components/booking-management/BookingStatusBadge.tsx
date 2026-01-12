@@ -1,7 +1,7 @@
 import { Badge } from "@/src/components/ui/badge";
 
 interface BookingStatusBadgeProps {
-  status: "pending" | "confirmed" | "cancelled";
+  status: "pending" | "confirmed" | "completed" | "cancelled";
 }
 
 export const BookingStatusBadge = ({ status }: BookingStatusBadgeProps) => {
@@ -9,6 +9,8 @@ export const BookingStatusBadge = ({ status }: BookingStatusBadgeProps) => {
     switch (status) {
       case "confirmed":
         return "bg-green-500/10 text-green-500 border-green-500/20";
+      case "completed":
+        return "bg-blue-500/10 text-blue-500 border-blue-500/20";
       case "cancelled":
         return "bg-red-500/10 text-red-500 border-red-500/20";
       default:

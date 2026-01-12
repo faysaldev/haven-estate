@@ -1,7 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { useState } from "react";
 import { BookingList } from "@/src/components/booking-management/BookingList";
-import { Booking } from "@/src/components/booking-management/types";
 import {
   useGetAllBookingRequestQuery,
   useUpdateBookingRequestMutation,
@@ -17,72 +17,78 @@ const BookingsManagement = () => {
   } = useGetAllBookingRequestQuery({ currentPage: page, itemsPerPage: 10 });
   console.log(bookingViewing);
   const [updateBookingView] = useUpdateBookingRequestMutation();
-  // Mock booking data
-  const [bookings, setBookings] = useState<Booking[]>([
-    {
-      id: "1",
-      propertyTitle: "Modern Downtown Apartment",
-      userName: "John Smith",
-      userEmail: "john.smith@email.com",
-      userPhone: "+1 (555) 123-4567",
-      moveInDate: "2024-12-15",
-      amount: 2450,
-      status: "pending",
-      createdAt: "2024-11-20T10:30:00Z",
-    },
-    {
-      id: "2",
-      propertyTitle: "Luxury Waterfront Condo",
-      userName: "Sarah Johnson",
-      userEmail: "sarah.johnson@email.com",
-      userPhone: "+1 (555) 987-6543",
-      moveInDate: "2024-12-20",
-      amount: 3200,
-      status: "confirmed",
-      createdAt: "2024-11-18T14:22:00Z",
-    },
-    {
-      id: "3",
-      propertyTitle: "Suburban Family Home",
-      userName: "Michael Brown",
-      userEmail: "michael.brown@email.com",
-      userPhone: "+1 (555) 456-7890",
-      moveInDate: "2024-12-25",
-      amount: 1850,
-      status: "cancelled",
-      createdAt: "2024-11-22T09:15:00Z",
-    },
-    {
-      id: "4",
-      propertyTitle: "City Center Loft",
-      userName: "Emily Davis",
-      userEmail: "emily.davis@email.com",
-      userPhone: "+1 (555) 234-5678",
-      moveInDate: "2025-01-10",
-      amount: 2800,
-      status: "pending",
-      createdAt: "2024-11-25T16:45:00Z",
-    },
-  ]);
 
-  const handleStatusChange = (
+  const mapStatus = (
+    apiStatus: string
+  ): "pending" | "confirmed" | "completed" | "cancelled" => {
+    switch (apiStatus.toLowerCase()) {
+      case "completed":
+        return "completed";
+      case "cancelled":
+        return "cancelled";
+      case "confirmed":
+        return "confirmed";
+      default:
+        return "pending";
+    }
+  };
+
+  // Map API data to Booking interface
+  const bookings =
+    bookingViewing?.data?.map((booking: any) => ({
+      id: booking._id,
+      propertyTitle: booking.property?.title || "N/A",
+      userName: booking.name,
+      userEmail: booking.email,
+      userPhone: booking.phone,
+      moveInDate: booking.date
+        ? new Date(booking.date).toISOString().split("T")[0]
+        : "",
+      amount: booking.amount,
+      status: mapStatus(booking.status),
+      createdAt: booking.createdAt,
+    })) || [];
+
+  const pagination = bookingViewing?.pagination || {
+    currentPage: 1,
+    totalPages: 1,
+    totalItems: bookings.length,
+    itemsPerPage: 10,
+  };
+
+  const handleStatusChange = async (
     id: string,
-    status: "pending" | "confirmed" | "cancelled"
+    status: "pending" | "confirmed" | "completed" | "cancelled"
   ) => {
-    setBookings((prevBookings) =>
-      prevBookings.map((booking) =>
-        booking.id === id ? { ...booking, status } : booking
-      )
-    );
+    try {
+      await updateBookingView({ id, status }).unwrap();
+    } catch (error) {
+      console.error("Failed to update booking status:", error);
+    }
   };
 
   const handleDelete = (id: string) => {
     if (confirm("Are you sure you want to delete this booking?")) {
-      setBookings((prevBookings) =>
-        prevBookings.filter((booking) => booking.id !== id)
-      );
+      // Delete functionality would go here
+      console.log("Delete functionality would go here");
     }
   };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-white p-4 md:p-8 flex items-center justify-center">
+        <div className="text-2xl text-[#235C47]">Loading bookings...</div>
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="min-h-screen bg-white p-4 md:p-8 flex items-center justify-center">
+        <div className="text-2xl text-red-500">Error loading bookings</div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-white p-4 md:p-8">
@@ -101,6 +107,40 @@ const BookingsManagement = () => {
           onStatusChange={handleStatusChange}
           onDelete={handleDelete}
         />
+
+        {/* Pagination Controls */}
+        <div className="flex justify-between items-center mt-8">
+          <button
+            onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
+            disabled={page <= 1}
+            className={`px-4 py-2 rounded-md ${
+              page <= 1
+                ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+                : "bg-[#235C47] text-white hover:bg-opacity-90"
+            }`}
+          >
+            Previous
+          </button>
+
+          <span className="text-[#235C47]">
+            Page {pagination.currentPage} of {pagination.totalPages}(
+            {pagination.totalItems} total bookings)
+          </span>
+
+          <button
+            onClick={() =>
+              setPage((prev) => Math.min(prev + 1, pagination.totalPages || 1))
+            }
+            disabled={page >= (pagination.totalPages || 1)}
+            className={`px-4 py-2 rounded-md ${
+              page >= (pagination.totalPages || 1)
+                ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+                : "bg-[#235C47] text-white hover:bg-opacity-90"
+            }`}
+          >
+            Next
+          </button>
+        </div>
       </div>
     </div>
   );

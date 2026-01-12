@@ -43,18 +43,19 @@ const buyersApi = baseApi.injectEndpoints({
       providesTags: ["requestInfo"],
     }),
     getAllBookingRequest: builder.query({
-      query: () => ({
+      query: (params) => ({
         url: "/bookings/my-bookings",
         method: "GET",
+        params, // Pass pagination parameters
       }),
-      transformResponse: (res) => res.data,
+      transformResponse: (res) => res?.data, // Return full response to access pagination data
       providesTags: ["bookingView"],
     }),
     updateBookingRequest: builder.mutation({
-      query: (id) => ({
-        url: `/bookings/${id}`,
+      query: ({ id, status }) => ({
+        url: `/bookings/${id}/status`,
         method: "PATCH",
-        body: { status: "Completed" },
+        body: { status },
       }),
       invalidatesTags: ["bookingView"],
     }),

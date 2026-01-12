@@ -9,7 +9,7 @@ interface BookingCardProps {
   booking: Booking;
   onStatusChange: (
     id: string,
-    status: "pending" | "confirmed" | "cancelled"
+    status: "pending" | "confirmed" | "completed" | "cancelled"
   ) => void;
   onDelete: (id: string) => void;
 }
@@ -19,6 +19,7 @@ export const BookingCard = ({
   onStatusChange,
   onDelete,
 }: BookingCardProps) => {
+  console.log(booking);
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden transition-all duration-200 hover:shadow-md">
       <div className="p-6">

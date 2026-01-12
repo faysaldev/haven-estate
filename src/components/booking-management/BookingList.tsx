@@ -6,7 +6,7 @@ interface BookingListProps {
   bookings: Booking[];
   onStatusChange: (
     id: string,
-    status: "pending" | "confirmed" | "cancelled"
+    status: "pending" | "confirmed" | "completed" | "cancelled"
   ) => void;
   onDelete: (id: string) => void;
 }

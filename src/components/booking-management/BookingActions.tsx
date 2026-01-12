@@ -2,10 +2,16 @@ import { Button } from "@/src/components/ui/button";
 
 interface BookingActionsProps {
   bookingId: string;
-  onStatusChange: (id: string, status: "pending" | "confirmed" | "cancelled") => void;
+  onStatusChange: (
+    id: string,
+    status: "pending" | "confirmed" | "completed" | "cancelled"
+  ) => void;
 }
 
-export const BookingActions = ({ bookingId, onStatusChange }: BookingActionsProps) => {
+export const BookingActions = ({
+  bookingId,
+  onStatusChange,
+}: BookingActionsProps) => {
   return (
     <div className="mt-6 pt-4 border-t border-gray-100 flex gap-3 justify-end">
       <Button
