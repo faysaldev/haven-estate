@@ -66,10 +66,10 @@ const Homepage = () => {
             {/* Quick Category Buttons */}
             <div className="flex flex-wrap justify-center gap-4 pt-4">
               {[
-                { icon: Home, label: "Residential", type: "residential" },
-                { icon: Building2, label: "Commercial", type: "commercial" },
+                { icon: Home, label: "House", type: "house" },
+                { icon: Building2, label: "Condo", type: "condo" },
                 { icon: TreePine, label: "Land", type: "land" },
-                { icon: Crown, label: "Luxury", type: "luxury" },
+                { icon: Crown, label: "Apartment", type: "apartment" },
               ].map((category) => (
                 <Link
                   key={category.type}
