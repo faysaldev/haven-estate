@@ -1,8 +1,12 @@
 "use client";
 import Link from "next/link";
 import { Calendar, MessageSquare, Building2 } from "lucide-react";
+import { useGetBuyerRecentActivitiesQuery } from "@/src/redux/features/Buyer/buyers";
 
 const DashboardHome = () => {
+  const { data: recentActivities } = useGetBuyerRecentActivitiesQuery({});
+  console.log(recentActivities);
+
   const quickActions = [
     {
       title: "Schedule Viewing",

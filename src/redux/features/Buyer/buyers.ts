@@ -74,6 +74,13 @@ const buyersApi = baseApi.injectEndpoints({
         body: profileBody,
       }),
     }),
+    getBuyerRecentActivities: builder.query({
+      query: () => ({
+        url: `/buyers/recent-activity`,
+        method: "GET",
+      }),
+      transformResponse: (res) => res.data,
+    }),
   }),
 });
 
@@ -88,4 +95,5 @@ export const {
   useUpdateBookingRequestMutation,
   useGetProfilesQuery,
   useUpdateProfileMutation,
+  useGetBuyerRecentActivitiesQuery,
 } = buyersApi;

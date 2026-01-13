@@ -20,8 +20,7 @@ const Homepage = () => {
   );
   const featuredProperties = properties.slice(0, 3);
   const { data: featuredPropertiesData } = useGetFeaturedPropertiesQuery({});
-  console.log(featuredPropertiesData);
-
+  console.log(featuredPropertiesData?.data);
   // Update URL when search query changes
   useEffect(() => {
     const params = new URLSearchParams(searchParams.toString());
@@ -36,7 +35,7 @@ const Homepage = () => {
     const queryString = params.toString();
     const newUrl = queryString ? `/?${queryString}` : "/";
     router.push(newUrl, { scroll: false });
-  }, [searchQuery, router, searchParams]);
+  }, [searchQuery]);
 
   const handleSearch = () => {
     if (searchQuery.trim()) {
@@ -145,15 +144,17 @@ const Homepage = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-            {featuredProperties.map((property: Property, index: number) => (
-              <div
-                key={property._id}
-                className="animate-slide-up"
-                style={{ animationDelay: `${index * 150}ms` }}
-              >
-                <PropertyCard property={property} />
-              </div>
-            ))}
+            {featuredPropertiesData?.data?.map(
+              (property: Property, index: number) => (
+                <div
+                  key={property._id}
+                  className="animate-slide-up"
+                  style={{ animationDelay: `${index * 150}ms` }}
+                >
+                  <PropertyCard property={property} />
+                </div>
+              )
+            )}
           </div>
 
           <div className="text-center">
