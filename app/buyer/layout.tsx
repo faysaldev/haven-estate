@@ -1,4 +1,5 @@
 import BuyerDashboardLayout from "@/src/layout/BuyerDashboardLayout";
+import ProtectedProvider from "@/src/Provider/ProtectedProvider";
 import { ReactNode } from "react";
 
 export default function BuyerLayoutWrapper({
@@ -6,5 +7,9 @@ export default function BuyerLayoutWrapper({
 }: {
   children: ReactNode;
 }) {
-  return <BuyerDashboardLayout>{children}</BuyerDashboardLayout>;
+  return (
+    <ProtectedProvider allowedRoles={["user"]}>
+      <BuyerDashboardLayout>{children}</BuyerDashboardLayout>
+    </ProtectedProvider>
+  );
 }

@@ -11,7 +11,6 @@ import {
   CreditCard,
   Home,
   Settings,
-  Building2,
 } from "lucide-react";
 
 interface BuyerDashboardLayoutProps {
