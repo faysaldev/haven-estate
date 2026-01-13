@@ -78,7 +78,6 @@ const Footer = () => {
               </li>
             </ul>
           </div>
-
           {/* Property Types */}
           <div>
             <h3 className="font-serif text-lg font-semibold mb-4 text-[#235C47]">
@@ -87,18 +86,18 @@ const Footer = () => {
             <ul className="space-y-2">
               <li>
                 <Link
-                  href="/listings?type=residential"
+                  href="/listings?type=house"
                   className="text-[#235C47]/80 hover:text-[#235C47] transition-smooth"
                 >
-                  Residential
+                  House
                 </Link>
               </li>
               <li>
                 <Link
-                  href="/listings?type=commercial"
+                  href="/listings?type=apartment"
                   className="text-[#235C47]/80 hover:text-[#235C47] transition-smooth"
                 >
-                  Commercial
+                  Apartment
                 </Link>
               </li>
               <li>
@@ -111,10 +110,10 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  href="/listings?type=luxury"
+                  href="/listings?type=condo"
                   className="text-[#235C47]/80 hover:text-[#235C47] transition-smooth"
                 >
-                  Luxury Estates
+                  Condo
                 </Link>
               </li>
             </ul>
