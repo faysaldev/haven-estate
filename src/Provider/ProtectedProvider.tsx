@@ -10,7 +10,7 @@ import {
 
 interface ProtectedProviderProps {
   children: ReactElement | ReactNode;
-  allowedRoles: string[];
+  allowedRoles: ("user" | "admin")[];
 }
 
 const ProtectedProvider: React.FC<ProtectedProviderProps> = ({
@@ -24,7 +24,7 @@ const ProtectedProvider: React.FC<ProtectedProviderProps> = ({
   let hasRequiredRole = false;
   if (user?.role) {
     if (Array.isArray(user.role)) {
-      hasRequiredRole = user.role.some((userRole: string) =>
+      hasRequiredRole = user.role.some((userRole: "user" | "admin") =>
         allowedRoles.includes(userRole)
       );
     } else {

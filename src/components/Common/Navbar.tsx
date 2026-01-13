@@ -58,7 +58,7 @@ const Navbar = () => {
                 asChild
                 className="px-8 bg-[#235C47] hover:bg-[#1a4a38] text-white hover:text-white"
               >
-                <Link href="/listings">Browse Properties</Link>
+                <Link href="/buyer">Dashboard</Link>
               </Button>
             ) : (
               <>
@@ -129,8 +129,8 @@ const Navbar = () => {
                   asChild
                   className="mt-4 bg-[#235C47] hover:bg-[#1a4a38] text-white"
                 >
-                  <Link href="/listings" onClick={() => setIsMenuOpen(false)}>
-                    Browse Properties
+                  <Link href="/buyer" onClick={() => setIsMenuOpen(false)}>
+                    Dashboard
                   </Link>
                 </Button>
               ) : (

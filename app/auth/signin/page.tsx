@@ -92,8 +92,11 @@ const SignInPage = () => {
             token: accessToken,
           })
         );
-        console.log("Sign in successful:", result);
-        router.push("/admin");
+        if (role != "user") {
+          router.push("/admin");
+        } else {
+          router.push("/buyer");
+        }
       } catch (error: any) {
         if (
           error.data?.error ==
