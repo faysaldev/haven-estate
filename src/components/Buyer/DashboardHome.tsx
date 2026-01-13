@@ -73,9 +73,65 @@ const DashboardHome = () => {
         <h2 className="text-xl font-semibold text-[#235C47] mb-4">
           Recent Activity
         </h2>
-        <p className="text-[#235C47]/80">
-          Your recent activities will appear here.
-        </p>
+        <div className="space-y-4">
+          {recentActivities?.length > 0 ? (
+            recentActivities?.map(
+              (activity: {
+                id: string;
+                action: string;
+                user: string;
+                timestamp: string;
+                details: string;
+              }) => (
+                <div
+                  key={activity.id}
+                  className="flex items-start p-4 bg-white rounded-lg border border-[#235C47]/10 hover:shadow-sm transition-shadow"
+                >
+                  <div className="mr-4 mt-1">
+                    <div className="w-3 h-3 rounded-full bg-[#235C47]"></div>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex justify-between">
+                      <h3 className="font-medium text-[#235C47] truncate">
+                        {activity.action}
+                      </h3>
+                      <span className="text-xs text-[#235C47]/60 whitespace-nowrap ml-2">
+                        {new Date(activity.timestamp).toLocaleDateString(
+                          "en-US",
+                          {
+                            month: "short",
+                            day: "numeric",
+                            year: "numeric",
+                          }
+                        )}{" "}
+                        at{" "}
+                        {new Date(activity.timestamp).toLocaleTimeString(
+                          "en-US",
+                          {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          }
+                        )}
+                      </span>
+                    </div>
+                    <p className="text-sm text-[#235C47]/80 mt-1">
+                      {activity.details}
+                    </p>
+                    <div className="mt-2 flex items-center">
+                      <span className="text-xs px-2 py-1 bg-[#F9F7F6] text-[#235C47] rounded">
+                        by {activity.user}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              )
+            )
+          ) : (
+            <p className="text-[#235C47]/80 italic">
+              No recent activities found.
+            </p>
+          )}
+        </div>
       </div>
     </div>
   );

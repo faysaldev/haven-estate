@@ -39,7 +39,7 @@ const BuyerDashboardLayout = ({ children }: BuyerDashboardLayoutProps) => {
         <div className="p-6 border-b border-[#235C47]/20">
           <Link
             href="/"
-            className="flex items-center gap-2 text-2xl font-serif font-bold text-[#235C47]"
+            className="flex items-center gap-2 text-lg md:text-xl font-serif font-bold text-[#235C47]"
           >
             <Home className="w-6 h-6" />
             Haven Estates
