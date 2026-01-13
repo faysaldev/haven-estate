@@ -6,16 +6,7 @@ import {
   useGetProfilesQuery,
   useUpdateProfileMutation,
 } from "@/src/redux/features/Buyer/buyers";
-
-interface ProfileData {
-  _id: string;
-  name: string;
-  email: string;
-  image: string;
-  role: string;
-  phoneNumber: string;
-  isEmailVerified: boolean;
-}
+import { toast } from "sonner";
 
 interface UserSettings {
   name: string;
@@ -102,10 +93,10 @@ const GeneralSettingsPage = () => {
           phoneNumber: formData.phone,
         }).unwrap();
 
-        alert("Settings updated successfully!");
+        toast.success("Settings updated successfully!");
       } catch (error) {
         console.error("Failed to update profile:", error);
-        alert("Failed to update settings. Please try again.");
+        toast.error("Failed to update settings. Please try again.");
       } finally {
         setIsSaving(false);
       }
@@ -124,7 +115,9 @@ const GeneralSettingsPage = () => {
           </p>
         </div>
         <div className="bg-white p-6 rounded-xl border border-[#235C47]/20 max-w-2xl">
-          <p className="text-center text-[#235C47]/70">Loading profile data...</p>
+          <p className="text-center text-[#235C47]/70">
+            Loading profile data...
+          </p>
         </div>
       </div>
     );
