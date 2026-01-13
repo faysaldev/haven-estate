@@ -81,6 +81,15 @@ const buyersApi = baseApi.injectEndpoints({
       }),
       transformResponse: (res) => res.data,
     }),
+    // sending contact us page info
+    sendingContactPageInfo: builder.mutation({
+      query: (requestBody) => ({
+        url: `/buyers/send_email`,
+        method: "POST",
+        body: requestBody,
+      }),
+      transformResponse: (res) => res.data,
+    }),
   }),
 });
 
@@ -96,4 +105,6 @@ export const {
   useGetProfilesQuery,
   useUpdateProfileMutation,
   useGetBuyerRecentActivitiesQuery,
+  // contact page sending contact page
+  useSendingContactPageInfoMutation,
 } = buyersApi;

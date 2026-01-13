@@ -8,8 +8,10 @@ import { Label } from "@/src/components/ui/label";
 import { MapPin, Phone, Mail, Clock } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
+import { useSendingContactPageInfoMutation } from "@/src/redux/features/Buyer/buyers";
 
 const Contact = () => {
+  const [sendContactInfo, { isLoading }] = useSendingContactPageInfoMutation();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -17,10 +19,23 @@ const Contact = () => {
     message: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast.success("Message sent! We'll get back to you soon.");
-    setFormData({ name: "", email: "", phone: "", message: "" });
+
+    try {
+      // Call the mutation with form data
+      const result = await sendContactInfo(formData);
+
+      if ("data" in result) {
+        toast.success("Message sent! We'll get back to you soon.");
+        setFormData({ name: "", email: "", phone: "", message: "" });
+      } else {
+        toast.error("Failed to send message. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error sending contact info:", error);
+      toast.error("Failed to send message. Please try again.");
+    }
   };
 
   return (
@@ -105,7 +120,9 @@ const Contact = () => {
                 </h2>
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div>
-                    <Label htmlFor="name" className="text-[#235C47]">Full Name</Label>
+                    <Label htmlFor="name" className="text-[#235C47]">
+                      Full Name
+                    </Label>
                     <Input
                       id="name"
                       type="text"
@@ -120,7 +137,9 @@ const Contact = () => {
                   </div>
 
                   <div>
-                    <Label htmlFor="email" className="text-[#235C47]">Email Address</Label>
+                    <Label htmlFor="email" className="text-[#235C47]">
+                      Email Address
+                    </Label>
                     <Input
                       id="email"
                       type="email"
@@ -135,7 +154,9 @@ const Contact = () => {
                   </div>
 
                   <div>
-                    <Label htmlFor="phone" className="text-[#235C47]">Phone Number</Label>
+                    <Label htmlFor="phone" className="text-[#235C47]">
+                      Phone Number
+                    </Label>
                     <Input
                       id="phone"
                       type="tel"
@@ -149,7 +170,9 @@ const Contact = () => {
                   </div>
 
                   <div>
-                    <Label htmlFor="message" className="text-[#235C47]">Message</Label>
+                    <Label htmlFor="message" className="text-[#235C47]">
+                      Message
+                    </Label>
                     <Textarea
                       id="message"
                       placeholder="Tell us about your property requirements..."
@@ -162,8 +185,13 @@ const Contact = () => {
                     />
                   </div>
 
-                  <Button type="submit" size="lg" className="w-full bg-[#235C47] hover:bg-[#1a4a38]">
-                    Send Message
+                  <Button
+                    type="submit"
+                    size="lg"
+                    className="w-full bg-[#235C47] hover:bg-[#1a4a38]"
+                    disabled={isLoading}
+                  >
+                    {isLoading ? "Sending..." : "Send Message"}
                   </Button>
                 </form>
               </div>
