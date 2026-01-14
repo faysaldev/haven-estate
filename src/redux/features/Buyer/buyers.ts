@@ -90,6 +90,14 @@ const buyersApi = baseApi.injectEndpoints({
       }),
       transformResponse: (res) => res.data,
     }),
+
+    // check the success payment
+    checkPaymentStatus: builder.query({
+      query: ({ sessionId }) => ({
+        url: `/bookings/payment-check/${sessionId}`,
+        method: "GET",
+      }),
+    }),
   }),
 });
 
@@ -107,4 +115,7 @@ export const {
   useGetBuyerRecentActivitiesQuery,
   // contact page sending contact page
   useSendingContactPageInfoMutation,
+
+  // check payment
+  useCheckPaymentStatusQuery,
 } = buyersApi;

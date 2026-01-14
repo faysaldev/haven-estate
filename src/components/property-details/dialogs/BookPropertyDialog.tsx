@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import { Button } from "@/src/components/ui/button";
 import { Input } from "@/src/components/ui/input";
@@ -74,9 +75,10 @@ export const BookPropertyDialog = ({
 
       // Reset the form
       form.reset();
-    } catch (error) {
-      console.error("Error booking property:", error);
-      toast.error("Failed to book property. Please try again.");
+    } catch (error: any) {
+      toast.error(
+        error?.data?.error || "Failed to book property. Please try again."
+      );
     }
   };
 
