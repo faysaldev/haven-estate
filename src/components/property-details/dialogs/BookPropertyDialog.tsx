@@ -69,12 +69,18 @@ export const BookPropertyDialog = ({
       // Call the createBooking mutation
       const result = await createBooking(bookingData).unwrap();
 
-      // Show success message
-      toast.success("Property booked successfully!");
-      console.log("Booking result:", result);
+      // Check if result contains a URL for redirect
+      if (result.data && result.data.url) {
+        // Redirect to the payment URL
+        window.location.href = result.data.url;
+      } else {
+        // Show success message if no redirect URL
+        toast.success(result.message || "Property booked successfully!");
+        console.log("Booking result:", result);
 
-      // Reset the form
-      form.reset();
+        // Reset the form
+        form.reset();
+      }
     } catch (error: any) {
       toast.error(
         error?.data?.error || "Failed to book property. Please try again."
