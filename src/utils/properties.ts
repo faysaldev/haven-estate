@@ -7,6 +7,7 @@ export interface Property {
   status: "sale" | "rent";
   bedrooms?: number;
   bathrooms?: number;
+  impressions?: number;
   area: number;
   image: string;
   images: string[];

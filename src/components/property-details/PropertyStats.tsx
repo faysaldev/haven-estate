@@ -1,5 +1,5 @@
 import { Bed, Bath, Maximize } from "lucide-react";
-import { Property } from "./types";
+import { Property } from "@/src/utils/properties";
 
 interface PropertyStatsProps {
   property: Property;

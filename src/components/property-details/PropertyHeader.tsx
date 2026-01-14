@@ -1,6 +1,6 @@
 import { Badge } from "@/src/components/ui/badge";
 import { MapPin } from "lucide-react";
-import { Property } from "./types";
+import { Property } from "@/src/utils/properties";
 
 interface PropertyHeaderProps {
   property: Property;

@@ -1,6 +1,6 @@
 import { Button } from "@/src/components/ui/button";
 import Image from "next/image";
-import { Property } from "./types";
+import { Property } from "@/src/utils/properties";
 import { Pencil, Trash2, Eye } from "lucide-react";
 
 interface PropertyCardProps {
@@ -66,7 +66,7 @@ export const PropertyCard = ({
             </div>
             <div className="flex items-center gap-2 text-sm text-[#235C47]/70">
               <Eye className="w-4 h-4" />
-              <span>{property.impressions} views</span>
+              <span>{property?.impressions} views</span>
             </div>
           </div>
         </div>

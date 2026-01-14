@@ -1,4 +1,4 @@
-import { Property } from "./types";
+import { Property } from "@/src/utils/properties";
 
 interface PropertyDescriptionProps {
   property: Property;

@@ -11,7 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/src/components/ui/select";
-import { Property } from "./types";
+import { Property } from "@/src/utils/properties";
 import { AgentsResponse } from "./Agent";
 import {
   useCreatePropertiesMutation,
@@ -39,7 +39,7 @@ export const PropertyForm = ({
     isError: agentsError,
   } = useGetAgentsQuery({});
   const [selectedAgentId, setSelectedAgentId] = useState(
-    property?.agent?.id || ""
+    property?.agent?._id || ""
   );
   const [createProperties] = useCreatePropertiesMutation();
   const [updateProperty] = useUpdatePropertiesMutation();
@@ -165,7 +165,7 @@ export const PropertyForm = ({
         changes.description = description;
       if (features !== property.features?.join(", "))
         changes.features = features;
-      if (selectedAgentId !== property.agent?.id)
+      if (selectedAgentId !== property.agent?._id)
         changes.agent = selectedAgent._id;
 
       // Check if images have changed
@@ -231,7 +231,7 @@ export const PropertyForm = ({
           formData.append("features", features);
           changes.features = features;
         }
-        if (selectedAgentId !== property.agent?.id) {
+        if (selectedAgentId !== property.agent?._id) {
           formData.append("agent", selectedAgent._id);
           changes.agent = selectedAgent._id;
         }

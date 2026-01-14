@@ -11,11 +11,11 @@ import {
 import { Plus, ChevronLeft, ChevronRight } from "lucide-react";
 import { PropertyList } from "@/src/components/property-management/PropertyList";
 import { PropertyForm } from "@/src/components/property-management/PropertyForm";
-import { Property } from "@/src/components/property-management/types";
 import {
   useDeletePropertiesMutation,
   useGetAdminPropertiesQuery,
 } from "@/src/redux/features/Admin/Properties/propertiesApi";
+import { Property } from "@/src/utils/properties";
 
 const PropertiesManagement = () => {
   const [currentPage, setCurrentPage] = useState(1);
