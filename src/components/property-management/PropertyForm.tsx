@@ -138,7 +138,6 @@ export const PropertyForm = ({
 
     // Find the selected agent
     const selectedAgent = allAgents.find(
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (agent: any) => agent._id === selectedAgentId
     );
 

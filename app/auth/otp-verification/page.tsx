@@ -92,7 +92,7 @@ const OTPVerificationPage = () => {
     const otpCode = otp.join("");
     if (otpCode.length === 6 && email) {
       try {
-        const result = await verifiedEmail({
+        await verifiedEmail({
           email: email,
           code: otpCode,
         }).unwrap();
