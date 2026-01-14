@@ -26,7 +26,9 @@ const Listings = () => {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
 
-  const [searchQuery, setSearchQuery] = useState(searchParams.get("search") || "");
+  const [searchQuery, setSearchQuery] = useState(
+    searchParams.get("search") || ""
+  );
   const [propertyType, setPropertyType] = useState(
     searchParams.get("type") || "all"
   );
@@ -42,7 +44,7 @@ const Listings = () => {
   } = useGetPropertiesQuery({
     page,
     limit,
-    location: searchQuery || undefined,
+    search: searchQuery || undefined,
     type: propertyType !== "all" ? propertyType : undefined,
     status: propertyStatus !== "all" ? propertyStatus : undefined,
     minPrice: priceRange[0] > 0 ? priceRange[0] : undefined,
@@ -164,7 +166,7 @@ const Listings = () => {
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                         onKeyDown={(e) => {
-                          if (e.key === 'Enter') {
+                          if (e.key === "Enter") {
                             // Trigger a page change to update the URL
                             setPage(1);
                           }

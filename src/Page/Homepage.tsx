@@ -6,10 +6,17 @@ import Footer from "@/src/components/Common/Footer";
 import PropertyCard from "@/src/components/Property/PropertyCard";
 import { Button } from "@/src/components/ui/button";
 import { Input } from "@/src/components/ui/input";
-import { Search, Home, Building2, TreePine, Crown } from "lucide-react";
+import { Search, Home, Building2, TreePine, Crown, X } from "lucide-react";
 import { Property } from "@/src/utils/properties";
 import Link from "next/link";
 import { useGetFeaturedPropertiesQuery } from "../redux/features/Admin/Properties/propertiesApi";
+import aboutImage from "@/assets/about_image.jpg";
+import testimonial1 from "@/assets/testimonial_1.jpg";
+import testimonial2 from "@/assets/testimonial_2.jpg";
+import testimonial3 from "@/assets/testimonial_3.jpg";
+import testimonial4 from "@/assets/testimonial_4.jpg";
+import ctaImage from "@/assets/cta.jpg";
+import Image from "next/image";
 
 const Homepage = () => {
   const router = useRouter();
@@ -17,7 +24,63 @@ const Homepage = () => {
   const [searchQuery, setSearchQuery] = useState(
     searchParams.get("search") || ""
   );
+  const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
+  const [currentVideoSrc, setCurrentVideoSrc] = useState("");
+  const [currentTestimonialIndex, setCurrentTestimonialIndex] = useState(0);
   const { data: featuredPropertiesData } = useGetFeaturedPropertiesQuery({});
+
+  const openVideoModal = (videoSrc: string) => {
+    setCurrentVideoSrc(videoSrc);
+    setIsVideoModalOpen(true);
+  };
+
+  const closeVideoModal = () => {
+    setIsVideoModalOpen(false);
+    setCurrentVideoSrc("");
+  };
+
+  const testimonials = [
+    {
+      image: testimonial1,
+      quote:
+        "Haven Estates made my dream of owning a home come true. Their team was professional, responsive, and made the entire process seamless. I couldn't be happier with my new property!",
+      name: "Sarah Johnson",
+      role: "Homeowner",
+    },
+    {
+      image: testimonial2,
+      quote:
+        "As an investor, I appreciate the transparency and detailed information provided by Haven Estates. Their properties have consistently delivered strong returns.",
+      name: "Michael Chen",
+      role: "Real Estate Investor",
+    },
+    {
+      image: testimonial3,
+      quote:
+        "The customer service at Haven Estates is exceptional. They went above and beyond to ensure I found the perfect property that met all my requirements.",
+      name: "David Williams",
+      role: "Property Owner",
+    },
+    {
+      image: testimonial4,
+      quote:
+        "From the initial consultation to the final paperwork, Haven Estates provided a stress-free experience. I highly recommend their services to anyone looking for quality properties.",
+      name: "Emma Thompson",
+      role: "New Homeowner",
+    },
+  ];
+
+  const nextTestimonial = () => {
+    setCurrentTestimonialIndex((prevIndex) =>
+      prevIndex === testimonials.length - 1 ? 0 : prevIndex + 1
+    );
+  };
+
+  const prevTestimonial = () => {
+    setCurrentTestimonialIndex((prevIndex) =>
+      prevIndex === 0 ? testimonials.length - 1 : prevIndex - 1
+    );
+  };
   useEffect(() => {
     const params = new URLSearchParams(searchParams.toString());
 
@@ -168,6 +231,213 @@ const Homepage = () => {
         </div>
       </section>
 
+      {/* About Us Section */}
+      <section className="py-20 bg-[#F9F7F6]">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div className="space-y-6">
+              <h3 className="text-3xl font-serif font-bold text-[#235C47] mt-8">
+                About Us
+              </h3>
+              <h4 className="text-xl font-semibold text-[#235C47]">
+                Redefining your standard of living
+              </h4>
+              <p className="text-lg text-gray-700 leading-relaxed">
+                Edison Group was founded in 2009 with the aim to enhance aspects
+                of life for people by providing powerful brands, reliable
+                products and a wide range of services. It ventured into the real
+                estate sector in 2015 with its {`"`}dream team{`"`} dedicated to
+                merge value and innovation in the evolving real estate sector of
+                Bangladesh. Through considerable focus on design, structural
+                dimension, and feasibility in the sense of space and resource
+                conservation; as well as environmental soundness; we deliver you
+                optimum support in residential and commercial accommodation.
+              </p>
+              <p className="text-lg text-gray-700 leading-relaxed">
+                Conjoining the expertise of different fields to develop and
+                bring in the quintessence of contemporary lifestyle, we provide
+                distinguished services and strictly maintain project handover
+                deadlines. We assure you to be your most reliable developer in
+                Dhaka in terms of integrity and credibility.
+              </p>
+              <button className="mt-4 px-6 py-3 bg-[#235C47] text-white rounded-lg hover:bg-[#1a4a38] transition-colors">
+                Learn More
+              </button>
+            </div>
+
+            {/* Video Section */}
+            <div className="flex justify-center">
+              <div
+                className="cursor-pointer overflow-hidden rounded-xl shadow-2xl transition-transform duration-300 hover:scale-105"
+                onClick={() =>
+                  openVideoModal("https://www.youtube.com/embed/BU_s5NhMLvc")
+                }
+              >
+                <div className="relative">
+                  <div className="relative">
+                    <Image
+                      width={500}
+                      height={400}
+                      src={aboutImage}
+                      alt="About Haven Estates"
+                      className="w-full h-auto object-cover"
+                    />
+                    <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
+                      <div className="w-20 h-20 rounded-full bg-[#235C47]/80 flex items-center justify-center transform transition-transform hover:scale-110">
+                        <svg
+                          className="w-10 h-10 text-white ml-1"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonial Carousel */}
+      <section className="py-20 bg-white">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl sm:text-5xl font-serif font-bold mb-4 text-[#235C47]">
+              Testimonial
+            </h2>
+            <h3 className="text-2xl font-semibold text-[#235C47]">
+              What customers say about us
+            </h3>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            {/* Video Testimonial */}
+            <div className="flex justify-center">
+              <div
+                className="cursor-pointer overflow-hidden rounded-xl shadow-2xl transition-transform duration-300 hover:scale-105"
+                onClick={() =>
+                  openVideoModal("https://www.youtube.com/embed/8Io_q6Bgijg")
+                }
+              >
+                <div className="relative">
+                  <Image
+                    width={500}
+                    height={400}
+                    src={testimonials[currentTestimonialIndex].image}
+                    alt={`Customer ${testimonials[currentTestimonialIndex].name}`}
+                    className="w-full h-auto object-cover"
+                  />
+                  <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
+                    <div className="w-20 h-20 rounded-full bg-[#235C47]/80 flex items-center justify-center transform transition-transform hover:scale-110">
+                      <svg
+                        className="w-10 h-10 text-white ml-1"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Testimonial Carousel */}
+            <div className="relative">
+              <div className="bg-[#F9F7F6] p-8 rounded-xl shadow-lg transition-opacity duration-500">
+                <p className="text-lg text-gray-700 italic mb-6">
+                  {`"`}
+                  {testimonials[currentTestimonialIndex].quote}
+                  {`"`}
+                </p>
+                <div className="flex items-center">
+                  <div>
+                    <p className="font-semibold text-[#235C47] text-lg">
+                      {testimonials[currentTestimonialIndex].name}
+                    </p>
+                    <p className="text-gray-600">
+                      {testimonials[currentTestimonialIndex].role}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Navigation Controls */}
+              <div className="flex justify-center mt-6 space-x-4">
+                <button
+                  onClick={prevTestimonial}
+                  className="p-2 rounded-full bg-[#235C47] text-white hover:bg-[#1a4a38] transition-colors"
+                  aria-label="Previous testimonial"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-6 w-6"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M15 19l-7-7 7-7"
+                    />
+                  </svg>
+                </button>
+
+                <button
+                  onClick={nextTestimonial}
+                  className="p-2 rounded-full bg-[#235C47] text-white hover:bg-[#1a4a38] transition-colors"
+                  aria-label="Next testimonial"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-6 w-6"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 5l7 7-7 7"
+                    />
+                  </svg>
+                </button>
+              </div>
+
+              {/* Indicators */}
+              <div className="flex justify-center mt-6 space-x-2">
+                {testimonials.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setCurrentTestimonialIndex(index)}
+                    className={`w-3 h-3 rounded-full ${
+                      index === currentTestimonialIndex
+                        ? "bg-[#235C47]"
+                        : "bg-gray-300"
+                    }`}
+                    aria-label={`Go to testimonial ${index + 1}`}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Stats Section */}
       <section className="py-20 bg-[#235C47] text-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -193,7 +463,88 @@ const Homepage = () => {
         </div>
       </section>
 
+      {/* CTA Popup Video */}
+      <section className="py-20 bg-[#F9F7F6]">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-4xl font-serif font-bold mb-6 text-[#235C47]">
+            Experience Our Premium Properties
+          </h2>
+          <p className="text-xl text-gray-700 mb-10 max-w-3xl mx-auto">
+            Watch our latest property showcase to see what makes Haven Estates
+            the premier choice for luxury living.
+          </p>
+
+          <div className="flex justify-center">
+            <div
+              className="cursor-pointer inline-block overflow-hidden rounded-xl shadow-2xl transition-transform duration-300 hover:scale-105"
+              onClick={() =>
+                openVideoModal("https://www.youtube.com/embed/qTQF9q21kOw")
+              }
+            >
+              <div className="relative" style={{ maxWidth: "845px" }}>
+                <div className="relative">
+                  <Image
+                    width={500}
+                    height={400}
+                    src={ctaImage}
+                    alt="Haven Estates Property Showcase"
+                    className="w-full h-auto object-cover"
+                  />
+                  <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
+                    <div className="w-20 h-20 rounded-full bg-[#235C47]/80 flex items-center justify-center transform transition-transform hover:scale-110">
+                      <svg
+                        className="w-10 h-10 text-white ml-1"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <Footer />
+
+      {/* Video Modal */}
+      {isVideoModalOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm"
+          onClick={closeVideoModal}
+        >
+          <div
+            className="relative w-full max-w-4xl bg-white rounded-xl overflow-hidden shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={closeVideoModal}
+              className="absolute top-4 right-4 z-10 p-2 bg-[#235C47] text-white rounded-full hover:bg-[#1a4a38] transition-colors"
+            >
+              <X className="w-5 h-5" />
+            </button>
+            <div className="relative pb-[56.25%] h-0">
+              {" "}
+              {/* 16:9 Aspect Ratio */}
+              <iframe
+                src={currentVideoSrc}
+                title="Video Player"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                className="absolute top-0 left-0 w-full h-full"
+              ></iframe>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
