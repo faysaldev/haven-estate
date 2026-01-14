@@ -7,8 +7,7 @@ import PropertyCard from "@/src/components/Property/PropertyCard";
 import { Button } from "@/src/components/ui/button";
 import { Input } from "@/src/components/ui/input";
 import { Search, Home, Building2, TreePine, Crown } from "lucide-react";
-import { properties, Property } from "@/src/utils/properties";
-import heroImage from "@/assets/hero_image.jpg";
+import { Property } from "@/src/utils/properties";
 import Link from "next/link";
 import { useGetFeaturedPropertiesQuery } from "../redux/features/Admin/Properties/propertiesApi";
 
@@ -18,10 +17,7 @@ const Homepage = () => {
   const [searchQuery, setSearchQuery] = useState(
     searchParams.get("search") || ""
   );
-  const featuredProperties = properties.slice(0, 3);
   const { data: featuredPropertiesData } = useGetFeaturedPropertiesQuery({});
-  console.log(featuredPropertiesData?.data);
-  // Update URL when search query changes
   useEffect(() => {
     const params = new URLSearchParams(searchParams.toString());
 
@@ -55,15 +51,18 @@ const Homepage = () => {
 
       {/* Hero Section */}
       <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden pt-20">
-        <div
-          className="absolute inset-0 z-0"
-          style={{
-            backgroundImage: `url(${heroImage})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
-        >
-          <div className="absolute inset-0 bg-gradient-to-b from-[#235C47]/60 via-[#235C47]/50 to-[#235C47]/70" />
+        <div className="absolute inset-0 z-0">
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="w-full h-full object-cover"
+          >
+            <source src="/bg_video.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+          <div className="absolute inset-0 bg-gradient-to-b from-[#235C47]/60 via-[#235C47]/30 to-[#235C47]/10" />
         </div>
 
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
