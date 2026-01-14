@@ -16,7 +16,7 @@ const OTPVerification: React.FC<OTPVerificationProps> = ({
 }) => {
   const [otp, setOtp] = useState<string[]>(["", "", "", "", "", ""]);
   const [timeLeft, setTimeLeft] = useState<number>(300); // 5 minutes in seconds
-  const inputRefs = useRef<Array<HTMLInputElement | null>>([]);
+  const inputRefs = useRef<(HTMLInputElement | null)[]>(Array(6).fill(null));
 
   // Timer effect
   useEffect(() => {
@@ -24,7 +24,9 @@ const OTPVerification: React.FC<OTPVerificationProps> = ({
     if (timeLeft > 0) {
       timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
     }
-    return () => clearTimeout(timer);
+    return () => {
+      if (timer) clearTimeout(timer);
+    };
   }, [timeLeft]);
 
   // Handle input changes
@@ -59,7 +61,9 @@ const OTPVerification: React.FC<OTPVerificationProps> = ({
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
-    return `${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
+    return `${mins.toString().padStart(2, "0")}:${secs
+      .toString()
+      .padStart(2, "0")}`;
   };
 
   // Handle OTP submission
@@ -91,7 +95,9 @@ const OTPVerification: React.FC<OTPVerificationProps> = ({
           {otp.map((digit, index) => (
             <input
               key={index}
-              ref={(el) => (inputRefs.current[index] = el)}
+              ref={(el) => {
+                inputRefs.current[index] = el;
+              }}
               type="text"
               inputMode="numeric"
               maxLength={1}
@@ -106,7 +112,8 @@ const OTPVerification: React.FC<OTPVerificationProps> = ({
         <div className="text-center">
           {timeLeft > 0 ? (
             <p className="text-sm text-gray-600">
-              Resend code in <span className="font-medium">{formatTime(timeLeft)}</span>
+              Resend code in{" "}
+              <span className="font-medium">{formatTime(timeLeft)}</span>
             </p>
           ) : (
             <button
@@ -122,13 +129,15 @@ const OTPVerification: React.FC<OTPVerificationProps> = ({
 
       <div className="text-center pt-4">
         <p className="text-sm text-gray-600">
-          Didn't receive the code?{" "}
+          Didn{`'`}t receive the code?{" "}
           <button
             type="button"
             onClick={handleResendOTP}
             disabled={timeLeft > 0}
             className={`font-medium ${
-              timeLeft > 0 ? "text-gray-400 cursor-not-allowed" : "text-[#235C47] hover:text-[#1a4a38]"
+              timeLeft > 0
+                ? "text-gray-400 cursor-not-allowed"
+                : "text-[#235C47] hover:text-[#1a4a38]"
             }`}
           >
             Resend Code
