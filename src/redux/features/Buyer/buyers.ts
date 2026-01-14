@@ -18,7 +18,7 @@ const buyersApi = baseApi.injectEndpoints({
     }),
     cancelScheduleViewing: builder.mutation({
       query: (id) => ({
-        url: `/schedule-views/${id}`,
+        url: `/schedule-views/${id}/status`,
         method: "PATCH",
         body: { status: "Cancelled" },
       }),

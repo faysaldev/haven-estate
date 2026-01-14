@@ -117,7 +117,7 @@ const RequestInfoPage = () => {
                     <td className="px-6 py-4 whitespace-nowrap text-sm">
                       <button
                         onClick={() => handleViewDetails(request)}
-                        className="text-[#235C47] hover:text-[#235C47]/80 font-medium"
+                        className="text-[#235C47] underline cursor-pointer hover:text-[#235C47]/80 font-medium"
                       >
                         View
                       </button>

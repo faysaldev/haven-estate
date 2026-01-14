@@ -57,7 +57,6 @@ const ScheduleViewingPage = () => {
     if (viewingToCancel) {
       try {
         await cancelScheduleViewing(viewingToCancel).unwrap();
-        console.log(`Viewing with ID ${viewingToCancel} cancelled`);
         refetch(); // Refresh the data after cancellation
         setShowCancelModal(false);
         setViewingToCancel(null);
@@ -280,7 +279,7 @@ const ScheduleViewingPage = () => {
 
       {/* Cancel Confirmation Modal */}
       {showCancelModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-[#0000003b] bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 w-full max-w-md mx-4 border border-[#235C47]/20">
             <div className="flex justify-between items-start mb-4">
               <h3 className="text-lg font-semibold text-[#235C47]">

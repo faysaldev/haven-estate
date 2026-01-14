@@ -146,7 +146,7 @@ export const BookPropertyDialog = ({
 
           <div className="space-y-2">
             <Label htmlFor="book-amount" className="text-[#235C47]">
-              Amount
+              Advanced Amount
             </Label>
             <div className="relative">
               <DollarSign className="absolute left-3 top-3 w-4 h-4 text-[#235C47]/60" />
