@@ -1,6 +1,18 @@
 import Navbar from "@/src/components/Common/Navbar";
 import Footer from "@/src/components/Common/Footer";
-import { Building2, Users, Award, TrendingUp } from "lucide-react";
+import {
+  Building2,
+  Users,
+  Award,
+  TrendingUp,
+  Linkedin,
+  Twitter,
+  Instagram,
+  Facebook,
+  Mail,
+  ExternalLink,
+} from "lucide-react";
+import Image from "next/image";
 
 const About = () => {
   return (
@@ -130,6 +142,94 @@ const About = () => {
                 Meet the experts dedicated to helping you find your perfect
                 property
               </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {[
+                {
+                  name: "Faysal Mridha",
+                  role: "CEO & Founder",
+                  image: "https://i.ibb.co.com/6cjxd4mG/Pictures.jpg",
+                  socials: [
+                    { name: "LinkedIn", url: "#", icon: "linkedin" },
+                    { name: "Twitter", url: "#", icon: "twitter" },
+                    { name: "Email", url: "#", icon: "email" },
+                  ],
+                },
+                {
+                  name: "Michael Chen",
+                  role: "Director of Sales",
+                  image:
+                    "https://i.ibb.co.com/yFvsb29R/Men-s-Camp-Collar-Casualshort-Sleeve-Shirt-1-8dfdcc55-bb0e-4c10-8c84-ae9664709c98.png",
+                  socials: [
+                    { name: "LinkedIn", url: "#", icon: "linkedin" },
+                    { name: "Instagram", url: "#", icon: "instagram" },
+                    { name: "Email", url: "#", icon: "email" },
+                  ],
+                },
+                {
+                  name: "Emily Rodriguez",
+                  role: "Head of Operations",
+                  image:
+                    "https://i.ibb.co.com/h1mZwVHz/Whats-App-Image-2025-09-05-at-10-24-44-AM.jpg",
+                  socials: [
+                    { name: "LinkedIn", url: "#", icon: "linkedin" },
+                    { name: "Facebook", url: "#", icon: "facebook" },
+                    { name: "Email", url: "#", icon: "email" },
+                  ],
+                },
+              ].map((member, index) => (
+                <div
+                  key={index}
+                  className="relative group overflow-hidden rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300"
+                >
+                  <div className="relative">
+                    <Image
+                      width={400}
+                      height={500}
+                      src={member.image}
+                      alt={member.name}
+                      className="w-full h-80 object-cover"
+                    />
+                    <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                      <div className="flex space-x-4">
+                        {member.socials.map((social, idx) => (
+                          <a
+                            key={idx}
+                            href={social.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center text-white hover:bg-[#235C47] transition-colors"
+                            aria-label={`${member.name} on ${social.name}`}
+                          >
+                            {social.name === "LinkedIn" && (
+                              <Linkedin className="w-5 h-5" />
+                            )}
+                            {social.name === "Twitter" && (
+                              <Twitter className="w-5 h-5" />
+                            )}
+                            {social.name === "Instagram" && (
+                              <Instagram className="w-5 h-5" />
+                            )}
+                            {social.name === "Facebook" && (
+                              <Facebook className="w-5 h-5" />
+                            )}
+                            {social.name === "Email" && (
+                              <Mail className="w-5 h-5" />
+                            )}
+                          </a>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="p-6 bg-white">
+                    <h3 className="text-xl font-bold text-[#235C47]">
+                      {member.name}
+                    </h3>
+                    <p className="text-[#235C47]/80">{member.role}</p>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </section>

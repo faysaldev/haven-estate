@@ -7,6 +7,7 @@ const nextConfig: NextConfig = {
       "images.unsplash.com",
       "faysal9500.sobhoy.com",
       "res.cloudinary.com",
+      "i.ibb.co.com",
     ],
   },
 };

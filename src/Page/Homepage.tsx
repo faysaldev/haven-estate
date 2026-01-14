@@ -260,9 +260,12 @@ const Homepage = () => {
                 deadlines. We assure you to be your most reliable developer in
                 Dhaka in terms of integrity and credibility.
               </p>
-              <button className="mt-4 px-6 py-3 bg-[#235C47] text-white rounded-lg hover:bg-[#1a4a38] transition-colors">
+              <Link
+                href={"/about"}
+                className="mt-4 px-6 py-3 bg-[#235C47] text-white rounded-lg hover:bg-[#1a4a38] transition-colors"
+              >
                 Learn More
-              </button>
+              </Link>
             </div>
 
             {/* Video Section */}

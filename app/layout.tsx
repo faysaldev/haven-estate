@@ -16,19 +16,29 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Haven Estates | Premium Real Estate Properties",
-  description: "Discover exceptional homes and investment opportunities with Haven Estates. Find your dream property in the most sought-after locations. Professional real estate services with transparency and excellence.",
+  description:
+    "Discover exceptional homes and investment opportunities with Haven Estates. Find your dream property in the most sought-after locations. Professional real estate services with transparency and excellence.",
   icons: {
-    icon: "/favicon.ico", // Default favicon
-    shortcut: "/favicon-16x16.png", // 16x16 icon
-    apple: "/apple-touch-icon.png", // Apple touch icon
+    icon: "/cta.jpg", // Default favicon
+    shortcut: "/cta.jpg", // 16x16 icon
+    apple: "/cta.jpg", // Apple touch icon
   },
-  keywords: ["real estate", "properties", "homes for sale", "investment properties", "luxury homes", "Bangladesh property", "Dhaka real estate"],
+  keywords: [
+    "real estate",
+    "properties",
+    "homes for sale",
+    "investment properties",
+    "luxury homes",
+    "Bangladesh property",
+    "Dhaka real estate",
+  ],
   authors: [{ name: "Haven Estates", url: "https://www.havenestates.com" }],
   creator: "Haven Estates",
   publisher: "Haven Estates",
   openGraph: {
     title: "Haven Estates | Premium Real Estate Properties",
-    description: "Discover exceptional homes and investment opportunities with Haven Estates. Find your dream property in the most sought-after locations.",
+    description:
+      "Discover exceptional homes and investment opportunities with Haven Estates. Find your dream property in the most sought-after locations.",
     url: "https://www.havenestates.com",
     siteName: "Haven Estates",
     images: [
@@ -45,7 +55,8 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Haven Estates | Premium Real Estate Properties",
-    description: "Discover exceptional homes and investment opportunities with Haven Estates. Find your dream property in the most sought-after locations.",
+    description:
+      "Discover exceptional homes and investment opportunities with Haven Estates. Find your dream property in the most sought-after locations.",
     images: ["/api/placeholder/1200/630"], // Placeholder for actual image
   },
   robots: {
@@ -54,9 +65,9 @@ export const metadata: Metadata = {
     googleBot: {
       index: true,
       follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
     },
   },
   alternates: {
