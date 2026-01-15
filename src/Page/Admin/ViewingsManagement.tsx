@@ -2,9 +2,11 @@
 "use client";
 import { ViewingList } from "@/src/components/viewings/ViewingList";
 import {
+  useDeleteScheduleViewingMutation,
   useGetAllScheduleViewingQuery,
   useUpdateScheduleViewingMutation,
 } from "@/src/redux/features/Admin/Bookings/bookings";
+import { toast } from "sonner";
 
 const ViewingsManagement = () => {
   const {
@@ -13,6 +15,7 @@ const ViewingsManagement = () => {
     isError,
   } = useGetAllScheduleViewingQuery({});
   const [updateScheduleView] = useUpdateScheduleViewingMutation();
+  const [deleteSheduleView] = useDeleteScheduleViewingMutation();
 
   // Map API data to PropertyViewing interface
   const scheduledViewings =
@@ -42,10 +45,12 @@ const ViewingsManagement = () => {
     }
   };
 
-  const handleDelete = (id: string) => {
-    if (confirm("Are you sure you want to delete this viewing?")) {
-      // Assuming there's a delete function, though not mentioned in requirements
-      console.log("Delete functionality would go here");
+  const handleDelete = async (id: string) => {
+    try {
+      await deleteSheduleView(id).unwrap();
+      toast.success("Delete Successfully!");
+    } catch (error: any) {
+      toast.error(error?.data?.error);
     }
   };
 

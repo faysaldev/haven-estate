@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Button } from "@/src/components/ui/button";
 import { Card, CardContent } from "@/src/components/ui/card";
 import { Badge } from "@/src/components/ui/badge";
@@ -19,6 +20,8 @@ export const ViewingCard = ({
   onStatusChange,
   onDelete,
 }: ViewingCardProps) => {
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+
   const getStatusColor = (status: string) => {
     // "Scheduled" | "Completed" | "Cancelled";
     switch (status) {
@@ -29,6 +32,11 @@ export const ViewingCard = ({
       default:
         return "bg-[#235C47]/10 text-[#235C47] border border-[#235C47]/20";
     }
+  };
+
+  const handleDelete = () => {
+    onDelete(viewing.id);
+    setShowDeleteModal(false);
   };
 
   return (
@@ -47,7 +55,7 @@ export const ViewingCard = ({
             variant="outline"
             size="sm"
             className="border-[#235C47]/20 text-[#235C47] hover:bg-[#235C47]/10"
-            onClick={() => onDelete(viewing.id)}
+            onClick={() => setShowDeleteModal(true)}
           >
             <Trash2 className="w-4 h-4" />
           </Button>
@@ -113,6 +121,36 @@ export const ViewingCard = ({
             >
               Cancel
             </Button>
+          </div>
+        )}
+
+        {/* Confirmation Modal */}
+        {showDeleteModal && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+            <div className="bg-white rounded-lg p-6 w-full max-w-md mx-4">
+              <h3 className="text-lg font-semibold text-[#235C47] mb-2">
+                Confirm Deletion
+              </h3>
+              <p className="text-[#235C47]/70 mb-6">
+                Are you sure you want to delete this viewing for "{viewing.propertyTitle}"?
+                This action cannot be undone.
+              </p>
+              <div className="flex justify-end gap-3">
+                <Button
+                  variant="outline"
+                  className="border-[#235C47] text-[#235C47] hover:bg-[#F9F7F6]"
+                  onClick={() => setShowDeleteModal(false)}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  className="bg-[#235C47] text-white hover:bg-[#235C47]/90"
+                  onClick={handleDelete}
+                >
+                  Delete
+                </Button>
+              </div>
+            </div>
           </div>
         )}
       </CardContent>
