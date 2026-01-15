@@ -14,7 +14,14 @@ const OTPVerificationPage = () => {
   const [verifiedEmail, { isLoading: isVerifying }] = useVerifyEmailMutation();
   const [resendVerifyEmail, { isLoading: isResending }] =
     useResendVerificationMutation();
-  const email = new URLSearchParams(window.location.search).get("email");
+  const [email, setEmail] = useState<string | null>(null);
+
+  // Get email from query params after component mounts
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const emailParam = urlParams.get("email");
+    setEmail(emailParam);
+  }, []);
   const [otp, setOtp] = useState<string[]>(["", "", "", "", "", ""]);
   const [timeLeft, setTimeLeft] = useState<number>(10); // 5 minutes in seconds
   const [apiError, setApiError] = useState<string | null>(null);
@@ -103,6 +110,8 @@ const OTPVerificationPage = () => {
           error.data?.error || "An error occurred during OTP verification"
         );
       }
+    } else if (!email) {
+      setApiError("Email is required for verification.");
     }
   };
 
@@ -121,6 +130,8 @@ const OTPVerificationPage = () => {
           error.data?.error || "An error occurred while resending OTP"
         );
       }
+    } else if (!email) {
+      setApiError("Email is required to resend OTP.");
     }
   };
 

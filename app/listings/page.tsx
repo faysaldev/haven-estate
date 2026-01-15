@@ -1,7 +1,5 @@
-"use client";
-
-import PropertyListing from "@/src/Page/Listings/PropertyListing";
+import SuspenseWrapper from './SuspenseWrapper';
 
 export default function ListingsPage() {
-  return <PropertyListing />;
+  return <SuspenseWrapper />;
 }

@@ -1,4 +1,4 @@
-import Homepage from "@/src/Page/Homepage";
+import SuspenseWrapper from './SuspenseWrapper';
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -54,5 +54,5 @@ export const metadata: Metadata = {
 };
 
 export default function Home() {
-  return <Homepage />;
+  return <SuspenseWrapper />;
 }
