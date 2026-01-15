@@ -71,39 +71,39 @@ const GeneralSettings = () => {
   // Handle saving privacy policy
   const handleSavePrivacyPolicy = async () => {
     if (!privacyPolicy.trim()) {
-      alert("Please enter privacy policy content");
+      toast("Please enter privacy policy content");
       return;
     }
 
     try {
       await updatePrivacyPolicy({ privacy: privacyPolicy }).unwrap();
-      alert("Privacy Policy updated successfully!");
+      toast("Privacy Policy updated successfully!");
     } catch (error) {
       console.error("Error updating privacy policy:", error);
-      alert("Failed to update privacy policy");
+      toast("Failed to update privacy policy");
     }
   };
 
   // Handle saving terms & conditions
   const handleSaveTermsConditions = async () => {
     if (!termsConditions.trim()) {
-      alert("Please enter terms & conditions content");
+      toast("Please enter terms & conditions content");
       return;
     }
 
     try {
       await updateTermsConditions({ terms: termsConditions }).unwrap();
-      alert("Terms & Conditions updated successfully!");
+      toast("Terms & Conditions updated successfully!");
     } catch (error) {
       console.error("Error updating terms & conditions:", error);
-      alert("Failed to update terms & conditions");
+      toast("Failed to update terms & conditions");
     }
   };
 
   // Handle adding new agent
   const handleAddAgent = async () => {
     if (!agentName || !agentNumber || !agentEmail) {
-      alert("Please fill all fields");
+      toast("Please fill all fields");
       return;
     }
 
