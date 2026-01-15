@@ -132,8 +132,9 @@ export const ViewingCard = ({
                 Confirm Deletion
               </h3>
               <p className="text-[#235C47]/70 mb-6">
-                Are you sure you want to delete this viewing for "{viewing.propertyTitle}"?
-                This action cannot be undone.
+                Are you sure you want to delete this viewing for {`"`}
+                {viewing.propertyTitle}
+                {`"`}? This action cannot be undone.
               </p>
               <div className="flex justify-end gap-3">
                 <Button

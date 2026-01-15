@@ -10,7 +10,6 @@ import {
   Instagram,
   Facebook,
   Mail,
-  ExternalLink,
 } from "lucide-react";
 import Image from "next/image";
 

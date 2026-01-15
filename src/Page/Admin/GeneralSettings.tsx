@@ -55,19 +55,6 @@ const GeneralSettings = () => {
       email: agent.email,
     })) || [];
 
-  // Update local state when API data changes
-  useEffect(() => {
-    if (allPrivacyPolicy) {
-      setPrivacyPolicy(allPrivacyPolicy);
-    }
-  }, [allPrivacyPolicy]);
-
-  useEffect(() => {
-    if (allTermsConditions) {
-      setTermsConditions(allTermsConditions);
-    }
-  }, [allTermsConditions]);
-
   // Handle saving privacy policy
   const handleSavePrivacyPolicy = async () => {
     if (!privacyPolicy.trim()) {
@@ -127,7 +114,7 @@ const GeneralSettings = () => {
       }
     } catch (error) {
       console.error("Error adding agent:", error);
-      alert("Failed to add agent");
+      toast.error("Failed to add agent");
     }
   };
 
@@ -163,6 +150,19 @@ const GeneralSettings = () => {
       />
     </DialogContent>
   );
+
+  // Update local state when API data changes
+  useEffect(() => {
+    if (allPrivacyPolicy) {
+      setPrivacyPolicy(allPrivacyPolicy);
+    }
+  }, [allPrivacyPolicy]);
+
+  useEffect(() => {
+    if (allTermsConditions) {
+      setTermsConditions(allTermsConditions);
+    }
+  }, [allTermsConditions]);
 
   return (
     <div className="space-y-6">
