@@ -67,9 +67,6 @@ const PropertyDetail = () => {
     ...propertyData,
   };
 
-  console.log(processedProperty, "Processed");
-  console.log(propertyData.features, "property Fetured");
-
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
