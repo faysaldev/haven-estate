@@ -13,7 +13,6 @@ import {
   Home,
   Settings,
 } from "lucide-react";
-
 interface BuyerLayoutProps {
   children: ReactNode;
 }
