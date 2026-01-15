@@ -87,12 +87,13 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Suspense fallback={<Preloader />}>
-          <ReduxProvider>
-            {children}
-            <GlobalLoginToast />
-          </ReduxProvider>
-        </Suspense>
+        {/* <Suspense fallback={<Preloader />}> */}
+        <Preloader />
+        <ReduxProvider>
+          {children}
+          <GlobalLoginToast />
+        </ReduxProvider>
+        {/* </Suspense> */}
       </body>
     </html>
   );

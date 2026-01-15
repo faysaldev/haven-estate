@@ -11,7 +11,7 @@ const Preloader = () => {
     // Hide preloader after a minimum time to ensure smooth transition
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 1500); // Minimum 1.5 seconds to show the preloader
+    }, 3000); // Minimum 1.5 seconds to show the preloader
 
     return () => clearTimeout(timer);
   }, [pathname]); // Re-run when route changes
