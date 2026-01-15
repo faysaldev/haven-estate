@@ -3,6 +3,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import ReduxProvider from "@/src/Provider/ReduxProvider";
 import { GlobalLoginToast } from "@/src/components/GlobalLoginToast";
+import Preloader from "@/src/components/Common/Preloader";
+import { Suspense } from "react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -85,10 +87,12 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <ReduxProvider>
-          {children}
-          <GlobalLoginToast />
-        </ReduxProvider>
+        <Suspense fallback={<Preloader />}>
+          <ReduxProvider>
+            {children}
+            <GlobalLoginToast />
+          </ReduxProvider>
+        </Suspense>
       </body>
     </html>
   );
