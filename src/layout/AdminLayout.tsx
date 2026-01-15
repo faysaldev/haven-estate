@@ -13,6 +13,8 @@ import {
   Home,
   Settings,
 } from "lucide-react";
+import { logout } from "../redux/features/auth/authSlice";
+import { useDispatch } from "react-redux";
 
 interface AdminLayoutProps {
   children: ReactNode;
@@ -20,6 +22,7 @@ interface AdminLayoutProps {
 
 const AdminLayout = ({ children }: AdminLayoutProps) => {
   const pathname = usePathname();
+  const dispatch = useDispatch();
 
   const navItems = [
     { icon: LayoutDashboard, label: "Dashboard", path: "/admin" },
@@ -67,6 +70,15 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
             );
           })}
         </nav>
+        {/* Logout Button */}
+        <div className="p-4 border-t border-[#235C47]/20">
+          <button
+            onClick={() => dispatch(logout())}
+            className="w-full flex items-center justify-center gap-3 px-4 py-3 rounded-lg transition-colors bg-[#F9F7F6] text-[#235C47] hover:bg-[#235C47] hover:text-white"
+          >
+            <span className="font-medium">Logout</span>
+          </button>
+        </div>
       </aside>
 
       {/* Main Content */}
