@@ -35,10 +35,8 @@ const ViewingsManagement = () => {
     status: "Scheduled" | "Completed" | "Cancelled"
   ) => {
     try {
-      // Convert status to match API format (first letter capitalized)
       const apiStatus = status.charAt(0).toUpperCase() + status.slice(1);
       await updateScheduleView({ id, status: apiStatus }).unwrap();
-      // The data will automatically update through RTK Query cache invalidation
     } catch (error) {
       console.error("Failed to update viewing status:", error);
     }

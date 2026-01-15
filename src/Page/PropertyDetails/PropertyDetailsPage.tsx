@@ -65,13 +65,6 @@ const PropertyDetail = () => {
   // Process features if they come as a string
   const processedProperty = {
     ...propertyData,
-    features: Array.isArray(propertyData.features)
-      ? propertyData.features
-      : typeof propertyData.features === "string"
-      ? propertyData?.features
-          .split(",")
-          .map((feature: string) => feature.trim())
-      : [],
   };
 
   console.log(processedProperty, "Processed");

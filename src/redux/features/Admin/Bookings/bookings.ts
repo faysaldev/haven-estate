@@ -4,7 +4,7 @@ const buyersApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     updateScheduleViewing: builder.mutation({
       query: ({ id, status }) => ({
-        url: `/schedule-views/${id}`,
+        url: `/schedule-views/${id}/status`,
         method: "PATCH",
         body: { status },
       }),

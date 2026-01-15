@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState, useRef, ChangeEvent } from "react";
+import { useState, useRef, ChangeEvent, KeyboardEvent } from "react";
 import { Button } from "@/src/components/ui/button";
 import { Input } from "@/src/components/ui/input";
 import { Label } from "@/src/components/ui/label";
@@ -57,9 +57,8 @@ export const PropertyForm = ({
   );
   const [area, setArea] = useState(property?.area?.toString() || "");
   const [description, setDescription] = useState(property?.description || "");
-  const [features, setFeatures] = useState(
-    property?.features?.join(", ") || ""
-  );
+  const [featureInput, setFeatureInput] = useState("");
+  const [features, setFeatures] = useState<string[]>(property?.features || []);
   const [imageFiles, setImageFiles] = useState<File[]>([]);
   const [imagePreviews, setImagePreviews] = useState<string[]>(
     property?.images || (property?.image ? [property.image] : [])
@@ -127,6 +126,25 @@ export const PropertyForm = ({
     }
   };
 
+  const handleFeatureKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault(); // Prevent form submission
+      if (featureInput.trim() !== "") {
+        // Add the feature if it's not already in the list
+        if (!features.includes(featureInput.trim())) {
+          setFeatures([...features, featureInput.trim()]);
+        }
+        setFeatureInput(""); // Clear the input
+      }
+    }
+  };
+
+  const removeFeature = (index: number) => {
+    const newFeatures = [...features];
+    newFeatures.splice(index, 1);
+    setFeatures(newFeatures);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -162,7 +180,7 @@ export const PropertyForm = ({
       if (area !== property.area?.toString()) changes.area = area;
       if (description !== property.description)
         changes.description = description;
-      if (features !== property.features?.join(", "))
+      if (JSON.stringify(features) !== JSON.stringify(property.features))
         changes.features = features;
       if (selectedAgentId !== property.agent?._id)
         changes.agent = selectedAgent._id;
@@ -226,8 +244,8 @@ export const PropertyForm = ({
           formData.append("description", description);
           changes.description = description;
         }
-        if (features !== property.features?.join(", ")) {
-          formData.append("features", features);
+        if (JSON.stringify(features) !== JSON.stringify(property.features)) {
+          formData.append("features", JSON.stringify(features));
           changes.features = features;
         }
         if (selectedAgentId !== property.agent?._id) {
@@ -274,7 +292,7 @@ export const PropertyForm = ({
         formData.append("bathrooms", bathrooms);
         formData.append("area", area);
         formData.append("description", description);
-        formData.append("features", features);
+        formData.append("features", JSON.stringify(features));
         formData.append("agent", selectedAgent._id);
 
         // Add image files to FormData
@@ -475,12 +493,32 @@ export const PropertyForm = ({
       </div>
 
       <div className="space-y-2">
-        <Label className="text-[#235C47]">Features (comma-separated) *</Label>
-        <Textarea
-          value={features}
-          onChange={(e) => setFeatures(e.target.value)}
-          className="border-[#235C47]/20 focus:border-[#235C47] focus:ring-[#235C47] min-h-[80px]"
-          required
+        <Label className="text-[#235C47]">
+          Features (press Enter to add) *
+        </Label>
+        <div className="flex flex-wrap gap-2 mb-2 min-h-[40px] p-2 border border-[#235C47]/20 rounded-md">
+          {features.map((feature, index) => (
+            <div
+              key={index}
+              className="flex items-center gap-1 bg-[#235C47] text-white px-3 py-1 rounded-full text-sm"
+            >
+              <span>{feature}</span>
+              <button
+                type="button"
+                onClick={() => removeFeature(index)}
+                className="text-white hover:text-[#F9F7F6]"
+              >
+                <XIcon className="h-4 w-4" />
+              </button>
+            </div>
+          ))}
+        </div>
+        <Input
+          value={featureInput}
+          onChange={(e) => setFeatureInput(e.target.value)}
+          onKeyDown={handleFeatureKeyDown}
+          placeholder="Type a feature and press Enter..."
+          className="border-[#235C47]/20 focus:border-[#235C47] focus:ring-[#235C47]"
         />
       </div>
 

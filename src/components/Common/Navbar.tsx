@@ -67,7 +67,7 @@ const Navbar = () => {
                   asChild
                   className="px-6 border-[#235C47] text-[#235C47] hover:bg-[#235C47]/10"
                 >
-                  <Link href="/auth/login">Login</Link>
+                  <Link href="/auth/signin">Login</Link>
                 </Button>
                 <Button
                   asChild
@@ -141,7 +141,7 @@ const Navbar = () => {
                     className="border-[#235C47] text-[#235C47] hover:bg-[#235C47]/10"
                   >
                     <Link
-                      href="/auth/login"
+                      href="/auth/signin"
                       onClick={() => setIsMenuOpen(false)}
                     >
                       Login
